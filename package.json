@@ -40,7 +40,7 @@
     "test": "mocha",
     "build": "npx rimraf dist && npx rollup -c && npx tsup",
     "parse": "tsx example/index.ts",
-    "setup:client": "cd client && npm install",
+    "setup:client": "cd client && npm install && npx meeting-schedules-parser",
     "start:client": "cd client && npm run dev",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome"
