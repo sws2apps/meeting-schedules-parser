@@ -1,5 +1,7 @@
 import JSZip from 'jszip';
 
+type FileInput = string | { url: string } | Blob | File;
+
 export const isMWBPub = (name: string) => {
   const regex = /^mwb_[A-Z]{1,3}_20[2-9]\d(0[1-9]|1[0-2]).(jwpub|epub)$/i;
   return regex.test(name);
@@ -10,13 +12,13 @@ export const isWPub = (name: string) => {
   return regex.test(name);
 };
 
-export const validateInput = (input: string | { url: string } | Blob | File) => {
+export const validateInput = (input: FileInput) => {
   if (!input) {
     throw new Error('You did not pass anything to the loadPub function.');
   }
 };
 
-export const getInputType = (input: string | { url: string } | Blob | File) => {
+export const getInputType = (input: FileInput) => {
   const result = { browser: false, node: true };
 
   if (typeof input === 'object' && 'url' in input) {
@@ -28,7 +30,7 @@ export const getInputType = (input: string | { url: string } | Blob | File) => {
   return result;
 };
 
-export const getPubFileName = (input: string | { url: string } | Blob) => {
+export const getPubFileName = (input: FileInput) => {
   let filename: string;
 
   if (typeof input === 'object' && 'url' in input) {
@@ -46,7 +48,7 @@ export const getPubExtension = (filename: string) => {
   return meeting_schedules_parser.path.extname(filename) as '.epub' | '.jwpub';
 };
 
-export const isValidPub = (input: string | { url: string } | Blob) => {
+export const isValidPub = (input: FileInput) => {
   const epubFilename = getPubFileName(input);
   const isMWB = isMWBPub(epubFilename);
   const isW = isWPub(epubFilename);
@@ -54,7 +56,7 @@ export const isValidPub = (input: string | { url: string } | Blob) => {
   return isMWB || isW;
 };
 
-export const isValidPubIssue = (input: string | { url: string } | Blob) => {
+export const isValidPubIssue = (input: FileInput) => {
   let valid = true;
 
   const epubFilename = getPubFileName(input);
@@ -71,17 +73,17 @@ export const isValidPubIssue = (input: string | { url: string } | Blob) => {
   return valid;
 };
 
-export const getPubYear = (input: string | { url: string } | Blob) => {
+export const getPubYear = (input: FileInput) => {
   const filename = getPubFileName(input);
   return +filename.split('_')[2].substring(0, 4);
 };
 
-export const getPubLanguage = (input: string | { url: string } | Blob) => {
+export const getPubLanguage = (input: FileInput) => {
   const filename = getPubFileName(input);
   return filename.split('_')[1];
 };
 
-export const getPubData = async (input: string | { url: string } | Blob) => {
+export const getPubData = async (input: FileInput) => {
   let result: Blob | ArrayBuffer | Buffer;
 
   if (input instanceof Blob) {

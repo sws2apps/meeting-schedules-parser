@@ -40,7 +40,7 @@ const hexToBytes = (hex: string) => {
   const bytes = new Uint8Array(clean.length / 2);
 
   for (let i = 0; i < bytes.length; i++) {
-    bytes[i] = parseInt(clean.substr(i * 2, 2), 16);
+    bytes[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
   }
 
   return bytes;
@@ -201,7 +201,7 @@ const parseWJwpub = async ({
   for (const [_, studyArticle] of studyArticles.entries()) {
     const href = studyArticle.nextElementSibling!.querySelector('a')!.getAttribute('href') as string;
 
-    const groups = Array.from(/(?:.*)+:(\w+)\/$/.exec(href)!);
+    const groups = Array.from(/.+:(\w+)\/$/.exec(href)!);
     const articleId = +groups[1];
 
     const content = await getHTMLWTArticleDoc(+articleId, htmlDocs);
