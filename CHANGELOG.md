@@ -1,3 +1,16 @@
+# [4.0.0-beta.1](https://github.com/sws2apps/meeting-schedules-parser/compare/v3.38.0...v4.0.0-beta.1) (2025-07-20)
+
+
+### Features
+
+* **module:** package renamed to meeting-schedules-parser ([5fb2fd8](https://github.com/sws2apps/meeting-schedules-parser/commit/5fb2fd80d7fefea1fb02fe760ddc27f60c101e09))
+
+
+### BREAKING CHANGES
+
+* **module:** - This beta version will also attempt parsing jwpub files.
+- After installing, it is necessary to run `npx meeting-schedules-parser` to copy the necessary web assembly file needed for the new parser.
+
 # [3.38.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v3.37.2...v3.38.0) (2025-07-04)
 
 ### Features
