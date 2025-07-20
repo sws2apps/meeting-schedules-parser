@@ -155,7 +155,8 @@ export const extractMWBDate = (src: string, year: number, lang: string) => {
     .replace('  ', ' ')
     .replace('​', '')
     .replace('⁠', '')
-    .replace(/\u200F/g, '');
+    .replace(/\u200F/g, '')
+    .replace(/\u200B/g, '');
 
   const datePattern = mwbDatePatterns[lang] || mwbDatePatterns.common;
 
@@ -369,7 +370,8 @@ export const extractWTStudyDate = (src: string, lang: string) => {
     .replace('  ', ' ')
     .replace('​', '')
     .replace('⁠', '')
-    .replace(/\u200F/g, '');
+    .replace(/\u200F/g, '')
+    .replace(/\u200B/g, '');
 
   let finalSrc = src;
 

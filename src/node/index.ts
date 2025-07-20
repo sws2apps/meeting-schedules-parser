@@ -1,11 +1,11 @@
 import './utils.node.js';
 import { startParse } from '../common/parser.js';
-import { validateInput } from '../common/epub_validation.js';
 import { MWBSchedule, WSchedule } from '../types/index.js';
+import { validateInput } from '../common/file_validation.js';
 
-export type { MWBSchedule, WSchedule }
+export type { MWBSchedule, WSchedule };
 
-export const loadEPUB = async (epubInput: string | Blob | { url: string }) => {
+export const loadPub = async (epubInput: string | Blob | { url: string }) => {
   try {
     validateInput(epubInput);
 

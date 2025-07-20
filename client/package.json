@@ -12,7 +12,6 @@
   "dependencies": {
     "file-select-dialog": "^1.5.4",
     "json-formatter-js": "^2.5.23",
-    "jw-epub-parser": "file:..",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

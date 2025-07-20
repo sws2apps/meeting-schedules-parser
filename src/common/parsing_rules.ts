@@ -18,6 +18,8 @@ export const extractSongNumber = (src: string) => {
 };
 
 export const extractSourceEnhanced = (src: string, lang: string) => {
+  src = src.replace(/(\u200B)*(\d+)(\u200B)*/g, '$2');
+
   const variations = getPartMinutesSeparatorVariations(lang);
 
   let finalSrc = src;
@@ -58,7 +60,7 @@ export const extractSourceEnhanced = (src: string, lang: string) => {
   const matchFirstPattern = finalSrc.match(langPattern);
 
   if (!matchFirstPattern) {
-    throw new JWEPUBParserError('jw-epub-parser', `Parsing failed. The input was: ${finalSrc}`);
+    throw new JWEPUBParserError('meeting-schedules-parser', `Parsing failed. The input was: ${finalSrc}`);
   }
 
   const groupsFirstPattern = Array.from(langPattern.exec(finalSrc)!);

@@ -1,4 +1,4 @@
-# JW EPUB Parser
+# Meeting Schedules Parser
 
 [![CI](https://github.com/sws2apps/jw-epub-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/sws2apps/jw-epub-parser/actions/workflows/ci.yml)
 [![CD](https://github.com/sws2apps/jw-epub-parser/actions/workflows/deploy.yml/badge.svg)](https://github.com/sws2apps/jw-epub-parser/actions/workflows/deploy.yml)
@@ -11,27 +11,25 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
 
-![epub-badge@3x](https://github.com/sws2apps/jw-epub-parser/assets/80993061/c7d7c280-f838-4ff3-a021-d669de4e195c)
-
-#### An EPUB Parser to extract the needed source materials from Meeting Workbook and Watchtower Study EPUB files.
+#### A parser utility to extract the needed meeting schedules from Meeting Workbook and Watchtower Study JWPUB and EPUB files.
 
 ## Install
 
 ```bash
-npm i jw-epub-parser
+npm i meeting-schedules-parser
 ```
 
 ## Usage
 
 ```js
 // browser
-import { loadEPUB } from 'jw-epub-parser';
+import { loadEPUB } from 'meeting-schedules-parser';
 
 // node esm
-import { loadEPUB } from 'jw-epub-parser/dist/node/index.js';
+import { loadEPUB } from 'meeting-schedules-parser/dist/node/index.js';
 
 // node commonjs
-const { loadEPUB } = require('jw-epub-parser/dist/node/index.cjs');
+const { loadEPUB } = require('meeting-schedules-parser/dist/node/index.cjs');
 
 // sample usage
 const epubJW = await loadEPUB('/path/to/file.epub');

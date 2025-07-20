@@ -1,4 +1,4 @@
-import { loadEPUB } from '../src/node/index.js';
+import { loadPub } from '../src/node/index.js';
 
 const JW_CDN = 'https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?';
 const WOL_E = 'https://wol.jw.org/wol/dt/r1/lp-e';
@@ -18,24 +18,29 @@ const months = [
   'December',
 ];
 
-type issue = {
+type Issue = {
   issueDate: string;
   currentYear: number;
   language: string;
-  hasEPUB: any;
+  EPUB?: { file: { url: string } }[];
+  JWPUB?: { file: { url: string } }[];
 };
 
-const fetchIssueData = async (issue: issue): Promise<any> => {
+const fetchIssueData = async (issue: Issue): Promise<any> => {
   try {
-    if (issue.hasEPUB) {
-      const epubFile = issue.hasEPUB[0].file;
-      const epubUrl = epubFile.url;
-
-      const epubData = await loadEPUB({ url: epubUrl });
-      return epubData;
+    if (issue.JWPUB) {
+      const fileUrl = issue.JWPUB[0].file.url;
+      const pubData = await loadPub({ url: fileUrl });
+      return pubData;
     }
 
-    if (!issue.hasEPUB) {
+    if (issue.EPUB) {
+      const fileUrl = issue.EPUB[0].file.url;
+      const pubData = await loadPub({ url: fileUrl });
+      return pubData;
+    }
+
+    if (!issue.JWPUB && !issue.EPUB) {
       return [];
     }
   } catch (err: any) {
@@ -44,11 +49,11 @@ const fetchIssueData = async (issue: issue): Promise<any> => {
 };
 
 export const fetchData = async (language: string, issue: string | undefined, pub: string | undefined) => {
-  let data = [];
+  let data: { mwb_week_date?: string; w_study_date?: string; week_date: string }[] = [];
 
   if (!issue && !pub) {
     for await (const pub of ['mwb', 'w']) {
-      const issues = [];
+      const issues: Issue[] = [];
 
       if (pub === 'mwb') {
         let notFound = false;
@@ -81,9 +86,11 @@ export const fetchData = async (language: string, issue: string | undefined, pub
 
           if (res.status === 200) {
             const result = await res.json();
-            const hasEPUB = result.files[language].EPUB;
 
-            issues.push({ issueDate, currentYear, language, hasEPUB: hasEPUB });
+            const JWPUB = result.files[language].JWPUB;
+            const EPUB = result.files[language].EPUB;
+
+            issues.push({ issueDate, currentYear, language, EPUB, JWPUB });
           }
 
           if (res.status === 404) {
@@ -140,9 +147,11 @@ export const fetchData = async (language: string, issue: string | undefined, pub
 
           if (res.status === 200) {
             const result = await res.json();
-            const hasEPUB = result.files[language].EPUB;
 
-            issues.push({ issueDate, currentYear, language, hasEPUB: hasEPUB });
+            const JWPUB = result.files[language].JWPUB;
+            const EPUB = result.files[language].EPUB;
+
+            issues.push({ issueDate, currentYear, language, EPUB, JWPUB });
           }
 
           if (res.status === 404) {
@@ -218,10 +227,11 @@ export const fetchData = async (language: string, issue: string | undefined, pub
 
     if (res.status === 200) {
       const result = await res.json();
-      const hasEPUB = result.files[language].EPUB;
-      const issueFetch = { issueDate: issue, currentYear: +issue.substring(0, 4), language, hasEPUB: hasEPUB };
 
-      data = await fetchIssueData(issueFetch);
+      const JWPUB = result.files[language].JWPUB;
+      const EPUB = result.files[language].EPUB;
+
+      data = await fetchIssueData({ issueDate: issue, currentYear: +issue.substring(0, 4), language, EPUB, JWPUB });
     }
   }
 

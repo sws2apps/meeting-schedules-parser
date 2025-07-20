@@ -3,6 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import copy from 'rollup-plugin-copy';
 
 const config = [
   {
@@ -23,8 +24,16 @@ const config = [
       commonjs(),
       json(),
       terser(),
+      copy({
+        targets: [
+          {
+            src: 'node_modules/sql.js/dist/sql-wasm.wasm',
+            dest: 'dist',
+          },
+        ],
+      }),
     ],
-    external: ['jszip', 'path-browserify'],
+    external: ['jszip', 'path-browserify', 'sql.js', 'pako'],
   },
   {
     input: 'src/node/index.ts',
@@ -44,7 +53,7 @@ const config = [
       json(),
       terser(),
     ],
-    external: ['jszip', 'node-html-parser', 'path', 'fs/promises'],
+    external: ['jszip', 'node-html-parser', 'path', 'fs/promises', 'sql.js', 'pako'],
   },
   {
     input: 'src/node/index.ts',
@@ -64,7 +73,7 @@ const config = [
       json(),
       terser(),
     ],
-    external: ['jszip', 'node-html-parser', 'path', 'fs/promises'],
+    external: ['jszip', 'node-html-parser', 'path', 'fs/promises', 'sql.js', 'pako'],
   },
 ];
 

@@ -1,9 +1,9 @@
 export class JWEPUBParserError extends Error {
-	code: string;
+  code: string;
 
-	constructor(code: string, message: string) {
-		super(message);
+  constructor(code: string, message: string) {
+    super(message);
 
-		this.code = `jw-epub-parser/failed-${code}`;
-	}
+    this.code = `meeting-schedules-parser/failed-${code}`;
+  }
 }
