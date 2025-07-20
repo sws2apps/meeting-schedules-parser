@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,5 +33,7 @@ for (const folder of candidates) {
 }
 
 if (!copied) {
-  console.log(`📭 No target folder found. Create one of: [public, static, assets] to receive sql-wasm.wasm.`);
+  console.log(
+    `📭 No target folder found. If working for browser environment, create one of: [public, dist, build] to receive sql-wasm.wasm.`
+  );
 }
