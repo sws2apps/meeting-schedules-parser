@@ -4,7 +4,7 @@
 
 To enhance parsing for a language, make sure first that EPUB is available for that language on jw.org.
 
-1. Open the [JW EPUB Parser](https://crowdin.com/project/cpe-jw-epub-parser) project on Crowdin
+1. Open the [Meeting Schedules Parser](https://crowdin.com/project/cpe-jw-epub-parser) project on Crowdin
 2. Find your locale and start translation. Find more details in [guide for volunteer translators](https://support.crowdin.com/for-volunteer-translators/)
 
 All translated and approved content will be pushed to this repo automatically. You don't need to create any PRs with translation.

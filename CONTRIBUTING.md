@@ -1,22 +1,22 @@
 # How to Contribute
 
-JW EPUB Parser is one of the utilities that is developped by the [Scheduling Workbox System (SWS)](https://github.com/sws2apps) team. But we are also more than happy to receive support from those who are very intersted to assist us. Hopefully this document makes the process for contributing clear and answers some questions that you may have.
+Meeting Schedules Parser is one of the utilities that is developped by the [Scheduling Workbox System (SWS)](https://github.com/sws2apps) team. But we are also more than happy to receive support from those who are very intersted to assist us. Hopefully this document makes the process for contributing clear and answers some questions that you may have.
 
 Please make sure that you have read the [code of conduct](https://github.com/sws2apps/meeting-schedules-parser/blob/main/CODE_OF_CONDUCT.md) before continuing.
 
 ## Semantic Versioning
 
-JW EPUB Parser follows semantic versioning. We release patch versions for bugfixes, minor versions for new features or non-essential changes, and major versions for any breaking changes. Every significant change is documented in the [changelog](https://github.com/sws2apps/meeting-schedules-parser/blob/main/CHANGELOG.md) file.
+Meeting Schedules Parser follows semantic versioning. We release patch versions for bugfixes, minor versions for new features or non-essential changes, and major versions for any breaking changes. Every significant change is documented in the [changelog](https://github.com/sws2apps/meeting-schedules-parser/blob/main/CHANGELOG.md) file.
 
 ## Branch Organization
 
 We used three different branches to make production, beta and alpha releases of SWS Pocket:
 
-| branch | whats for                                                                                                  |
-| :----- | :--------------------------------------------------------------------------------------------------------- |
-| main   | making production release of JW EPUB Parser: bug fix for the current version will be queued in this branch |
-| beta   | making beta release of JW EPUB Parser: new feature will be queued in this branch                           |
-| alpha  | making alpha release of JW EPUB Parser: major update to the application will be queued in this branch      |
+| branch | whats for                                                                                                            |
+| :----- | :------------------------------------------------------------------------------------------------------------------- |
+| main   | making production release of Meeting Schedules Parser: bug fix for the current version will be queued in this branch |
+| beta   | making beta release of Meeting Schedules Parser: new feature will be queued in this branch                           |
+| alpha  | making alpha release of Meeting Schedules Parser: major update to the application will be queued in this branch      |
 
 ## Bugs
 
@@ -30,7 +30,7 @@ Please do not report security bugs in the public issues; go through the process 
 
 ## Proposing a Change
 
-If you intend to add new features or suggest major changes to JW EPUB Parser, check first that your idea is not yet in our tracking issues list. If not, we recommend creating a new [discussion first](https://github.com/sws2apps/meeting-schedules-parser/discussions/categories/ideas). This lets us reach an agreement on your proposal before you put significant effort into it. After it has been approved, please create [new issue](https://github.com/sws2apps/meeting-schedules-parser/issues), and choose the correct template.
+If you intend to add new features or suggest major changes to Meeting Schedules Parser, check first that your idea is not yet in our tracking issues list. If not, we recommend creating a new [discussion first](https://github.com/sws2apps/meeting-schedules-parser/discussions/categories/ideas). This lets us reach an agreement on your proposal before you put significant effort into it. After it has been approved, please create [new issue](https://github.com/sws2apps/meeting-schedules-parser/issues), and choose the correct template.
 
 If you’re only fixing a bug, it’s fine to submit a pull request right away but we still recommend to file an issue detailing what you’re fixing. This is helpful in case we don’t accept that specific fix but want to keep track of the issue.
 

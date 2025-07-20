@@ -1,7 +1,7 @@
 # Meeting Schedules Parser
 
-[![CI](https://github.com/sws2apps/jw-epub-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/sws2apps/jw-epub-parser/actions/workflows/ci.yml)
-[![CD](https://github.com/sws2apps/jw-epub-parser/actions/workflows/deploy.yml/badge.svg)](https://github.com/sws2apps/jw-epub-parser/actions/workflows/deploy.yml)
+[![CI](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/ci.yml)
+[![CD](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/deploy.yml/badge.svg)](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/deploy.yml)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 [![jw-epub-parser](https://snyk.io/advisor/npm-package/jw-epub-parser/badge.svg)](https://snyk.io/advisor/npm-package/jw-epub-parser)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
@@ -19,37 +19,47 @@
 npm i meeting-schedules-parser
 ```
 
+## Browser environment (only)
+
+If you will use this package in the browser, run the following command after installing:
+
+```bash
+npx meeting-schedules-parser
+```
+
+This is necessary to copy the necessary web assembly file required in the browser.
+
 ## Usage
 
 ```js
 // browser
-import { loadEPUB } from 'meeting-schedules-parser';
+import { loadPub } from 'meeting-schedules-parser';
 
 // node esm
-import { loadEPUB } from 'meeting-schedules-parser/dist/node/index.js';
+import { loadPub } from 'meeting-schedules-parser/dist/node/index.js';
 
 // node commonjs
-const { loadEPUB } = require('meeting-schedules-parser/dist/node/index.cjs');
+const { loadPub } = require('meeting-schedules-parser/dist/node/index.cjs');
 
 // sample usage
-const epubJW = await loadEPUB('/path/to/file.epub');
+const pub = await loadPub('/path/to/file.jwpub');
 
-const epubJW = await loadEPUB({ url: epubUrl });
+const pub = await loadPub({ url: epubUrl });
 ```
 
-### loadEPUB(epubData)
+### pub(pubData)
 
 function: asynchronous
 
-#### epubData
+#### pubData
 
 type: `string` or `blob` or `url`
 
-It can be the path to the EPUB file or EPUB file's blob or url to download the EPUB file.
+It can be the path to the JWPUB/EPUB file or JWPUB/EPUB file's blob or url to download the JWPUB/EPUB file.
 
 ## Return
 
-By calling the `loadEPUB` function, it will return an array of objects with the following properties:
+By calling the `loadPub` function, it will return an array of objects with the following properties:
 
 #### Meeting Workbook Data
 
