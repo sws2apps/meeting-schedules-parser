@@ -1,11 +1,11 @@
 import '../browser/utils.browser.js';
-import { getInputType, validateInput } from '../common/epub_validation.js';
+import { getInputType, validateInput } from '../common/file_validation.js';
 import { startParse } from '../common/parser.js';
 import { MWBSchedule, WSchedule } from '../types/index.js';
 
-export type { MWBSchedule, WSchedule }
+export type { MWBSchedule, WSchedule };
 
-export const loadEPUB = async (epubInput: File | Blob | { url: string }) => {
+export const loadPub = async (epubInput: File | Blob | { url: string }) => {
   try {
     validateInput(epubInput);
 
@@ -13,13 +13,13 @@ export const loadEPUB = async (epubInput: File | Blob | { url: string }) => {
     const { browser } = getInputType(epubInput);
     if (!browser) {
       throw new Error(
-        'You are using the Browser version of jw-epub-parser. Please switch to the Node version if needed.'
+        'You are using the Browser version of meeting-schedules-parser. Please switch to the Node version if needed.'
       );
     }
 
     // Step: Start Parsing
     const data = await startParse(epubInput);
-    return data as any
+    return data as any;
   } catch (err) {
     console.error(err);
 

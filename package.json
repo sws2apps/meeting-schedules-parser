@@ -1,40 +1,46 @@
 {
-  "name": "jw-epub-parser",
+  "name": "meeting-schedules-parser",
   "version": "3.38.0",
   "type": "module",
-  "description": "This tool will help you to parse and extract the needed source materials from Meeting Workbook EPUB file. Support for parsing Watchtower Study will be added in future release.",
+  "description": "This tool will help you to parse and extract the needed meeting schedules from Meeting Workbook and Watchtower Study EPUB and JWPUB files.",
   "keywords": [
     "epub parse",
+    "jwpub parse",
     "jw",
     "jw.org",
-    "epub"
+    "epub",
+    "jwpub"
   ],
   "main": "./dist/node/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/*"
+    "dist/*",
+    "copy-wasm.js"
   ],
-  "homepage": "https://github.com/sws2apps/jw-epub-parser#readme",
-  "author": "Scheduling Workbox System <sws2apps.notification@gmail.com>",
+  "homepage": "https://github.com/sws2apps/meeting-schedules-parser#readme",
+  "author": "Scheduling Workbox System <contact@sws2apps.com>",
   "bugs": {
-    "url": "https://github.com/sws2apps/jw-epub-parser/issues",
-    "email": "sws2apps.notification@gmail.com"
+    "url": "https://github.com/sws2apps/meeting-schedules-parser/issues",
+    "email": "contact@sws2apps.com"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sws2apps/jw-epub-parser.git"
+    "url": "https://github.com/sws2apps/meeting-schedules-parser.git"
   },
   "funding": {
     "type": "buymeacoffee",
     "url": "https://www.buymeacoffee.com/sws2apps"
   },
+  "bin": {
+    "setup": "./copy-wasm.js"
+  },
   "scripts": {
     "test": "mocha",
     "build": "npx rimraf dist && npx rollup -c && npx tsup",
     "parse": "tsx example/index.ts",
-    "setup:client": "cd client && npm install",
+    "setup:client": "cd client && npm install && npx meeting-schedules-parser",
     "start:client": "cd client && npm run dev",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome"
@@ -47,16 +53,20 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^12.1.0",
+    "@rollup/plugin-wasm": "^6.2.2",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^7.0.2",
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^24.0.0",
+    "@types/pako": "^2.0.3",
     "@types/path-browserify": "^1.0.2",
+    "@types/sql.js": "^1.4.9",
     "chai": "^5.0.0",
     "cypress": "^14.0.0",
     "mocha": "^11.0.1",
     "rimraf": "^6.0.0",
     "rollup": "^4.0.0",
+    "rollup-plugin-copy": "^3.5.0",
     "semantic-release": "^24.0.0",
     "tsup": "^8.4.0",
     "tsx": "^4.7.0",
@@ -65,6 +75,8 @@
   "dependencies": {
     "jszip": "^3.9.1",
     "node-html-parser": "^7.0.1",
-    "path-browserify": "^1.0.1"
+    "pako": "^2.1.0",
+    "path-browserify": "^1.0.1",
+    "sql.js": "^1.13.0"
   }
 }

@@ -8,7 +8,7 @@ permissions: read-all
 jobs:
   deploy_dev:
     name: Preparing Alpha release
-    if: ${{ github.repository == 'sws2apps/jw-epub-parser' && github.ref == 'refs/heads/alpha' }}
+    if: ${{ github.repository == 'sws2apps/meeting-schedules-parser' && github.ref == 'refs/heads/alpha' }}
     environment:
       name: Development
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
 
   deploy_stg:
     name: Preparing Beta release
-    if: ${{ github.repository == 'sws2apps/jw-epub-parser' && github.ref == 'refs/heads/beta' }}
+    if: ${{ github.repository == 'sws2apps/meeting-schedules-parser' && github.ref == 'refs/heads/beta' }}
     environment:
       name: Staging
     runs-on: ubuntu-latest
@@ -72,7 +72,7 @@ jobs:
 
   deploy_prod:
     name: Preparing Production release
-    if: ${{ github.repository == 'sws2apps/jw-epub-parser' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.repository == 'sws2apps/meeting-schedules-parser' && github.ref == 'refs/heads/main' }}
     environment:
       name: Production
     runs-on: ubuntu-latest

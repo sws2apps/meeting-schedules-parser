@@ -40,11 +40,11 @@ import Z from '../locales/sv-SE/text.json';
 
 declare global {
   interface Window {
-    jw_epub_parser: any;
+    meeting_schedules_parser: any;
   }
 }
 
-window.jw_epub_parser = {
+window.meeting_schedules_parser = {
   languages: {
     CH,
     CHS,

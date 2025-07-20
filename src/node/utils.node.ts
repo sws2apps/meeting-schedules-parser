@@ -40,10 +40,10 @@ import YW from '../locales/rw-RW/text.json' with { type: 'json' };
 import Z from '../locales/sv-SE/text.json' with { type: 'json' };
 
 declare global {
-  var jw_epub_parser: any;
+  var meeting_schedules_parser: any;
 }
 
-global.jw_epub_parser = {
+global.meeting_schedules_parser = {
   languages: {
     CH,
     CHS,

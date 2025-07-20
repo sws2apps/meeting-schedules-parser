@@ -1,6 +1,6 @@
 import { Language } from '../types/index.js';
 
-const languages: Language = jw_epub_parser.languages;
+const languages: Language = meeting_schedules_parser.languages;
 
 export const getMonthNames = (lang: string) => {
   return [
