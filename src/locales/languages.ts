@@ -36,4 +36,5 @@ export default [
   { locale: 'vi-VN', code: 'VT' },
   { locale: 'ms-MY', code: 'ML' },
   { locale: 'el-GR', code: 'G' },
+  { locale: 'es-LSE', code: 'LSE' },
 ];

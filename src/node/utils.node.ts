@@ -14,6 +14,7 @@ import IL from '../locales/ilo-PH/text.json' with { type: 'json' };
 import J from '../locales/ja-JP/text.json' with { type: 'json' };
 import K from '../locales/uk-UA/text.json' with { type: 'json' };
 import KO from '../locales/ko-KR/text.json' with { type: 'json' };
+import LSE from '../locales/es-LSE/text.json' with { type: 'json' };
 import M from '../locales/ro-RO/text.json' with { type: 'json' };
 import MG from '../locales/mg-MG/text.json' with { type: 'json' };
 import ML from '../locales/ms-MY/text.json' with { type: 'json' };
@@ -58,6 +59,7 @@ global.meeting_schedules_parser = {
     J,
     K,
     KO,
+    LSE,
     M,
     MG,
     ML,

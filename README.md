@@ -130,10 +130,10 @@ Iloko, Italian
 Japanese
 Kinyarwanda, Korean
 Liberian English
-Malagasy, Malay
+Madagascar Sign Language, Malagasy, Malay
 Pidgin (West Africa), Polish, Portuguese Brazil
 Romanian, Russian
-Slovenian, Spanish, Swahili, Swedish
+Slovenian, Spanish, Spanish Sign Language, Swahili, Swedish
 Tagalog, Tandroy, Tankarana, Turkish, Twin
 Ukrainian
 Vietnamese, Vezo
