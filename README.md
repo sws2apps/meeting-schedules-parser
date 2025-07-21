@@ -124,7 +124,7 @@ Chinese Mandarin (Simplified), Chinese Mandarin (Traditional)
 Dutch
 English
 French
-German
+German, Greek
 Haitian Creole
 Iloko, Italian
 Japanese
