@@ -31,5 +31,10 @@
   { "language": "ML", "issue": "202509" },
   { "language": "G", "issue": "202509" },
   { "language": "TTM", "issue": "202505" },
-  { "language": "LSE", "issue": "202507" }
+  { "language": "LSE", "issue": "202507" },
+  { "language": "T", "issue": "202509" },
+  { "language": "P", "issue": "202509" },
+  { "language": "FI", "issue": "202509" },
+  { "language": "ST", "issue": "202509" },
+  { "language": "TW", "issue": "202509" }
 ]
