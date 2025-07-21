@@ -47,7 +47,7 @@ const pub = await loadPub('/path/to/file.jwpub');
 const pub = await loadPub({ url: epubUrl });
 ```
 
-### pub(pubData)
+### loadPub(pubData)
 
 function: asynchronous
 
