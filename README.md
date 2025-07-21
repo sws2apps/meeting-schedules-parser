@@ -19,7 +19,7 @@
 npm i meeting-schedules-parser
 ```
 
-## Browser environment (only)
+### Browser environment (only)
 
 If you will use this package in the browser, run the following command after installing:
 
@@ -27,7 +27,7 @@ If you will use this package in the browser, run the following command after ins
 npx meeting-schedules-parser
 ```
 
-This is necessary to copy the necessary web assembly file required in the browser.
+This is necessary to copy a web assembly file required in the browser.
 
 ## Usage
 
