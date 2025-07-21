@@ -13,6 +13,7 @@ import IL from '../locales/ilo-PH/text.json';
 import J from '../locales/ja-JP/text.json';
 import K from '../locales/uk-UA/text.json';
 import KO from '../locales/ko-KR/text.json';
+import LSE from '../locales/es-LSE/text.json';
 import M from '../locales/ro-RO/text.json';
 import MG from '../locales/mg-MG/text.json';
 import ML from '../locales/ms-MY/text.json';
@@ -40,11 +41,11 @@ import Z from '../locales/sv-SE/text.json';
 
 declare global {
   interface Window {
-    jw_epub_parser: any;
+    meeting_schedules_parser: any;
   }
 }
 
-window.jw_epub_parser = {
+window.meeting_schedules_parser = {
   languages: {
     CH,
     CHS,
@@ -59,6 +60,7 @@ window.jw_epub_parser = {
     J,
     K,
     KO,
+    LSE,
     M,
     MG,
     ML,

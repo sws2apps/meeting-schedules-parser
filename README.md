@@ -1,7 +1,7 @@
-# JW EPUB Parser
+# Meeting Schedules Parser
 
-[![CI](https://github.com/sws2apps/jw-epub-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/sws2apps/jw-epub-parser/actions/workflows/ci.yml)
-[![CD](https://github.com/sws2apps/jw-epub-parser/actions/workflows/deploy.yml/badge.svg)](https://github.com/sws2apps/jw-epub-parser/actions/workflows/deploy.yml)
+[![CI](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/ci.yml)
+[![CD](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/deploy.yml/badge.svg)](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/deploy.yml)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 [![jw-epub-parser](https://snyk.io/advisor/npm-package/jw-epub-parser/badge.svg)](https://snyk.io/advisor/npm-package/jw-epub-parser)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
@@ -11,47 +11,55 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
 
-![epub-badge@3x](https://github.com/sws2apps/jw-epub-parser/assets/80993061/c7d7c280-f838-4ff3-a021-d669de4e195c)
-
-#### An EPUB Parser to extract the needed source materials from Meeting Workbook and Watchtower Study EPUB files.
+#### A parser utility to extract the needed meeting schedules from Meeting Workbook and Watchtower Study JWPUB and EPUB files.
 
 ## Install
 
 ```bash
-npm i jw-epub-parser
+npm i meeting-schedules-parser
 ```
+
+### Browser environment (only)
+
+If you will use this package in the browser, run the following command after installing:
+
+```bash
+npx meeting-schedules-parser
+```
+
+This is necessary to copy a web assembly file required in the browser.
 
 ## Usage
 
 ```js
 // browser
-import { loadEPUB } from 'jw-epub-parser';
+import { loadPub } from 'meeting-schedules-parser';
 
 // node esm
-import { loadEPUB } from 'jw-epub-parser/dist/node/index.js';
+import { loadPub } from 'meeting-schedules-parser/dist/node/index.js';
 
 // node commonjs
-const { loadEPUB } = require('jw-epub-parser/dist/node/index.cjs');
+const { loadPub } = require('meeting-schedules-parser/dist/node/index.cjs');
 
 // sample usage
-const epubJW = await loadEPUB('/path/to/file.epub');
+const pub = await loadPub('/path/to/file.jwpub');
 
-const epubJW = await loadEPUB({ url: epubUrl });
+const pub = await loadPub({ url: epubUrl });
 ```
 
-### loadEPUB(epubData)
+### loadPub(pubData)
 
 function: asynchronous
 
-#### epubData
+#### pubData
 
 type: `string` or `blob` or `url`
 
-It can be the path to the EPUB file or EPUB file's blob or url to download the EPUB file.
+It can be the path to the JWPUB/EPUB file or JWPUB/EPUB file's blob or url to download the JWPUB/EPUB file.
 
 ## Return
 
-By calling the `loadEPUB` function, it will return an array of objects with the following properties:
+By calling the `loadPub` function, it will return an array of objects with the following properties:
 
 #### Meeting Workbook Data
 
@@ -114,18 +122,18 @@ Currently, we only support enhanced parsing for the following languages:
 ```bash
 Chinese Mandarin (Simplified), Chinese Mandarin (Traditional)
 Dutch
-English
-French
-German
+English, Estonian
+Finnish, French
+German, Greek
 Haitian Creole
 Iloko, Italian
 Japanese
 Kinyarwanda, Korean
 Liberian English
-Malagasy, Malay
-Pidgin (West Africa), Polish, Portuguese Brazil
+Madagascar Sign Language, Malagasy, Malay
+Pidgin (West Africa), Polish, Portuguese (Brazil), Portuguese (Portugal)
 Romanian, Russian
-Slovenian, Spanish, Swahili, Swedish
+Slovenian, Spanish, Spanish Sign Language, Swahili, Swedish
 Tagalog, Tandroy, Tankarana, Turkish, Twin
 Ukrainian
 Vietnamese, Vezo
@@ -190,10 +198,10 @@ Here are how the results of this module look like:
 [
   {
     w_study_date: '2025/01/06',
-	  w_study_date_locale: 'Study Article 44: January 6-12, 2025',
-	  w_study_title: 'How to Cope With Injustice',
-	  w_study_opening_song: 33,
-	  w_study_concluding_song: 38
+    w_study_date_locale: 'Study Article 44: January 6-12, 2025',
+    w_study_title: 'How to Cope With Injustice',
+    w_study_opening_song: 33,
+    w_study_concluding_song: 38
   },
 	...
 ]

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import * as path from 'path';
 import { expect } from 'chai';
-import { loadEPUB } from '../dist/node/index.js';
+import { loadPub } from '../dist/node/index.js';
 
 const list = JSON.parse(await fs.promises.readFile(new URL('./standardParsing/list.json', import.meta.url)));
 const JW_CDN = 'https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?';
@@ -15,7 +15,6 @@ const fetchData = async (language, issue, pub) => {
     new URLSearchParams({
       langwritten: language,
       pub,
-      fileformat: 'epub',
       output: 'json',
       issue,
     });
@@ -24,13 +23,12 @@ const fetchData = async (language, issue, pub) => {
 
   if (res.status === 200) {
     const result = await res.json();
-    const epubEntry = result.files[language].EPUB;
+    const fileUrl = result.files[language].JWPUB[0].file.url;
+    const filename = path.basename(fileUrl);
+    data = await loadPub({ url: fileUrl });
 
-    const epubFile = epubEntry[0].file;
-    const epubUrl = epubFile.url;
-    const epubName = path.basename(epubUrl);
-    data = await loadEPUB({ url: epubUrl });
-    fixture = (await import(`./fixtures/${epubName.replace('.epub', '.js')}`)).default;
+    const jsonPath = `./test/fixtures/${filename.replace('.jwpub', '.json')}`;
+    fixture = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   }
 
   return { data, fixture };
@@ -40,8 +38,8 @@ describe('Testing Standard Parsing', () => {
   for (let i = 0; i < list.length; i++) {
     const { language, issue } = list[i];
 
-    describe(`Test loadEPUB function for ${language} language`, async () => {
-      it(`Parsing Meeting Workbook EPUB file`, async () => {
+    describe(`Test loadPub function for ${language} language`, async () => {
+      it(`Parsing Meeting Workbook file`, async () => {
         const { data, fixture } = await fetchData(language, issue, 'mwb');
 
         for (let a = 0; a < fixture.length; a++) {
@@ -52,7 +50,7 @@ describe('Testing Standard Parsing', () => {
         }
       });
 
-      it(`Parsing Watchtower Study EPUB file`, async () => {
+      it(`Parsing Watchtower Study file`, async () => {
         const { data, fixture } = await fetchData(language, issue, 'w');
 
         for (let a = 0; a < fixture.length; a++) {

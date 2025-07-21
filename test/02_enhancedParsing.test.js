@@ -1,7 +1,7 @@
 import fs from 'fs';
 import * as path from 'path';
 import { expect } from 'chai';
-import { loadEPUB } from '../dist/node/index.js';
+import { loadPub } from '../dist/node/index.js';
 
 const list = JSON.parse(await fs.promises.readFile(new URL('./enhancedParsing/list.json', import.meta.url)));
 
@@ -9,14 +9,19 @@ const JW_CDN = 'https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?';
 
 const fetchIssueData = async (issue, pub) => {
   try {
-    if (issue.hasEPUB) {
-      const epubFile = issue.hasEPUB[0].file;
-      const epubUrl = epubFile.url;
+    if (issue.JWPUB) {
+      const fileUrl = issue.JWPUB[0].file.url;
 
-      const epubData = await loadEPUB({ url: epubUrl });
-      return epubData;
+      const pubData = await loadPub({ url: fileUrl });
+      return pubData;
     }
 
+    if (issue.EPUB) {
+      const fileUrl = issue.EPUB[0].file.url;
+
+      const pubData = await loadPub({ url: fileUrl });
+      return pubData;
+    }
     if (!issue.hasEPUB) {
       return [];
     }
@@ -42,21 +47,32 @@ const fetchData = async (language, issue, pub) => {
 
   if (res.status === 200) {
     const result = await res.json();
-    const hasEPUB = result.files[language].EPUB;
+    const EPUB = result.files[language].EPUB;
+    const JWPUB = result.files[language].JWPUB;
 
-    const issueFetch = { issueDate: issue, currentYear: issue.substring(0, 4), language, hasEPUB: hasEPUB };
+    const issueFetch = { issueDate: issue, currentYear: issue.substring(0, 4), language, EPUB, JWPUB };
 
     data = await fetchIssueData(issueFetch, pub);
 
-    if (hasEPUB) {
-      const epubFile = hasEPUB[0].file;
-      const epubUrl = epubFile.url;
-      const epubName = path.basename(epubUrl);
-      fixture = (await import(`./fixtures/${epubName.replace('.epub', '.js')}`)).default;
+    if (JWPUB) {
+      const fileUrl = JWPUB[0].file.url;
+      const filename = path.basename(fileUrl);
+
+      const jsonPath = `./test/fixtures/${filename.replace('.jwpub', '.json')}`;
+      fixture = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     }
 
-    if (!hasEPUB) {
-      fixture = (await import(`./fixtures/${pub}_${language}_${issue}.js`)).default;
+    if (EPUB) {
+      const fileUrl = EPUB[0].file.url;
+      const filename = path.basename(fileUrl);
+
+      const jsonPath = `./test/fixtures/${filename.replace('.epub', '.json')}`;
+      fixture = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    }
+
+    if (!JWPUB && !EPUB) {
+      const jsonPath = `./test/fixtures/${pub}_${language}_${issue}.json`;
+      fixture = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     }
   }
 
@@ -67,8 +83,8 @@ describe('Testing Enhanced Parsing', async () => {
   for (let i = 0; i < list.length; i++) {
     const { language, issue } = list[i];
 
-    describe(`Test loadEPUB function for ${language} language`, async () => {
-      it(`Parsing Meeting Workbook EPUB file`, async () => {
+    describe(`Test loadPub function for ${language} language`, async () => {
+      it(`Parsing Meeting Workbook file`, async () => {
         const { data, fixture } = await fetchData(language, issue, 'mwb');
 
         for (let a = 0; a < fixture.length; a++) {
@@ -79,7 +95,7 @@ describe('Testing Enhanced Parsing', async () => {
         }
       });
 
-      it(`Parsing Watchtower Study EPUB file`, async () => {
+      it(`Parsing Watchtower Study file`, async () => {
         const { data, fixture } = await fetchData(language, issue, 'w');
 
         for (let a = 0; a < fixture.length; a++) {

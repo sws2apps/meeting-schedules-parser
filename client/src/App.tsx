@@ -1,11 +1,11 @@
-import { loadEPUB, MWBSchedule, WSchedule } from 'jw-epub-parser';
+import { loadPub, MWBSchedule, WSchedule } from 'meeting-schedules-parser';
 import JSONFormatter from 'json-formatter-js';
 
 function App() {
   const handleOpenMWBEPUB = async (file: File) => {
     try {
-      const data: MWBSchedule = await loadEPUB(file);
-      
+      const data: MWBSchedule = await loadPub(file);
+
       const formatter = new JSONFormatter(data);
 
       const result = document.querySelector('#mwb_parser_result')!;
@@ -18,7 +18,7 @@ function App() {
 
   const handleOpenWEPUB = async (file: File) => {
     try {
-      const data: WSchedule = await loadEPUB(file);
+      const data: WSchedule = await loadPub(file);
       const formatter = new JSONFormatter(data);
 
       const result = document.querySelector('#w_parser_result')!;

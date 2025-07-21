@@ -81,6 +81,7 @@ const mwbDatePatterns: LangRegExp = {
   IL: new RegExp(mwbDatePatternE, 'giu'),
   J: new RegExp(mwbDatePatternJ, 'giu'),
   KO: new RegExp(mwbDatePatternKO, 'giu'),
+  LSE: new RegExp(mwbDatePatternS, 'giu'),
   P: new RegExp(mwbDatePatternP, 'giu'),
   PGW: new RegExp(mwbDatePatternE, 'giu'),
   S: new RegExp(mwbDatePatternS, 'giu'),
@@ -155,7 +156,8 @@ export const extractMWBDate = (src: string, year: number, lang: string) => {
     .replace('  ', ' ')
     .replace('​', '')
     .replace('⁠', '')
-    .replace(/\u200F/g, '');
+    .replace(/\u200F/g, '')
+    .replace(/\u200B/g, '');
 
   const datePattern = mwbDatePatterns[lang] || mwbDatePatterns.common;
 
@@ -272,6 +274,7 @@ const wDatePatterns: LangRegExp = {
   IL: new RegExp(wDatePatternE, 'giu'),
   J: new RegExp(wDatePatternJ, 'giu'),
   KO: new RegExp(wDatePatternKO, 'giu'),
+  LSE: new RegExp(wDatePatternS, 'giu'),
   P: new RegExp(wDatePatternP, 'giu'),
   PGW: new RegExp(wDatePatternE, 'giu'),
   S: new RegExp(wDatePatternS, 'giu'),
@@ -369,7 +372,8 @@ export const extractWTStudyDate = (src: string, lang: string) => {
     .replace('  ', ' ')
     .replace('​', '')
     .replace('⁠', '')
-    .replace(/\u200F/g, '');
+    .replace(/\u200F/g, '')
+    .replace(/\u200B/g, '');
 
   let finalSrc = src;
 
