@@ -1,3 +1,18 @@
+# [4.0.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v3.38.0...v4.0.0) (2025-07-21)
+
+
+### Features
+
+* **module:** package renamed to `meeting-schedules-parser` ([c36eafd](https://github.com/sws2apps/meeting-schedules-parser/commit/c36eafdcd5b518b38853de5015c555d9d6cec5f5))
+
+
+### BREAKING CHANGES
+
+* **module:** if the package will be used in a browser environment, it is necessary to run `npx meeting-schedules-parser` after installing.
+
+* **module:** the name of function has been changed from `loadEPUB` to `loadPub`
+* **module:** it is now possible to use jwpub file as input
+
 # [4.0.0-beta.1](https://github.com/sws2apps/meeting-schedules-parser/compare/v3.38.0...v4.0.0-beta.1) (2025-07-20)
 
 
