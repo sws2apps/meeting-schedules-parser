@@ -198,10 +198,10 @@ Here are how the results of this module look like:
 [
   {
     w_study_date: '2025/01/06',
-	  w_study_date_locale: 'Study Article 44: January 6-12, 2025',
-	  w_study_title: 'How to Cope With Injustice',
-	  w_study_opening_song: 33,
-	  w_study_concluding_song: 38
+    w_study_date_locale: 'Study Article 44: January 6-12, 2025',
+    w_study_title: 'How to Cope With Injustice',
+    w_study_opening_song: 33,
+    w_study_concluding_song: 38
   },
 	...
 ]
