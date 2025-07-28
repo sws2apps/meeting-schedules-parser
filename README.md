@@ -3,13 +3,13 @@
 [![CI](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/ci.yml)
 [![CD](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/deploy.yml/badge.svg)](https://github.com/sws2apps/meeting-schedules-parser/actions/workflows/deploy.yml)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
-[![jw-epub-parser](https://snyk.io/advisor/npm-package/jw-epub-parser/badge.svg)](https://snyk.io/advisor/npm-package/jw-epub-parser)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_jw-epub-parser&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sws2apps_jw-epub-parser)
+[![snyk](https://snyk.io/advisor/npm-package/meeting-schedules-parser/badge.svg)](https://snyk.io/advisor/npm-package/meeting-schedules-parser)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
 
 #### A parser utility to extract the needed meeting schedules from Meeting Workbook and Watchtower Study JWPUB and EPUB files.
 
@@ -44,7 +44,7 @@ const { loadPub } = require('meeting-schedules-parser/dist/node/index.cjs');
 // sample usage
 const pub = await loadPub('/path/to/file.jwpub');
 
-const pub = await loadPub({ url: epubUrl });
+const pub = await loadPub({ url: fileUrl });
 ```
 
 ### loadPub(pubData)

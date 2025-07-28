@@ -2,6 +2,9 @@ node_modules
 dist
 sample
 
+client/public/sql-wasm.wasm
+
 .env
 
 *.epub
+*.jwpub

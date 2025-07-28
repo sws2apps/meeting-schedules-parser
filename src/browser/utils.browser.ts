@@ -1,4 +1,5 @@
 import * as path from 'path-browserify';
+import initSqlJs from 'sql.js';
 
 import CH from '../locales/cmn-Hant/text.json';
 import CHS from '../locales/ch-CHS/text.json';
@@ -87,4 +88,5 @@ window.meeting_schedules_parser = {
     Z,
   },
   path: path,
+  loadSQL: async () => await initSqlJs({ wasmBinary: await fetch('./sql-wasm.wasm').then((res) => res.arrayBuffer()) }),
 };

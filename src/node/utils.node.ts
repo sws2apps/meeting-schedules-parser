@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { readFile } from 'fs/promises';
+import initSqlJs from 'sql.js';
 
 import CH from '../locales/cmn-Hant/text.json' with { type: 'json' };
 import CHS from '../locales/ch-CHS/text.json' with { type: 'json' };
@@ -87,4 +88,5 @@ global.meeting_schedules_parser = {
   },
   path: path,
   readFile: readFile,
+  loadSQL: async () => await initSqlJs(),
 };
