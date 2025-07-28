@@ -29,6 +29,16 @@ npx meeting-schedules-parser
 
 This is necessary to copy a web assembly file required in the browser.
 
+Then adjust your bundler to ignore some Node built-in modules during build. For example, if using Vite, add the following:
+
+```js
+  build: {
+    rollupOptions: {
+      external: ['fs', 'path', 'crypto'],
+    },
+  },
+```
+
 ## Usage
 
 ```js
