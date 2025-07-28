@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.0.0...v4.0.1) (2025-07-28)
+
+
+### Bug Fixes
+
+* **module:** node built-in modules appearing in browser version ([7706568](https://github.com/sws2apps/meeting-schedules-parser/commit/77065682b663e2149dba73679f693901cc589a3b))
+
 # [4.0.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v3.38.0...v4.0.0) (2025-07-21)
 
 
