@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import initSqlJs, { Database } from 'sql.js';
+import { Database, SqlJsStatic } from 'sql.js';
 import { inflate } from 'pako';
 import { HTMLElement } from 'node-html-parser';
 
@@ -14,11 +14,8 @@ type StudyArticle = { id: number; article: HTMLElement };
 type WPubContents = { toc: HTMLElement; articles: StudyArticle[] };
 
 const getDatabaseFile = async (zip: JSZip) => {
-  const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
-
-  const SQL = await initSqlJs(
-    isBrowser ? { wasmBinary: await fetch('./sql-wasm.wasm').then((res) => res.arrayBuffer()) } : {}
-  );
+  const SQL = await meeting_schedules_parser.loadSQL() as SqlJsStatic;
+  
 
   const contentZip = await zip.files['contents'].async('uint8array');
   const innerZip = await extractZipFiles(contentZip);
@@ -62,7 +59,7 @@ const generateSHA256Rounds = async (text: string) => {
   return bufferToHex(hashBuffer);
 };
 
-const xorBuffers = (buf1: Uint8Array<ArrayBuffer>, buf2: Uint8Array<ArrayBuffer>) => {
+const xorBuffers = (buf1: Uint8Array, buf2: Uint8Array) => {
   if (buf1.length !== buf2.length) {
     throw new Error('Buffers must be same length');
   }
