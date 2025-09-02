@@ -81,6 +81,7 @@ export const getMWBSources = (htmlItem: HTMLElement) => {
 
     for (const h3 of h3Texts) {
       let isSong = h3.classList.contains('dc-icon--music');
+
       const part = h3.parentNode.classList.contains('boxContent') === false;
 
       if (!isSong) {
@@ -100,28 +101,36 @@ export const getMWBSources = (htmlItem: HTMLElement) => {
           data = data.replace('|', '@');
         }
 
+        if (part) {
+          const nextSibling = h3.nextElementSibling;
+
+          if (nextSibling) {
+            const nextElement = nextSibling.querySelector('p');
+
+            if (nextElement) {
+              const dataAdd = nextElement.textContent;
+              data += ` ${dataAdd}`;
+            }
+          }
+        }
+
         src += '@' + data;
 
         const nextSibling = h3.nextElementSibling;
 
-        if (nextSibling) {
+        if (isSong && songIndex === 2 && nextSibling?.tagName === 'DIV' && nextSibling?.nextElementSibling?.tagName !== 'H3') {
           const nextElement = nextSibling.querySelector('p');
 
           if (nextElement) {
-            // handle element exception in mwb25.09
-            if (isSong && songIndex === 2 && nextSibling.tagName === 'DIV') {
-              src += '@' + nextElement.textContent;
+            src += '@' + nextElement.textContent;
 
-              const tmpSibling = nextSibling.nextElementSibling?.querySelector('p');
+            const tmpSibling = nextSibling.nextElementSibling?.querySelector('p');
 
-              if (tmpSibling) {
-                src += ' ' + tmpSibling.textContent;
-              }
-
-              continue;
+            if (tmpSibling) {
+              src += ' ' + tmpSibling.textContent;
             }
 
-            src += ' ' + nextElement.textContent;
+            continue;
           }
         }
       }

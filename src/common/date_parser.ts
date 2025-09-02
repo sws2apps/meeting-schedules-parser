@@ -23,6 +23,12 @@ option2 = `(${wordWithDiacritics}) (\\d{1,2})[-–](?:${wordWithDiacritics}) (?:
 option3 = `(${wordWithDiacritics}) (\\d{1,2}), (\\d{4})`;
 const mwbDatePatternE = `${option1}|${option2}|${option3}`;
 
+// date like 1) DECEMBER 23-29.; or 2) NOVEMBER 25. – DECEMBER 1.; or 3) 2024. DECEMBER 30. - 2025. JANUARY 5.
+option1 = `(${wordWithDiacritics}) (\\d{1,2})[-–](?:\\d{1,2}).`;
+option2 = `(${wordWithDiacritics}) (\\d{1,2}). [-–] (?:${wordWithDiacritics}) (?:\\d{1,2}).`;
+option3 = `(?:\\d{4}). (${wordWithDiacritics}) (\\d{1,2}).`;
+const mwbDatePatternH = `${option1}|${option2}|${option3}`;
+
 // date like 1-) 12月23-29日; or 2) 11月25日-12月1日; or 3) 2024年12月30日-2025年1月5日
 option1 = `(\\d{1,2})月(\\d{1,2})[-–](?:\\d{1,2})日`;
 option2 = `(\\d{1,2})月(\\d{1,2})日`;
@@ -78,6 +84,7 @@ const mwbDatePatterns: LangRegExp = {
   E: new RegExp(mwbDatePatternE, 'giu'),
   ELI: new RegExp(mwbDatePatternE, 'giu'),
   FI: new RegExp(mwbDatePatternX, 'giu'),
+  H: new RegExp(mwbDatePatternH, 'giu'),
   IL: new RegExp(mwbDatePatternE, 'giu'),
   J: new RegExp(mwbDatePatternJ, 'giu'),
   KO: new RegExp(mwbDatePatternKO, 'giu'),
@@ -139,6 +146,7 @@ const mwbDateParsing: MWBDateParsing = {
   CHS: mwbParsingE,
   E: mwbParsingE,
   ELI: mwbParsingE,
+  H: mwbParsingE,
   IL: mwbParsingE,
   J: mwbParsingE,
   KO: mwbParsingE,
@@ -202,6 +210,11 @@ option1 = `(${wordWithDiacritics}) (\\d{1,2})[-–](?:\\d{1,2})?, (\\d{4})`;
 option2 = `(${wordWithDiacritics}) (\\d{1,2})[-–](?:${wordWithDiacritics}) (?:\\d{1,2}), (\\d{4})`;
 option3 = `(${wordWithDiacritics}) (\\d{1,2}), (\\d{4})`;
 const wDatePatternE = `${option1}|${option2}|${option3}`;
+
+// date like 1-) 2025. December 16-22.; or 2) 2024. December 30. - 2025. January 5.
+option1 = `(\\d{4}). (${wordWithDiacritics}) (\\d{1,2})[-–](?:\\d{1,2}).`;
+option2 = `(\\d{4}). (${wordWithDiacritics}) (\\d{1,2}).`;
+const wDatePatternH = `${option1}|${option2}|${option3}`;
 
 // date like 1-) 2024年12月16-22日; or 2) 2024年12月30日-2025年1月5日
 option1 = `(\\d{4})年(?:nián)?(\\d{1,2})月(?:yuè)?(\\d{1,2})[-–～](\\d{1,2})日`;
@@ -271,6 +284,7 @@ const wDatePatterns: LangRegExp = {
   E: new RegExp(wDatePatternE, 'giu'),
   ELI: new RegExp(wDatePatternE, 'giu'),
   FI: new RegExp(wDatePatternFI, 'giu'),
+  H: new RegExp(wDatePatternH, 'giu'),
   IL: new RegExp(wDatePatternE, 'giu'),
   J: new RegExp(wDatePatternJ, 'giu'),
   KO: new RegExp(wDatePatternKO, 'giu'),
@@ -333,6 +347,22 @@ const wParsingE = (groups: string[]): WDateParsingResult => {
   return [year, month, date];
 };
 
+const wParsingH = (groups: string[]): WDateParsingResult => {
+  let date: string, month: string, year: string;
+
+  if (groups[1]) {
+    year = groups[1];
+    month = groups[2];
+    date = groups[3];
+  } else {
+    year = groups[4];
+    month = groups[5];
+    date = groups[6];
+  }
+
+  return [year, month, date];
+};
+
 const wParsingJ = (groups: string[]): WDateParsingResult => {
   let date: string, month: string, year: string;
 
@@ -355,6 +385,7 @@ const wDateParsing: WDateParsing = {
   CHS: wParsingJ,
   E: wParsingE,
   ELI: wParsingE,
+  H: wParsingH,
   IL: wParsingE,
   J: wParsingJ,
   KO: wParsingJ,
