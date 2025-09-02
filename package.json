@@ -1,6 +1,6 @@
 {
   "name": "meeting-schedules-parser",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "type": "module",
   "description": "This tool will help you to parse and extract the needed meeting schedules from Meeting Workbook and Watchtower Study EPUB and JWPUB files.",
   "keywords": [

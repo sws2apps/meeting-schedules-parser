@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.0.1...v4.1.0) (2025-09-02)
+
+
+### Features
+
+* **locales:** add support for hungarian language ([05e1085](https://github.com/sws2apps/meeting-schedules-parser/commit/05e108560d53570d729cc238e574e8a02108f19a))
+
 ## [4.0.1](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.0.0...v4.0.1) (2025-07-28)
 
 
