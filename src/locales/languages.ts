@@ -37,4 +37,5 @@ export default [
   { locale: 'ms-MY', code: 'ML' },
   { locale: 'el-GR', code: 'G' },
   { locale: 'es-LSE', code: 'LSE' },
+  { locale: 'hu-HU', code: 'H' },
 ];

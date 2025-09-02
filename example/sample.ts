@@ -28,14 +28,16 @@ type Issue = {
 
 const fetchIssueData = async (issue: Issue): Promise<any> => {
   try {
-    if (issue.JWPUB) {
-      const fileUrl = issue.JWPUB[0].file.url;
+    
+
+    if (issue.EPUB) {
+      const fileUrl = issue.EPUB[0].file.url;
       const pubData = await loadPub({ url: fileUrl });
       return pubData;
     }
 
-    if (issue.EPUB) {
-      const fileUrl = issue.EPUB[0].file.url;
+    if (issue.JWPUB) {
+      const fileUrl = issue.JWPUB[0].file.url;
       const pubData = await loadPub({ url: fileUrl });
       return pubData;
     }
