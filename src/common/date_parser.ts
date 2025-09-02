@@ -214,7 +214,7 @@ const wDatePatternE = `${option1}|${option2}|${option3}`;
 // date like 1-) 2025. December 16-22.; or 2) 2024. December 30. - 2025. January 5.
 option1 = `(\\d{4}). (${wordWithDiacritics}) (\\d{1,2})[-–](?:\\d{1,2}).`;
 option2 = `(\\d{4}). (${wordWithDiacritics}) (\\d{1,2}).`;
-const wDatePatternH = `${option1}|${option2}|${option3}`;
+const wDatePatternH = `${option1}|${option2}`;
 
 // date like 1-) 2024年12月16-22日; or 2) 2024年12月30日-2025年1月5日
 option1 = `(\\d{4})年(?:nián)?(\\d{1,2})月(?:yuè)?(\\d{1,2})[-–～](\\d{1,2})日`;
