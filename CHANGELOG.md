@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.1.0...v4.2.0) (2025-10-28)
+
+
+### Features
+
+* **common:** increase songs range to 162 ([d5ef573](https://github.com/sws2apps/meeting-schedules-parser/commit/d5ef57323334b0cb693659739c31e761bf2fda9b))
+
 # [4.1.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.0.1...v4.1.0) (2025-09-02)
 
 
