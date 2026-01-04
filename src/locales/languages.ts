@@ -38,4 +38,5 @@ export default [
   { locale: 'el-GR', code: 'G' },
   { locale: 'es-LSE', code: 'LSE' },
   { locale: 'hu-HU', code: 'H' },
+  { locale: 'pt-LSB', code: 'LSB' },
 ];

@@ -15,6 +15,7 @@ import IL from '../locales/ilo-PH/text.json';
 import J from '../locales/ja-JP/text.json';
 import K from '../locales/uk-UA/text.json';
 import KO from '../locales/ko-KR/text.json';
+import LSB from '../locales/pt-LSB/text.json';
 import LSE from '../locales/es-LSE/text.json';
 import M from '../locales/ro-RO/text.json';
 import MG from '../locales/mg-MG/text.json';
@@ -63,6 +64,7 @@ window.meeting_schedules_parser = {
     J,
     K,
     KO,
+    LSB,
     LSE,
     M,
     MG,
