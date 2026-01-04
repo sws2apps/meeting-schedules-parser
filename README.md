@@ -136,7 +136,7 @@ Dutch
 English, Estonian
 Finnish, French
 German, Greek
-Haitian Creole, Hungarian
+Haitian Creole, Hindi, Hungarian
 Iloko, Italian
 Japanese
 Kinyarwanda, Korean
