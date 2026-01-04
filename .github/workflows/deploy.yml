@@ -28,10 +28,6 @@ jobs:
     environment:
       name: ${{ matrix.environment }}
 
-    permissions:
-      contents: write
-      id-token: write
-
     steps:
       - name: Guard – ensure branch matches matrix
         if: ${{ github.ref != format('refs/heads/{0}', matrix.branch) || github.repository != 'sws2apps/meeting-schedules-parser' }}
@@ -43,7 +39,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ matrix.branch }}
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Setup Node.js LTS
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
@@ -55,5 +51,5 @@ jobs:
 
       - name: Run Semantic Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
