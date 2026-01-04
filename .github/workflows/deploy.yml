@@ -7,49 +7,92 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy ${{ matrix.channel }} Release
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - channel: Alpha
-            branch: alpha
-            environment: Development
-          - channel: Beta
-            branch: beta
-            environment: Staging
-          - channel: Production
-            branch: main
-            environment: Production
-
+  deploy_dev:
+    name: Preparing Alpha release
+    if: ${{ github.repository == 'sws2apps/meeting-schedules-parser' && github.ref == 'refs/heads/alpha' }}
     environment:
-      name: ${{ matrix.environment }}
+      name: Development
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
 
     steps:
-      - name: Guard – ensure branch matches matrix
-        if: ${{ github.ref != format('refs/heads/{0}', matrix.branch) || github.repository != 'sws2apps/meeting-schedules-parser' }}
-        run: |
-          echo "Skipping matrix entry: branch does not match"
-          exit 0
-
-      - name: Checkout code
+      - name: Checkout for release preparation
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ matrix.branch }}
+          ref: alpha
           persist-credentials: false
 
-      - name: Setup Node.js LTS
+      - name: Use Node.js LTS version
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
         with:
           node-version: lts/Jod
 
-      - name: Install dependencies
+      - name: Install package dependencies
         run: npm ci
 
-      - name: Run Semantic Release
+      - name: Semantic Release
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
+
+  deploy_stg:
+    name: Preparing Beta release
+    if: ${{ github.repository == 'sws2apps/meeting-schedules-parser' && github.ref == 'refs/heads/beta' }}
+    environment:
+      name: Staging
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Checkout for release preparation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: beta
+          persist-credentials: false
+
+      - name: Use Node.js LTS version
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: lts/Jod
+
+      - name: Install package dependencies
+        run: npm ci
+
+      - name: Semantic Release
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
+
+  deploy_prod:
+    name: Preparing Production release
+    if: ${{ github.repository == 'sws2apps/meeting-schedules-parser' && github.ref == 'refs/heads/main' }}
+    environment:
+      name: Production
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Checkout for release preparation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Use Node.js LTS version
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: lts/Jod
+
+      - name: Install package dependencies
+        run: npm ci
+
+      - name: Semantic Release
+        id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
