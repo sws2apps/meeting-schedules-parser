@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [main, beta, alpha]
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   test_unit:
