@@ -29,6 +29,11 @@ option2 = `(${wordWithDiacritics}) (\\d{1,2}). [-–] (?:${wordWithDiacritics}) 
 option3 = `(?:\\d{4}). (${wordWithDiacritics}) (\\d{1,2}).`;
 const mwbDatePatternH = `${option1}|${option2}|${option3}`;
 
+option1 = `(\\d{1,2})(?:${dateRangeSeparator})(?:\\d{1,2}) ((?:${wordWithDiacritics})+)`;
+option2 = `(\\d{1,2}) ((?:${wordWithDiacritics})+)(?:${dateRangeSeparator})(?:\\d{1,2}) (?:(?:${wordWithDiacritics})+)`;
+option3 = `(\\d{1,2}) ((?:${wordWithDiacritics})+), (\\d{4})`;
+const mwbDatePatternHI = `${option1}|${option2}|${option3}`;
+
 // date like 1-) 12月23-29日; or 2) 11月25日-12月1日; or 3) 2024年12月30日-2025年1月5日
 option1 = `(\\d{1,2})月(\\d{1,2})[-–](?:\\d{1,2})日`;
 option2 = `(\\d{1,2})月(\\d{1,2})日`;
@@ -85,6 +90,7 @@ const mwbDatePatterns: LangRegExp = {
   ELI: new RegExp(mwbDatePatternE, 'giu'),
   FI: new RegExp(mwbDatePatternX, 'giu'),
   H: new RegExp(mwbDatePatternH, 'giu'),
+  HI: new RegExp(mwbDatePatternHI, 'giu'),
   IL: new RegExp(mwbDatePatternE, 'giu'),
   J: new RegExp(mwbDatePatternJ, 'giu'),
   KO: new RegExp(mwbDatePatternKO, 'giu'),
@@ -217,6 +223,10 @@ option1 = `(\\d{4}). (${wordWithDiacritics}) (\\d{1,2})[-–](?:\\d{1,2}).`;
 option2 = `(\\d{4}). (${wordWithDiacritics}) (\\d{1,2}).`;
 const wDatePatternH = `${option1}|${option2}`;
 
+option1 = `(\\d{1,2})(?:${dateRangeSeparator})(?:\\d{1,2})? ((?:${wordWithDiacritics})+), (\\d{4})`;
+option2 = `(\\d{1,2}) ((?:${wordWithDiacritics})+), (\\d{4})`;
+const wDatePatternHI = `${option1}|${option2}`;
+
 // date like 1-) 2024年12月16-22日; or 2) 2024年12月30日-2025年1月5日
 option1 = `(\\d{4})年(?:nián)?(\\d{1,2})月(?:yuè)?(\\d{1,2})[-–～](\\d{1,2})日`;
 option2 = `(\\d{4})年(?:nián)?(\\d{1,2})月(?:yuè)?(\\d{1,2})日`;
@@ -288,6 +298,7 @@ const wDatePatterns: LangRegExp = {
   ELI: new RegExp(wDatePatternE, 'giu'),
   FI: new RegExp(wDatePatternFI, 'giu'),
   H: new RegExp(wDatePatternH, 'giu'),
+  HI: new RegExp(wDatePatternHI, 'giu'),
   IL: new RegExp(wDatePatternE, 'giu'),
   J: new RegExp(wDatePatternJ, 'giu'),
   KO: new RegExp(wDatePatternKO, 'giu'),

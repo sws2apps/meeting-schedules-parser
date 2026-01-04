@@ -10,6 +10,7 @@ import F from '../locales/fr-FR/text.json';
 import FI from '../locales/fi-FI/text.json';
 import G from '../locales/el-GR/text.json';
 import H from '../locales/hu-HU/text.json';
+import HI from '../locales/hi-IN/text.json';
 import I from '../locales/it-IT/text.json';
 import IL from '../locales/ilo-PH/text.json';
 import J from '../locales/ja-JP/text.json';
@@ -59,6 +60,7 @@ window.meeting_schedules_parser = {
     FI,
     G,
     H,
+    HI,
     I,
     IL,
     J,
