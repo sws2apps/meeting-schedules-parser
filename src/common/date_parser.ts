@@ -5,7 +5,7 @@ import overrides from './override.js';
 
 const dateRangeSeparator = `\\s? bis |[-–—]| do | — | – \\s?`;
 const wordWithDiacritics = `\\p{L}+\\p{M}*`;
-let option1: string, option2: string, option3, option4, option5: string;
+let option1: string, option2: string, option3: string, option4: string, option5: string;
 
 // #region MEETING WORKBOOK
 
