@@ -31,6 +31,7 @@ import SV from '../locales/sl-SI/text.json' with { type: 'json' };
 import SW from '../locales/sw-KE/text.json' with { type: 'json' };
 import T from '../locales/pt-POR/text.json' with { type: 'json' };
 import TG from '../locales/tl-PH/text.json' with { type: 'json' };
+import TH from '../locales/ty-PF/text.json' with { type: 'json' };
 import TK from '../locales/tr-TR/text.json' with { type: 'json' };
 import TND from '../locales/mg-TND/text.json' with { type: 'json' };
 import TNK from '../locales/mg-TNK/text.json' with { type: 'json' };
@@ -79,6 +80,7 @@ global.meeting_schedules_parser = {
     SW,
     T,
     TG,
+    TH,
     TK,
     TND,
     TNK,

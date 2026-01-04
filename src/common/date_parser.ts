@@ -64,6 +64,11 @@ option2 = `(\\d{1,2}) de (${wordWithDiacritics})[-–](?:\\d{1,2})(?:.º)? de (?
 option3 = `(\\d{1,2}) de (${wordWithDiacritics}) de (\\d{4})`;
 const mwbDatePatternT = `${option1}|${option2}|${option3}`;
 
+option1 = `(\\d{1,2})(?:${dateRangeSeparator})(?:\\d{1,2}) no (${wordWithDiacritics})`;
+option2 = `(\\d{1,2}) no (${wordWithDiacritics})(?:${dateRangeSeparator})(?:\\d{1,2}) no ?(?:${wordWithDiacritics})`;
+option3 = `(\\d{1,2}) no (${wordWithDiacritics}) (\\d{4})`;
+const mwbDatePatternTH = `${option1}|${option2}|${option3}`;
+
 // date like 1-) 4-10 de noviembre; or 2) 25 de noviembre a 1 de diciembre; or 3) 30 de diciembre de 2024 a 5 de enero de 2025
 option1 = `(\\d{1,2}) a (?:\\d{1,2}) de (${wordWithDiacritics})`;
 option2 = `(\\d{1,2}) de (${wordWithDiacritics}) a (?:\\d{1,2}) de (?:${wordWithDiacritics})`;
@@ -104,6 +109,7 @@ const mwbDatePatterns: LangRegExp = {
   SW: new RegExp(mwbDatePatternE, 'giu'),
   T: new RegExp(mwbDatePatternT, 'giu'),
   TG: new RegExp(mwbDatePatternE, 'giu'),
+  TH: new RegExp(mwbDatePatternTH, 'giu'),
   TPO: new RegExp(mwbDatePatternTPO, 'giu'),
   TW: new RegExp(mwbDatePatternE, 'giu'),
   VT: new RegExp(mwbDatePatternVT, 'giu'),
@@ -254,6 +260,11 @@ option2 = `(\\d{1,2}) de (${wordWithDiacritics})[-](?:\\d{1,2})?(?:.º)? de (?:$
 option3 = `(\\d{1,2}) de (${wordWithDiacritics}) de (\\d{4})`;
 const wDatePatternT = `${option1}|${option2}|${option3}`;
 
+option1 = `(\\d{1,2})(?:${dateRangeSeparator})(?:\\d{1,2})? no (${wordWithDiacritics}) (\\d{4})`;
+option2 = `(\\d{1,2}) (${wordWithDiacritics})(?:${dateRangeSeparator})(?:\\d{1,2}) no (?:${wordWithDiacritics}) (\\d{4})`;
+option3 = `(\\d{1,2}) no (${wordWithDiacritics})(?:,)? (\\d{4})`;
+const wDatePatternTH = `${option1}|${option2}|${option3}`;
+
 // date like 1-) 16 a 22 de december de 2024; or 2) 30 de december de 2024 a 5 de january de 2025
 option1 = `(\\d{1,2}) a (?:\\d{1,2})? de (${wordWithDiacritics}) de (\\d{4})`;
 option2 = `(\\d{1,2}) de (${wordWithDiacritics}) de (\\d{4})`;
@@ -311,6 +322,7 @@ const wDatePatterns: LangRegExp = {
   SV: new RegExp(wDatePatternX, 'giu'),
   SW: new RegExp(wDatePatternE, 'giu'),
   T: new RegExp(wDatePatternT, 'giu'),
+  TH: new RegExp(wDatePatternTH, 'giu'),
   TPO: new RegExp(wDatePatternTPO, 'giu'),
   TG: new RegExp(wDatePatternE, 'giu'),
   TTM: new RegExp(wDatePatternTTM, 'giu'),

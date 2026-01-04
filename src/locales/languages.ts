@@ -40,4 +40,5 @@ export default [
   { locale: 'hu-HU', code: 'H' },
   { locale: 'pt-LSB', code: 'LSB' },
   { locale: 'hi-IN', code: 'HI' },
+  { locale: 'ty-PF', code: 'TH' },
 ];
