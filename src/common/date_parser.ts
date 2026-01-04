@@ -5,7 +5,7 @@ import overrides from './override.js';
 
 const dateRangeSeparator = `\\s? bis |[-–—]| do | — | – \\s?`;
 const wordWithDiacritics = `\\p{L}+\\p{M}*`;
-let option1: string, option2: string, option3: string;
+let option1: string, option2: string, option3, option4, option5: string;
 
 // #region MEETING WORKBOOK
 
@@ -275,7 +275,9 @@ const wDatePatternX = `${option1}|${option2}|${option3}`;
 option1 = '(\\d{1,2}).[–](?:\\d{1,2}).(\\d{1,2}).(\\d{4})';
 option2 = '(\\d{1,2}).(\\d{1,2}).[–](?:\\d{1,2}).(?:\\d{1,2}).(\\d{4})';
 option3 = '(\\d{1,2}).(\\d{1,2}).(\\d{4})';
-const wDatePatternFI = `${option1}|${option2}|${option3}`;
+option4 = `(\\d{1,2}).[–](?:\\d{1,2}). (${wordWithDiacritics}) (\\d{4})`;
+option5 = `(\\d{1,2}). (${wordWithDiacritics}) (\\d{4})`;
+const wDatePatternFI = `${option1}|${option2}|${option3}|${option4}|${option5}`;
 
 const wDatePatterns: LangRegExp = {
   common: new RegExp(wDatePatternCommon, 'giu'),
@@ -347,6 +349,34 @@ const wParsingE = (groups: string[]): WDateParsingResult => {
   return [year, month, date];
 };
 
+const wParsingFI = (groups: string[]): WDateParsingResult => {
+  let date: string, month: string, year: string;
+
+  if (groups[1]) {
+    date = groups[1];
+    month = groups[2];
+    year = groups[3];
+  } else if (groups[4]) {
+    date = groups[4];
+    month = groups[5];
+    year = groups[6];
+  } else if (groups[7]) {
+    date = groups[7];
+    month = groups[8];
+    year = groups[9];
+  } else if (groups[10]) {
+    date = groups[10];
+    month = groups[11];
+    year = groups[12];
+  } else {
+    date = groups[13];
+    month = groups[14];
+    year = groups[15];
+  }
+
+  return [year, month, date];
+};
+
 const wParsingH = (groups: string[]): WDateParsingResult => {
   let date: string, month: string, year: string;
 
@@ -385,6 +415,7 @@ const wDateParsing: WDateParsing = {
   CHS: wParsingJ,
   E: wParsingE,
   ELI: wParsingE,
+  FI: wParsingFI,
   H: wParsingH,
   IL: wParsingE,
   J: wParsingJ,
