@@ -1,3 +1,19 @@
+# [4.3.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.2.0...v4.3.0) (2026-01-04)
+
+
+### Bug Fixes
+
+* **common:** update date parser for finnish ([1dc01af](https://github.com/sws2apps/meeting-schedules-parser/commit/1dc01af581eb9c64e4729edaddca1a20230cd297))
+
+
+### Features
+
+* **deps:** bump glob from 10.4.5 to 10.5.0 ([aa9e35b](https://github.com/sws2apps/meeting-schedules-parser/commit/aa9e35b9c9c112f72221195a483543829ee1f4ea))
+* **deps:** bump tar and npm ([cf28790](https://github.com/sws2apps/meeting-schedules-parser/commit/cf28790a9f2c810c75940a8af3b2f6e68cb99b26))
+* **locales:** add brazilian sign language ([f0868b4](https://github.com/sws2apps/meeting-schedules-parser/commit/f0868b4dc69c75d667a1e4c1fdd51441c07bbdf2))
+* **locales:** add hindi ([7083ac8](https://github.com/sws2apps/meeting-schedules-parser/commit/7083ac8f192d3c74091a078826d98d66902506ff))
+* **locales:** add tahitian ([3b082b6](https://github.com/sws2apps/meeting-schedules-parser/commit/3b082b65498db1380347753dec8e6a2c5a9246c5))
+
 # [4.2.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.1.0...v4.2.0) (2025-10-28)
 
 
