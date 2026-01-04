@@ -145,7 +145,7 @@ Madagascar Sign Language, Malagasy, Malay
 Pidgin (West Africa), Polish, Portuguese (Brazil), Portuguese (Portugal)
 Romanian, Russian
 Slovenian, Spanish, Spanish Sign Language, Swahili, Swedish
-Tagalog, Tandroy, Tankarana, Turkish, Twin
+Tagalog, Tahitian, Tandroy, Tankarana, Turkish, Twin
 Ukrainian
 Vietnamese, Vezo
 ```
