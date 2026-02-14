@@ -1,15 +1,15 @@
 {
-	"januaryVariations": "January",
-	"februaryVariations": "February",
-	"marchVariations": "March",
-	"aprilVariations": "April",
-	"mayVariations": "May",
-	"juneVariations": "June",
-	"julyVariations": "July",
-	"augustVariations": "August",
-	"septemberVariations": "September",
-	"octoberVariations": "October",
-	"novemberVariations": "November",
-	"decemberVariations": "December",
-	"partMinutesSeparatorVariations": "min."
+	"januaryVariations": "януари",
+	"februaryVariations": "февруари",
+	"marchVariations": "март",
+	"aprilVariations": "април",
+	"mayVariations": "май",
+	"juneVariations": "юни",
+	"julyVariations": "юли",
+	"augustVariations": "август",
+	"septemberVariations": "септември",
+	"octoberVariations": "октомври",
+	"novemberVariations": "ноември",
+	"decemberVariations": "декември",
+	"partMinutesSeparatorVariations": "мин"
 }
