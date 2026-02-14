@@ -2,6 +2,7 @@ import * as path from 'path';
 import { readFile } from 'fs/promises';
 import initSqlJs from 'sql.js';
 
+import BL from '../locales/bg-BG/text.json' with { type: 'json' };
 import CH from '../locales/cmn-Hant/text.json' with { type: 'json' };
 import CHS from '../locales/ch-CHS/text.json' with { type: 'json' };
 import CR from '../locales/ht-HT/text.json' with { type: 'json' };
@@ -51,6 +52,7 @@ declare global {
 
 global.meeting_schedules_parser = {
   languages: {
+    BL,
     CH,
     CHS,
     CR,
