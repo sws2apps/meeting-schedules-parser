@@ -1,15 +1,15 @@
 {
-  "januaryVariations": "Tenuare",
-  "februaryVariations": "Fepuare",
-  "marchVariations": "Mati",
-  "aprilVariations": "Eperera",
-  "mayVariations": "Me",
-  "juneVariations": "Tiunu",
-  "julyVariations": "Tiurai",
-  "augustVariations": "Atete",
-  "septemberVariations": "Tetepa",
-  "octoberVariations": "Atopa",
-  "novemberVariations": "Novema",
-  "decemberVariations": "Titema",
-  "partMinutesSeparatorVariations": "min."
+	"januaryVariations": "no Tenuare",
+	"februaryVariations": "no Fepuare",
+	"marchVariations": "no Mati",
+	"aprilVariations": "no Eperera",
+	"mayVariations": "no Me",
+	"juneVariations": "no Tiunu",
+	"julyVariations": "no Tiurai",
+	"augustVariations": "no Atete",
+	"septemberVariations": "no Tetepa",
+	"octoberVariations": "no Atopa",
+	"novemberVariations": "no Novema",
+	"decemberVariations": "no Titema",
+	"partMinutesSeparatorVariations": "min."
 }
