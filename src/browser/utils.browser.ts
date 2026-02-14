@@ -1,6 +1,7 @@
 import * as path from 'path-browserify';
 import initSqlJs from 'sql.js';
 
+import BL from '../locales/bg-BG/text.json';
 import CH from '../locales/cmn-Hant/text.json';
 import CHS from '../locales/ch-CHS/text.json';
 import CR from '../locales/ht-HT/text.json';
@@ -52,6 +53,7 @@ declare global {
 
 window.meeting_schedules_parser = {
   languages: {
+    BL,
     CH,
     CHS,
     CR,

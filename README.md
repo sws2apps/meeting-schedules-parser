@@ -130,7 +130,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 Currently, we only support enhanced parsing for the following languages:
 
 ```bash
-Brazilian Sign Language
+Brazilian Sign Language, Bulgarian
 Chinese Mandarin (Simplified), Chinese Mandarin (Traditional)
 Dutch
 English, Estonian

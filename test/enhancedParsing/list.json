@@ -40,5 +40,6 @@
   { "language": "H", "issue": "202509" },
   { "language": "LSB", "issue": "202511" },
   { "language": "HI", "issue": "202511" },
-  { "language": "TH", "issue": "202511" }
+  { "language": "TH", "issue": "202511" },
+  { "language": "BL", "issue": "202511" }
 ]
