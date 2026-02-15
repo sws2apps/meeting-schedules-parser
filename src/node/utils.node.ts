@@ -26,6 +26,7 @@ import ML from '../locales/ms-MY/text.json' with { type: 'json' };
 import O from '../locales/nl-NL/text.json' with { type: 'json' };
 import P from '../locales/pl-PL/text.json' with { type: 'json' };
 import PGW from '../locales/wes-PGW/text.json' with { type: 'json' };
+import Q from '../locales/he-IL/text.json' with { type: 'json' };
 import S from '../locales/es-ES/text.json' with { type: 'json' };
 import ST from '../locales/et-EE/text.json' with { type: 'json' };
 import SV from '../locales/sl-SI/text.json' with { type: 'json' };
@@ -76,6 +77,7 @@ global.meeting_schedules_parser = {
     O,
     P,
     PGW,
+    Q,
     S,
     ST,
     SV,

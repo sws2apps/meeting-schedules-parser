@@ -42,6 +42,83 @@ If you’re only fixing a bug, it’s fine to submit a pull request right away b
 - If you have already forked and clone the repository, make sure that it is in sync with the upstream repository ([Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)).
 - Run `npm i` to install the needed dependencies
 
+## Locale and Parsing Contributions
+
+This project separates translation content from parser metadata:
+- Crowdin-synced translation content: `src/locales/<locale>/text.json`
+- Developer-maintained parser profile: `src/locales/<locale>/profile.ts`
+
+### Add a new language
+1. Sync/add locale in Crowdin first so `src/locales/<locale>/text.json` exists.
+2. Run:
+```bash
+npm run locale:new -- --code Q --locale he-IL --enhanced true
+```
+3. Adjust locale-specific parsing in `src/locales/<locale>/profile.ts` only when needed.
+4. Validate:
+```bash
+npm run locale:check
+npm run build
+npm test
+```
+
+### Edit an existing language
+1. Update locale tokens in `src/locales/<locale>/text.json` (Crowdin-managed).
+2. If parsing fails, adjust `src/locales/<locale>/profile.ts`.
+3. Validate:
+```bash
+npm run locale:check
+npm run build
+npm test
+```
+
+### Locale manager commands
+- `npm run locale:check`
+  - Verifies locale imports in `src/node/utils.node.ts` and `src/browser/utils.browser.ts`
+  - Verifies imported locale codes in both global language maps
+  - Verifies required keys in every `src/locales/<locale>/text.json`
+  - Verifies enhanced language entries and profile files
+- `npm run locale:new -- --code <CODE> --locale <locale> [--enhanced true|false]`
+  - Updates runtime locale wiring and enhanced language registry (if enabled)
+  - Requires an existing Crowdin-synced `src/locales/<locale>/text.json`
+
+### Required keys in `text.json`
+- `januaryVariations`
+- `februaryVariations`
+- `marchVariations`
+- `aprilVariations`
+- `mayVariations`
+- `juneVariations`
+- `julyVariations`
+- `augustVariations`
+- `septemberVariations`
+- `octoberVariations`
+- `novemberVariations`
+- `decemberVariations`
+- `partMinutesSeparatorVariations`
+
+### Parsing strategy map
+- Per-locale definitions live in `src/locales/<locale>/profile.ts`:
+  - `mwbDatePatterns`
+  - `wDatePatterns`
+  - `sourcePatternOptions`
+  - `normalizers`
+  - optional `textOverrides`
+- Strategy consumers:
+  - Date extraction: `src/common/date_parser.ts`
+  - Source/title extraction: `src/common/parsing_rules.ts`
+  - Shared source helpers: `src/common/source_strategies.ts`
+  - Shared date input normalization: `src/common/date_normalize_input.ts`
+
+### `textOverrides` vs regex changes
+Use `textOverrides` in profile when:
+- The issue is a one-off or a small set of exact bad strings.
+- Base regex already works for normal content.
+
+Use regex/pattern updates when:
+- The locale has a recurring structural format difference.
+- Multiple inputs fail for the same grammar pattern.
+
 ## Sending a Pull Request (PR)
 
 We are monitoring for pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation. We’ll do our best to provide updates and feedback throughout the process.

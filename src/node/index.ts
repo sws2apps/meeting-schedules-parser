@@ -12,8 +12,9 @@ export const loadPub = async (epubInput: string | Blob | { url: string }) => {
     const data = await startParse(epubInput);
     return data as any;
   } catch (err) {
-    console.error(err);
-
-    throw new Error((err as Error)?.message);
+    if (err instanceof Error) {
+      throw err;
+    }
+    throw new Error(String(err));
   }
 };

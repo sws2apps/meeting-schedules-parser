@@ -1,15 +1,15 @@
 {
-	"januaryVariations": "Janoary",
-	"februaryVariations": "Febroary",
-	"marchVariations": "Martsa",
-	"aprilVariations": "Aprily",
-	"mayVariations": "Mey",
-	"juneVariations": "Jona",
-	"julyVariations": "Jolay",
-	"augustVariations": "Aogositra",
-	"septemberVariations": "Septambra",
-	"octoberVariations": "Oktobra",
-	"novemberVariations": "Novambra",
-	"decemberVariations": "Desambra",
-	"partMinutesSeparatorVariations": "min."
+  "januaryVariations": "Janoary",
+  "februaryVariations": "Febroary",
+  "marchVariations": "Martsa",
+  "aprilVariations": "Aprily",
+  "mayVariations": "Mey",
+  "juneVariations": "Jona",
+  "julyVariations": "Jolay",
+  "augustVariations": "Aogositra",
+  "septemberVariations": "Septambra",
+  "octoberVariations": "Oktobra",
+  "novemberVariations": "Novambra",
+  "decemberVariations": "Desambra",
+  "partMinutesSeparatorVariations": "min."
 }

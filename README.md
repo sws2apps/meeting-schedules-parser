@@ -152,6 +152,8 @@ Vietnamese, Vezo
 
 For the other languages, you may use your own method to convert these outputs according to your needs to get the needed informations. If you want to contribute and add your language in the enhanced parsing list, or edit your language rules, please follow [this guide](./TRANSLATION.md).
 
+For developer-focused locale onboarding and parser wiring, see [CONTRIBUTING.md](./CONTRIBUTING.md) under `Locale and Parsing Contributions`.
+
 ## Sample Output
 
 Here are how the results of this module look like:

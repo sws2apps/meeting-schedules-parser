@@ -16,29 +16,38 @@ const runLiveCommand = async () => {
     return;
   }
 
-  if (pubIndex >= 0 && issueIndex === -1) {
-    console.error('pub type was provided but issue date is missing');
-    return;
-  }
-
   const fixture = process.argv.indexOf('fixture');
 
   const language = process.argv[languageIndex + 1].toUpperCase();
   const issue = issueIndex >= 0 ? process.argv[issueIndex + 1] : undefined;
   const pub = pubIndex >= 0 ? process.argv[pubIndex + 1] : undefined;
 
+  if (pub && !['mwb', 'w'].includes(pub)) {
+    console.error('pub must be either "mwb" or "w"');
+    return;
+  }
+
+  if (fixture >= 0 && (!issue || !pub)) {
+    console.error('fixture mode requires both issue and pub arguments');
+    return;
+  }
+
   console.time();
   const data = await fetchData(language, issue, pub);
 
-  if (fixture >= 0) {
-    // Convert to pretty JSON text
-    const json = JSON.stringify(data, null, 2);
+  if (data) {
+    if (fixture >= 0) {
+      const json = JSON.stringify(data, null, 2);
+      writeFileSync(`test/fixtures/${pub}_${language.toUpperCase()}_${issue}.json`, json, 'utf-8');
+    }
 
-    // Write to a file
-    writeFileSync(`test/fixtures/${pub}_${language.toUpperCase()}_${issue}.json`, json, 'utf-8');
+    if (issue && pub) {
+      console.dir(data, { depth: null });
+    } else {
+      console.log(`Auto discovery completed. Parsed ${data.length} issues.`);
+    }
   }
 
-  console.log(data);
   console.timeEnd();
 };
 
