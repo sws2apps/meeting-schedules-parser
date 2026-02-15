@@ -49,9 +49,9 @@ export const getPubExtension = (filename: string) => {
 };
 
 export const isValidPub = (input: FileInput) => {
-  const epubFilename = getPubFileName(input);
-  const isMWB = isMWBPub(epubFilename);
-  const isW = isWPub(epubFilename);
+  const pubFilename = getPubFileName(input);
+  const isMWB = isMWBPub(pubFilename);
+  const isW = isWPub(pubFilename);
 
   return isMWB || isW;
 };
@@ -59,16 +59,24 @@ export const isValidPub = (input: FileInput) => {
 export const isValidPubIssue = (input: FileInput) => {
   let valid = true;
 
-  const epubFilename = getPubFileName(input);
-  const isMWB = isMWBPub(epubFilename);
-  const isW = isWPub(epubFilename);
+  const pubFilename = getPubFileName(input);
+  const isMWB = isMWBPub(pubFilename);
+  const isW = isWPub(pubFilename);
 
   const type = isMWB ? 'mwb' : isW ? 'w' : undefined;
 
-  const issue = +epubFilename.split('_')[2].split('.epub')[0];
+  const match = pubFilename.match(/_(\d{6})\./);
 
-  if (type === 'mwb' && issue < 202207) valid = false;
-  if (type === 'w' && issue < 202304) valid = false;
+  if (!match) {
+    valid = false;
+  }
+
+  if (match) {
+    const issue = +match[1];
+
+    if (type === 'mwb' && issue < 202401) valid = false;
+    if (type === 'w' && issue < 202310) valid = false;
+  }
 
   return valid;
 };

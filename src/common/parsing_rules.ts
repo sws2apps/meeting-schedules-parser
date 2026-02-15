@@ -1,7 +1,12 @@
 import { JWEPUBParserError } from '../classes/error.js';
-import { LangRegExp } from '../types/index.js';
 import { getPartMinutesSeparatorVariations } from './language_rules.js';
-import overrides from './override.js';
+import { getLanguageProfile } from '../config/language_profiles.js';
+import {
+  buildSourcePatterns,
+  normalizeEasternArabicDigits,
+  parseTitleIndex,
+  stripBidiControls,
+} from './source_strategies.js';
 
 export const extractSongNumber = (src: string) => {
   const parseNum = src.match(/(\d+)/);
@@ -18,68 +23,56 @@ export const extractSongNumber = (src: string) => {
 };
 
 export const extractSourceEnhanced = (src: string, lang: string) => {
-  src = src.replace(/(\u200B)*(\d+)(\u200B)*/g, '$2');
+  const profile = getLanguageProfile(lang);
+  const sourceInput = src;
+  src = stripBidiControls(src);
+
+  if (profile.normalizers.includes('normalizeEasternArabicDigits')) {
+    src = normalizeEasternArabicDigits(src);
+  }
 
   const variations = getPartMinutesSeparatorVariations(lang);
 
   let finalSrc = src;
 
-  const overrideLang = overrides[lang];
+  const overrideSrc = profile.textOverrides?.[sourceInput] || profile.textOverrides?.[src];
 
-  if (overrideLang) {
-    const overrideSrc = overrideLang[src];
+  if (overrideSrc) {
+    finalSrc = stripBidiControls(overrideSrc);
 
-    if (overrideSrc) {
-      finalSrc = overrideSrc;
+    if (profile.normalizers.includes('normalizeEasternArabicDigits')) {
+      finalSrc = normalizeEasternArabicDigits(finalSrc);
     }
   }
 
-  // separate minutes from title
-  const firstPatternCommon = new RegExp(
-    `(.+?)(?:: )?[（(](\\d+)(?: |  | )?(?:${variations})[）)](?: : | |. )?(.+?)?$`,
-    'giu'
-  );
+  // Some locales encode 1-minute parts as "(minute-marker)" without an explicit digit.
+  // Normalize to "(1 minute-marker)" so existing source patterns can parse time.
+  const implicitOneMinutePattern = new RegExp(`([（(]\\s*)(${variations})(\\s*[）)])`, 'iu');
+  const primaryMinuteMarker = variations.split('|')[0];
+  finalSrc = finalSrc.replace(implicitOneMinutePattern, (_match, open, _marker, close) => {
+    return `${open}1 ${primaryMinuteMarker}${close}`;
+  });
 
-  const firstPatternCommonPGW = new RegExp(
-    `(.+?)(?:: )?[（(](\\d+)(?: |  )?(?:${variations})[）)]?(?: : | |. )?(.+?)?$`,
-    'giu'
-  );
+  const langPatterns = buildSourcePatterns(profile.sourcePatternOptions, variations);
+  let groupsFirstPattern: string[] | null = null;
 
-  const firstPatternTW = new RegExp(`(.+?)(?: )?\\((?:${variations})(?: |  )?(\\d+).?\\)(?: |.)?(.+?)?$`, 'giu');
+  for (const langPattern of langPatterns) {
+    const match = langPattern.exec(finalSrc);
 
-  const firstPattern: LangRegExp = {
-    common: firstPatternCommon,
-    PGW: firstPatternCommonPGW,
-    SW: firstPatternTW,
-    TW: firstPatternTW,
-    YW: firstPatternTW,
-  };
-
-  const langPattern = firstPattern[lang] || firstPattern.common;
-
-  const matchFirstPattern = finalSrc.match(langPattern);
-
-  if (!matchFirstPattern) {
-    throw new JWEPUBParserError('meeting-schedules-parser', `Parsing failed. The input was: ${finalSrc}`);
+    if (match) {
+      groupsFirstPattern = Array.from(match);
+      break;
+    }
   }
 
-  const groupsFirstPattern = Array.from(langPattern.exec(finalSrc)!);
+  if (!groupsFirstPattern) {
+    throw new JWEPUBParserError('meeting-schedules-parser', `Parsing failed. The input was: ${finalSrc}`);
+  }
 
   const fulltitle = groupsFirstPattern.at(1)!.trim();
   const time = +groupsFirstPattern.at(2)!.trim();
   const source = groupsFirstPattern.at(3)?.trim();
-
-  // separate index from title
-  const nextPattern = /^(:?\d+)(?:．|.\s)(.+?)$/giu;
-
-  const matchNextPattern = fulltitle.match(nextPattern);
-
-  let type = fulltitle;
-
-  if (matchNextPattern) {
-    const groupsNextPattern = Array.from(nextPattern.exec(fulltitle)!);
-    type = groupsNextPattern.at(2)!.trim();
-  }
+  const type = parseTitleIndex(fulltitle);
 
   return { type, src: source, time, fulltitle };
 };

@@ -186,10 +186,14 @@ const parseWJwpub = async ({
   htmlItem,
   htmlDocs,
   lang,
+  year,
+  issueMonth,
 }: {
   htmlItem: HTMLElement;
   htmlDocs: StudyArticle[];
   lang: string;
+  year: number;
+  issueMonth: number;
 }) => {
   const weeksData = [];
 
@@ -203,7 +207,7 @@ const parseWJwpub = async ({
 
     const content = await getHTMLWTArticleDoc(+articleId, htmlDocs);
 
-    const weekItem = parseWSchedule(studyArticle, content, lang);
+    const weekItem = parseWSchedule(studyArticle, content, lang, year, issueMonth);
     weeksData.push(weekItem);
   }
 
@@ -230,6 +234,7 @@ export const parseJWPUB = async (filename: string, input: string | ArrayBuffer |
 
   const jwpubYear = getPubYear(filename);
   const jwpubLang = getPubLanguage(filename);
+  const jwpubIssueMonth = +filename.split('_')[2].substring(4, 6);
 
   const htmlDocs = await getHTMLDocs(jwpubContents, isMWB, isW);
 
@@ -240,7 +245,13 @@ export const parseJWPUB = async (filename: string, input: string | ArrayBuffer |
   if (isW) {
     const WDocs = htmlDocs as WPubContents;
 
-    result = await parseWJwpub({ htmlItem: WDocs.toc, htmlDocs: WDocs.articles, lang: jwpubLang });
+    result = await parseWJwpub({
+      htmlItem: WDocs.toc,
+      htmlDocs: WDocs.articles,
+      lang: jwpubLang,
+      year: jwpubYear,
+      issueMonth: jwpubIssueMonth,
+    });
   }
 
   return result;

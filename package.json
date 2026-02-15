@@ -37,13 +37,23 @@
     "setup": "./copy-wasm.js"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "vitest run test/unit",
+    "test:e2e": "vitest run test/e2e",
     "build": "npx rimraf dist && npx rollup -c && npx tsup",
     "parse": "tsx example/index.ts",
+    "locale:check": "node scripts/locale-manager.js check",
+    "locale:new": "node scripts/locale-manager.js new",
     "setup:client": "cd client && npm install && npx meeting-schedules-parser",
     "start:client": "cd client && npm run dev",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome"
+  },
+  "dependencies": {
+    "jszip": "^3.9.1",
+    "node-html-parser": "^7.0.1",
+    "pako": "^2.1.0",
+    "path-browserify": "^1.0.1",
+    "sql.js": "^1.13.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
@@ -70,14 +80,8 @@
     "semantic-release": "^25.0.1",
     "tsup": "^8.4.0",
     "tsx": "^4.7.0",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "jszip": "^3.9.1",
-    "node-html-parser": "^7.0.1",
-    "pako": "^2.1.0",
-    "path-browserify": "^1.0.1",
-    "sql.js": "^1.13.0"
+    "typescript": "^5.2.2",
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public",

@@ -25,6 +25,7 @@ import ML from '../locales/ms-MY/text.json';
 import O from '../locales/nl-NL/text.json';
 import P from '../locales/pl-PL/text.json';
 import PGW from '../locales/wes-PGW/text.json';
+import Q from '../locales/he-IL/text.json';
 import S from '../locales/es-ES/text.json';
 import ST from '../locales/et-EE/text.json';
 import SV from '../locales/sl-SI/text.json';
@@ -77,6 +78,7 @@ window.meeting_schedules_parser = {
     O,
     P,
     PGW,
+    Q,
     S,
     ST,
     SV,

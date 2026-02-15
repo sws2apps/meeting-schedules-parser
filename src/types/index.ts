@@ -82,8 +82,25 @@ export type MWBDateParsing = {
   [lang: string]: (groups: string[]) => MWBDateParsingResult;
 };
 
-export type Override = {
-  [language: string]: {
-    [src: string]: string;
-  };
+export type NormalizerKey = 'stripBidiControls' | 'normalizeEasternArabicDigits';
+
+export type LanguageProfile = {
+  code: string;
+  locale: string;
+  direction: 'ltr' | 'rtl';
+  enhanced: boolean;
+  mwbDatePatterns: RegExp[];
+  wDatePatterns: RegExp[];
+  sourcePatternOptions: string[];
+  normalizers: NormalizerKey[];
+  textOverrides?: Record<string, string>;
+};
+
+export type LanguageProfileConfig = Pick<
+  LanguageProfile,
+  'direction' | 'mwbDatePatterns' | 'wDatePatterns' | 'sourcePatternOptions' | 'normalizers' | 'textOverrides'
+>;
+
+export type LanguageStrategyOverridesMap = {
+  [code: string]: LanguageProfileConfig;
 };

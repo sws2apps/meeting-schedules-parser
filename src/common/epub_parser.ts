@@ -48,10 +48,14 @@ const getHTMLWTArticleDoc = async (zip: JSZip, articleFilename: string): Promise
 const parseWEpub = async ({
   htmlItem,
   epubLang,
+  epubYear,
+  epubIssueMonth,
   epubContents,
 }: {
   htmlItem: HTMLElement;
   epubLang: string;
+  epubYear: number;
+  epubIssueMonth: number;
   epubContents: JSZip;
 }) => {
   const weeksData = [];
@@ -62,7 +66,7 @@ const parseWEpub = async ({
     const articleLink = studyArticle.nextElementSibling!.querySelector('a')!.getAttribute('href') as string;
     const content = await getHTMLWTArticleDoc(epubContents, articleLink);
 
-    const weekItem = parseWSchedule(studyArticle, content, epubLang);
+    const weekItem = parseWSchedule(studyArticle, content, epubLang, epubYear, epubIssueMonth);
     weeksData.push(weekItem);
   }
 
@@ -95,6 +99,7 @@ export const parseEPUB = async (filename: string, input: string | ArrayBuffer | 
 
   const epubYear = getPubYear(filename);
   const epubLang = getPubLanguage(filename);
+  const epubIssueMonth = +filename.split('_')[2].substring(4, 6);
 
   if (isMWB) {
     result = await parseMWB({ htmlDocs, year: epubYear, lang: epubLang });
@@ -104,6 +109,8 @@ export const parseEPUB = async (filename: string, input: string | ArrayBuffer | 
     result = await parseWEpub({
       htmlItem: htmlDocs[0],
       epubLang,
+      epubYear,
+      epubIssueMonth,
       epubContents,
     });
   }

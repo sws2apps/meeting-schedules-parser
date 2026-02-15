@@ -1,6 +1,6 @@
 import JSZip from 'jszip';
 import { HTMLElement } from 'node-html-parser';
-import languages from '../locales/languages.js';
+import { isEnhancedLanguage } from '../config/language_profiles.js';
 
 import { extractSongNumber, extractSourceEnhanced } from './parsing_rules.js';
 import { MWBSchedule, WSchedule } from '../types/index.js';
@@ -22,123 +22,83 @@ export const getMWBWeeklyBibleReading = (htmlItem: HTMLElement) => {
 };
 
 export const getMWBAYFCount = (htmlItem: HTMLElement) => {
-  let count: number = 1;
-
-  const testSection = htmlItem.querySelector('#section3');
-
-  //  pre-2024 mwb
-  if (testSection) {
-    count = testSection.querySelectorAll('li').length;
-  }
-
-  // 2024 onward
-  if (!testSection) {
-    count = htmlItem.querySelectorAll('.du-color--gold-700').length - 1;
-  }
-
-  return count;
+  return htmlItem.querySelectorAll('.du-color--gold-700').length - 1;
 };
 
 export const getMWBLCCount = (htmlItem: HTMLElement) => {
-  let count = 1;
-
-  const testSection = htmlItem.querySelector('#section4');
-
-  //  pre-2024 mwb
-  if (testSection) {
-    count = testSection.querySelectorAll('li').length;
-    count = count === 6 ? 2 : 1;
-  }
-
-  // 2024 onward
-  if (testSection === null) {
-    count = htmlItem.querySelectorAll('.du-color--maroon-600.du-margin-top--8.du-margin-bottom--0').length - 1;
-  }
-
-  return count;
+  return htmlItem.querySelectorAll('.du-color--maroon-600.du-margin-top--8.du-margin-bottom--0').length - 1;
 };
 
 export const getMWBSources = (htmlItem: HTMLElement) => {
   let src = '';
+  const h3Texts = htmlItem.querySelectorAll('h3');
 
-  // pre-2024 mwb
-  // get elements with meeting schedule data: pGroup
-  const pGroupData = htmlItem.querySelectorAll('.pGroup');
-  for (const pGroup of pGroupData) {
-    const liData = pGroup.querySelectorAll('li');
-    for (const li of liData) {
-      const firstP = li.querySelector('p')!;
-      src += '@' + firstP.textContent;
+  let songIndex = 0;
+
+  for (const h3 of h3Texts) {
+    let isSong = h3.classList.contains('dc-icon--music');
+
+    const part = h3.parentNode.classList.contains('boxContent') === false;
+
+    if (!isSong) {
+      isSong = h3.querySelector('.dc-icon--music') ? true : false;
     }
-  }
 
-  // 2024 onward
-  // get elements with meeting schedule data: h3
-  if (src.length === 0) {
-    const h3Texts = htmlItem.querySelectorAll('h3');
+    if (isSong) {
+      songIndex++;
+    }
 
-    let songIndex = 0;
+    if (isSong || part) {
+      let data = '';
 
-    for (const h3 of h3Texts) {
-      let isSong = h3.classList.contains('dc-icon--music');
-
-      const part = h3.parentNode.classList.contains('boxContent') === false;
-
-      if (!isSong) {
-        isSong = h3.querySelector('.dc-icon--music') ? true : false;
-      }
+      data = h3.textContent;
 
       if (isSong) {
-        songIndex++;
+        data = data.replace('|', '@');
       }
 
-      if (isSong || part) {
-        let data = '';
-
-        data = h3.textContent;
-
-        if (isSong) {
-          data = data.replace('|', '@');
-        }
-
-        if (part) {
-          const nextSibling = h3.nextElementSibling;
-
-          if (nextSibling) {
-            const nextElement = nextSibling.querySelector('p');
-
-            if (nextElement) {
-              const dataAdd = nextElement.textContent;
-              data += ` ${dataAdd}`;
-            }
-          }
-        }
-
-        src += '@' + data;
-
+      if (part) {
         const nextSibling = h3.nextElementSibling;
 
-        if (isSong && songIndex === 2 && nextSibling?.tagName === 'DIV' && nextSibling?.nextElementSibling?.tagName !== 'H3') {
+        if (nextSibling) {
           const nextElement = nextSibling.querySelector('p');
 
           if (nextElement) {
-            src += '@' + nextElement.textContent;
-
-            const tmpSibling = nextSibling.nextElementSibling?.querySelector('p');
-
-            if (tmpSibling) {
-              src += ' ' + tmpSibling.textContent;
-            }
-
-            continue;
+            const dataAdd = nextElement.textContent;
+            data += ` ${dataAdd}`;
           }
         }
       }
-    }
 
-    const sepBeforeBR = src.split('@', 5).join('@').length;
-    src = src.substring(0, sepBeforeBR) + '@junk@junk' + src.substring(sepBeforeBR);
+      src += '@' + data;
+
+      const nextSibling = h3.nextElementSibling;
+
+      if (
+        isSong &&
+        songIndex === 2 &&
+        nextSibling?.tagName === 'DIV' &&
+        nextSibling?.nextElementSibling?.tagName !== 'H3'
+      ) {
+        const nextElement = nextSibling.querySelector('p');
+
+        if (nextElement) {
+          src += '@' + nextElement.textContent;
+
+          const tmpSibling = nextSibling.nextElementSibling?.querySelector('p');
+
+          if (tmpSibling) {
+            src += ' ' + tmpSibling.textContent;
+          }
+
+          continue;
+        }
+      }
+    }
   }
+
+  const sepBeforeBR = src.split('@', 5).join('@').length;
+  src = src.substring(0, sepBeforeBR) + '@junk@junk' + src.substring(sepBeforeBR);
 
   src = src.replace(/\u00A0/g, ' '); // remove non-breaking space
 
@@ -225,7 +185,7 @@ export const getHTMLDocs = async (zip: JSZip, isMWB: boolean, isW: boolean) => {
 };
 
 export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang: string) => {
-  const isEnhancedParsing = languages.find((language) => language.code === mwbLang);
+  const isEnhancedParsing = isEnhancedLanguage(mwbLang);
 
   const weekItem = {} as MWBSchedule;
 
@@ -316,6 +276,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
   //AYF3 Source
   if (cnAYF > 2) {
     tmpSrc = splits[10].trim();
+    console.log(tmpSrc);
     if (isEnhancedParsing) {
       const partEnhanced = extractSourceEnhanced(tmpSrc, mwbLang);
       weekItem.mwb_ayf_part3 = partEnhanced.src!;
@@ -398,16 +359,37 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
   }
 
   // Concluding Song
-  nextIndex++;
-  nextIndex++;
-  tmpSrc = splits[nextIndex].trim();
-  weekItem.mwb_song_conclude = extractSongNumber(tmpSrc);
+  // Older and newer layouts differ: some weeks split closing comments and song
+  // into two tokens, others keep both in one token ("... | Song N ...").
+  const trailingTokens = splits
+    .slice(nextIndex + 1)
+    .map((token) => token?.trim())
+    .filter((token): token is string => Boolean(token && token.length > 0));
+
+  const trailingNumbers = trailingTokens
+    .flatMap((token) => Array.from(token.matchAll(/\d{1,3}/g)).map((match) => +match[0]))
+    .filter((num) => num > 0 && num <= 162);
+
+  if (trailingNumbers.length > 0) {
+    weekItem.mwb_song_conclude = trailingNumbers.at(-1)!;
+  } else {
+    nextIndex++;
+    nextIndex++;
+    tmpSrc = (splits[nextIndex] ?? '').trim();
+    weekItem.mwb_song_conclude = extractSongNumber(tmpSrc);
+  }
 
   return weekItem;
 };
 
-export const parseWSchedule = (article: HTMLElement, content: HTMLElement, wLang: string) => {
-  const isEnhancedParsing = languages.find((language) => language.code === wLang);
+export const parseWSchedule = (
+  article: HTMLElement,
+  content: HTMLElement,
+  wLang: string,
+  wYear: number,
+  wIssueMonth: number,
+) => {
+  const isEnhancedParsing = isEnhancedLanguage(wLang);
 
   const weekItem = {} as WSchedule;
 
@@ -415,7 +397,7 @@ export const parseWSchedule = (article: HTMLElement, content: HTMLElement, wLang
 
   if (studyDate.length > 0) {
     if (isEnhancedParsing) {
-      const wStudyEnhanced = extractWTStudyDate(studyDate, wLang);
+      const wStudyEnhanced = extractWTStudyDate(studyDate, wLang, wYear, wIssueMonth);
       weekItem.w_study_date = wStudyEnhanced;
       weekItem.w_study_date_locale = studyDate;
     } else {

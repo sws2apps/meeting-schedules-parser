@@ -21,7 +21,7 @@ export const startParse = async (epubInput: string | Blob | { url: string }) => 
   const isValiIssue = isValidPubIssue(epubInput);
   if (!isValiIssue) {
     throw new Error(
-      'Parsing is only supported for Meeting Workbook starting on July 2022, and for Watchtower Study starting on April 2023.'
+      'Parsing is only supported for Meeting Workbook starting on January 2024, and for Watchtower Study starting on October 2023.'
     );
   }
 
