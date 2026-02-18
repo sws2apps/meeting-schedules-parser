@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  test_unit:
+  test_unit_e2e:
     name: Run Test Units
     runs-on: ubuntu-latest
 
@@ -22,7 +22,7 @@ jobs:
       - name: Use Node.js LTS version
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
         with:
-          node-version: lts/Jod
+          node-version: lts/Krypton
 
       - name: Install dependency
         run: npm ci
@@ -60,7 +60,53 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [BL, CH, CHS, CR, E, ELI, F, FI, G, H, HI, I, IL, J, K, KO, LSB, LSE, M, MG, ML, O, P, PGW, Q, S, ST, SV, SW, T, TG, TH, TK, TND, TNK, TPO, TTM, TW, U, VT, VZ, X, YW, Z]
+        language:
+          [
+            BL,
+            CH,
+            CHS,
+            CR,
+            E,
+            ELI,
+            F,
+            FI,
+            G,
+            H,
+            HI,
+            I,
+            IL,
+            J,
+            K,
+            KO,
+            LSB,
+            LSE,
+            M,
+            MG,
+            ML,
+            O,
+            P,
+            PGW,
+            Q,
+            S,
+            ST,
+            SV,
+            SW,
+            T,
+            TG,
+            TH,
+            TK,
+            TND,
+            TNK,
+            TPO,
+            TTM,
+            TW,
+            U,
+            VT,
+            VZ,
+            X,
+            YW,
+            Z,
+          ]
 
     steps:
       - name: 'Checkout code'
@@ -69,7 +115,7 @@ jobs:
       - name: Use Node.js LTS version
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
         with:
-          node-version: lts/Jod
+          node-version: lts/Krypton
 
       - name: Install dependency
         run: npm ci
