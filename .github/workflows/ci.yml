@@ -52,3 +52,30 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_JW_EPUB_PARSER_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: dvtrvb
+
+  parse_languages:
+    name: Test parsing for ${{ matrix.language }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [BL, CH, CHS, CR, E, ELI, F, FI, G, H, HI, I, IL, J, K, KO, LSB, LSE, M, MG, ML, O, P, PGW, Q, S, ST, SV, SW, T, TG, TH, TK, TND, TNK, TPO, TTM, TW, U, VT, VZ, X, YW, Z]
+
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Use Node.js LTS version
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: lts/Jod
+
+      - name: Install dependency
+        run: npm ci
+
+      - name: Build output
+        run: npm run build
+
+      - name: Test parsing for language
+        run: npm run parse language ${{ matrix.language }}
