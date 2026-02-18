@@ -276,7 +276,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
   //AYF3 Source
   if (cnAYF > 2) {
     tmpSrc = splits[10].trim();
-    console.log(tmpSrc);
+
     if (isEnhancedParsing) {
       const partEnhanced = extractSourceEnhanced(tmpSrc, mwbLang);
       weekItem.mwb_ayf_part3 = partEnhanced.src!;

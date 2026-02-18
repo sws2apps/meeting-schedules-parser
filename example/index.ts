@@ -38,7 +38,7 @@ const runLiveCommand = async () => {
   if (data) {
     if (fixture >= 0) {
       const json = JSON.stringify(data, null, 2);
-      writeFileSync(`test/fixtures/${pub}_${language.toUpperCase()}_${issue}.json`, json, 'utf-8');
+      writeFileSync(`test/e2e/fixtures/${pub}_${language.toUpperCase()}_${issue}.json`, json, 'utf-8');
     }
 
     if (issue && pub) {
