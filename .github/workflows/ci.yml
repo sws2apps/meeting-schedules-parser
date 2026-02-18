@@ -30,8 +30,14 @@ jobs:
       - name: Build output
         run: npm run build
 
+      - name: Check Locale Consistency
+        run: npm run locale:check
+
       - name: Run Test Units
         run: npm run test
+
+      - name: Run E2E Tests
+        run: npm run test:e2e
 
       - name: Browser version testing
         uses: cypress-io/github-action@57b70560982e6a11d23d4b8bec7f8a487cdbb71b

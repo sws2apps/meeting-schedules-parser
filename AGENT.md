@@ -1,15 +1,18 @@
 # AGENT.md
 
 ## Purpose
+
 `meeting-schedules-parser` parses JW Meeting Workbook (`mwb_*`) and Watchtower Study (`w_*`) publications from `.jwpub` and `.epub` files and returns normalized schedule objects.
 
 Primary public API:
+
 - `loadPub(...)` from:
   - Browser: `meeting-schedules-parser`
   - Node ESM: `meeting-schedules-parser/dist/node/index.js`
   - Node CJS: `meeting-schedules-parser/dist/node/index.cjs`
 
 ## High-Level Architecture
+
 - Entry points:
   - `src/node/index.ts`
   - `src/browser/index.ts`
@@ -31,16 +34,19 @@ Primary public API:
 - Enhanced-language config:
   - `src/config/enhanced_languages.ts`
   - `src/config/language_profile_overrides.ts`
-- Locale data:
+- Per-locale configuration (each enhanced language):
   - Crowdin translation file: `src/locales/*/text.json`
-  - Parser profile: `src/locales/*/profile.ts`
+  - Parser profile with regex patterns and text overrides: `src/locales/*/profile.ts`
 
 ## Runtime Model
+
 The code relies on a global `meeting_schedules_parser` object, initialized by:
+
 - Node: `src/node/utils.node.ts`
 - Browser: `src/browser/utils.browser.ts`
 
 This global provides:
+
 - locale rules (`languages`)
 - path helpers (`path`)
 - file IO in Node (`readFile`)
@@ -49,6 +55,7 @@ This global provides:
 If parsing code is used without these initializers, it will fail.
 
 ## Parsing Flow
+
 1. `loadPub` validates input.
 2. `startParse` enforces filename rules and issue minimums:
    - MWB >= `202401`
@@ -59,16 +66,23 @@ If parsing code is used without these initializers, it will fail.
    - `.epub` -> XHTML scan and parse.
    - `.jwpub` -> decrypt DB documents and parse HTML payloads.
 6. Schedules are assembled in `html_utils.ts`.
-7. If language is in enhanced list (`src/config/enhanced_languages.ts`), date/source parts are normalized into structured fields using locale profile config.
+7. If language is in enhanced list (`src/config/enhanced_languages.ts`), date/source parts are normalized:
+   - Language-specific profile (`src/locales/<locale>/profile.ts`) defines regex patterns for dates and sources.
+   - Date parser uses these patterns to extract and structure date fields.
+   - Source parser extracts and normalizes assignment information.
+   - Text overrides apply locale-specific content fixes.
 
 ## Output Contracts
+
 Types are in `src/types/index.ts`:
+
 - `MWBSchedule`
 - `WSchedule`
 
 Enhanced fields are optional and language-dependent (for example locale date vs normalized date).
 
 ## Important Invariants
+
 - File naming is strict (`mwb_[A-Z]{1,3}_YYYYMM.*` / `w_[A-Z]{1,3}_YYYYMM.*`).
 - JWPUB is expected to contain exactly 2 top-level files in zip.
 - Locale text comes from Crowdin-managed JSON files.
@@ -76,7 +90,9 @@ Enhanced fields are optional and language-dependent (for example locale date vs 
 - Enhanced parsing logic is regex-driven and sensitive to punctuation/spacing changes; keep changes narrowly scoped and fixture-backed.
 
 ## Build and Test
+
 Common commands:
+
 - `npm run build`
 - `npm test`
 - `npm run parse`
@@ -86,22 +102,30 @@ Common commands:
 - `npm run cypress:run`
 
 Notes:
-- `test/01_standardParsing.test.js` and `test/02_enhancedParsing.test.js` are integration-style and pull data from JW CDN.
-- Tests compare parser output with fixtures in `test/fixtures`.
+
+- `test/unit/` contains unit tests for language-specific parsing.
+- `test/e2e/01_standardParsing.test.js` and `test/e2e/02_enhancedParsing.test.js` are integration tests that pull data from JW CDN.
+- Tests compare parser output with fixtures in `test/e2e/fixtures/`.
 - Tests import from `dist/node/index.js`, so build first when changing source.
 
 ## Change Guidelines
+
 - Do not edit `dist/*` manually.
 - Prefer edits in `src/common/*` for parser behavior.
 - When adding/updating enhanced parsing for a language:
   1. Ensure language code exists in globals (`utils.node.ts` and `utils.browser.ts`) and `src/config/enhanced_languages.ts`.
   2. Sync/update locale tokens in `src/locales/<locale>/text.json` (Crowdin-managed).
-  3. Add/update `src/locales/<locale>/profile.ts`.
-  4. Validate with `npm run locale:check`, `npm run build`, and `npm test`.
-- Prefer per-locale `textOverrides` in profile for one-off content fixes; use parser regex updates for recurring structural patterns.
-- Keep parser errors descriptive with source input context (`JWEPUBParserError` usage).
+  3. Add/update `src/locales/<locale>/profile.ts` with:
+     - Date regex patterns (`mwbDatePatterns`, `wDatePatterns`)
+     - Source parsing patterns (`sourcePatternOptions`)
+     - Text overrides for one-off content fixes (`textOverrides` object)
+     - Locale-specific settings (direction, normalizers, etc.)
+  4. Validate with `npm run locale:check`, `npm run build`, and `npm run test`.
+- Language-specific text overrides previously in `src/common/override.ts` (removed) are now handled per-locale via the `textOverrides` property in `src/locales/<locale>/profile.ts`.
+- Prefer per-locale `textOverrides` in profile for one-off content fixes; use parser regex updates in `parsing_rules.ts` for recurring structural patterns.
 
 ## Known Sensitive Areas
+
 - `src/common/parsing_rules.ts`: assignment parsing by regex (including RTL/bidi normalization work).
 - `src/common/date_parser.ts`: strategy dispatch and date extraction flow.
 - `src/common/source_strategies.ts`: regex assembly, bidi stripping, and numeral normalization helpers.
@@ -109,5 +133,6 @@ Notes:
 - `src/common/jwpub_parser.ts`: decryption/DB extraction path.
 
 ## Client Demo
+
 - Demo app is under `client/`.
 - Browser setup requires copied wasm (`copy-wasm.js`) and bundler external config for Node built-ins.

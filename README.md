@@ -115,7 +115,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_lc_cbs_title\*       |      string       | Congregation Bible Study assignment full title                                                                                  |
 | mwb_song_conclude        | integer or string | Concluding song. When the song number is out of range, it will be the default text from the Meeting Workbook.                   |
 
-#### Watchtowet Study Data
+#### Watchtower Study Data
 
 | Name                    |  Type   | Description                                                      |
 | ----------------------- | :-----: | ---------------------------------------------------------------- |
@@ -127,30 +127,16 @@ By calling the `loadPub` function, it will return an array of objects with the f
 
 \* These properties are only available when enhanced parsing is available for the language you parse.
 
-Currently, we only support enhanced parsing for the following languages:
+Currently, we support enhanced parsing for **45+ languages**. For a complete and up-to-date list of supported languages, check:
 
-```bash
-Brazilian Sign Language, Bulgarian
-Chinese Mandarin (Simplified), Chinese Mandarin (Traditional)
-Dutch
-English, Estonian
-Finnish, French
-German, Greek
-Haitian Creole, Hindi, Hungarian
-Iloko, Italian
-Japanese
-Kinyarwanda, Korean
-Liberian English
-Madagascar Sign Language, Malagasy, Malay
-Pidgin (West Africa), Polish, Portuguese (Brazil), Portuguese (Portugal)
-Romanian, Russian
-Slovenian, Spanish, Spanish Sign Language, Swahili, Swedish
-Tagalog, Tahitian, Tandroy, Tankarana, Turkish, Twin
-Ukrainian
-Vietnamese, Vezo
-```
+- `src/config/enhanced_languages.ts` for the authoritative language codes
+- `src/locales/` directory for locale-specific parsing rules and translations
+- `src/node/utils.node.ts` and `src/browser/utils.browser.ts` for registered languages
 
-For the other languages, you may use your own method to convert these outputs according to your needs to get the needed informations. If you want to contribute and add your language in the enhanced parsing list, or edit your language rules, please follow [this guide](./TRANSLATION.md).
+Supported languages include (but not limited to):
+Brazilian Portuguese, Bulgarian, Chinese (Simplified & Traditional), Dutch, English, Estonian, Finnish, French, German, Greek, Haitian Creole, Hebrew, Hindi, Hungarian, Iloko, Italian, Japanese, Kinyarwanda, Korean, Liberian English, Malagasy, Malay, Polish, Portuguese, Romanian, Russian, Slovenian, Spanish, Swahili, Swedish, Tagalog, Turkish, Ukrainian, Vietnamese, and more.
+
+For the other languages, you may use your own method to convert these outputs according to your needs to get the needed informations. If you want to contribute and add or improve language support, please follow [this guide](./TRANSLATION.md).
 
 For developer-focused locale onboarding and parser wiring, see [CONTRIBUTING.md](./CONTRIBUTING.md) under `Locale and Parsing Contributions`.
 

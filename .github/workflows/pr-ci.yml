@@ -27,6 +27,9 @@ jobs:
       - name: Build output
         run: npm run build
 
+      - name: Check Locale Consistency
+        run: npm run locale:check
+
       - name: Run Test Units
         run: npm run test
 
