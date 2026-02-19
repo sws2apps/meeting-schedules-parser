@@ -1,3 +1,15 @@
+# [4.4.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.3.0...v4.4.0) (2026-02-19)
+
+
+### Features
+
+* **ci:** add language parsing validation with matrix strategy ([12fffad](https://github.com/sws2apps/meeting-schedules-parser/commit/12fffad1b7d112b81eed70f4252ee0d7fa2b3844))
+* **deps:** bump lodash from 4.17.21 to 4.17.23 ([149bcb4](https://github.com/sws2apps/meeting-schedules-parser/commit/149bcb43f07d7e8356f12597850a4405f5be88c7))
+* **deps:** bump node-html-parser from 7.0.1 to 7.0.2 ([cc112c8](https://github.com/sws2apps/meeting-schedules-parser/commit/cc112c870c31b84e2f2356af09ff06119867fe11))
+* **deps:** bump sql.js from 1.13.0 to 1.14.0 ([885463b](https://github.com/sws2apps/meeting-schedules-parser/commit/885463b686d4d17b1112a8f0af41c1169a9c23d4))
+* **locales:** add support for bulgarian ([12bcfb0](https://github.com/sws2apps/meeting-schedules-parser/commit/12bcfb0c08ca4c881d4fee94bd3346c1525520c4))
+* **module:** change of project structure to support hebrew locale ([46f2445](https://github.com/sws2apps/meeting-schedules-parser/commit/46f2445cf84390cc493d511c71edc88593f95136))
+
 # [4.3.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.2.0...v4.3.0) (2026-01-04)
 
 
