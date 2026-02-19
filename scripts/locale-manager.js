@@ -31,7 +31,7 @@ const usage = () => {
   console.log(`
 Usage:
   node scripts/locale-manager.js check
-  node scripts/locale-manager.js new --code <CODE> --locale <locale> [--enhanced true|false]
+  node scripts/locale-manager.js new --code <CODE> --locale <locale> [--name <NAME>] [--enhanced true|false]
 `);
 };
 
@@ -87,12 +87,12 @@ const parseLanguagesObjectCodes = (content) => {
 };
 
 const parseEnhancedEntries = (content) => {
-  const regex = /\{\s*locale:\s*'([^']+)',\s*code:\s*'([A-Z0-9]+)'\s*\}/g;
+  const regex = /\{\s*locale:\s*'([^']+)',\s*code:\s*'([A-Z0-9]+)'(?:,\s*name:\s*'([^']+)')?\s*\}/g;
   const records = [];
   let match;
 
   while ((match = regex.exec(content))) {
-    records.push({ locale: match[1], code: match[2] });
+    records.push({ locale: match[1], code: match[2], name: match[3] });
   }
 
   return records;
@@ -161,17 +161,34 @@ const insertCodeInLanguagesObject = (content, code) => {
   return content.replace(/(\s*Z,\n)(\s*\},\n\s*(?:path|loadSQL|readFile))/m, `$1    ${code},\n$2`);
 };
 
-const addEnhancedLanguageEntry = (content, code, locale) => {
+const addEnhancedLanguageEntry = (content, code, locale, name) => {
   const entries = parseEnhancedEntries(content);
-  const hasCode = entries.some((entry) => entry.code === code);
+  const existingIndex = entries.findIndex((entry) => entry.code === code);
 
-  const nextEntries = hasCode ? entries : [...entries, { locale, code }];
+  let nextEntries;
+  if (existingIndex >= 0 && name) {
+    // Update existing entry with name
+    nextEntries = entries.map((entry, idx) =>
+      idx === existingIndex ? { ...entry, name } : entry
+    );
+  } else if (existingIndex === -1) {
+    // Add new entry
+    nextEntries = [...entries, { locale, code, name }];
+  } else {
+    // Keep existing entry as is
+    nextEntries = entries;
+  }
+
   nextEntries.sort((a, b) => a.code.localeCompare(b.code));
 
   const lines = [];
   lines.push('export default [');
   for (const entry of nextEntries) {
-    lines.push(`  { locale: '${entry.locale}', code: '${entry.code}' },`);
+    if (entry.name) {
+      lines.push(`  { locale: '${entry.locale}', code: '${entry.code}', name: '${entry.name}' },`);
+    } else {
+      lines.push(`  { locale: '${entry.locale}', code: '${entry.code}' },`);
+    }
   }
   lines.push('];');
   lines.push('');
@@ -305,6 +322,7 @@ const check = async () => {
 const createLocale = async (args) => {
   const code = args.code?.toUpperCase();
   const locale = args.locale;
+  const name = args.name;
   const enhanced = (args.enhanced ?? 'true').toLowerCase() === 'true';
 
   if (!code || !locale) {
@@ -357,7 +375,7 @@ const createLocale = async (args) => {
 
   let enhancedContent = enhancedContentRaw;
   if (enhanced) {
-    enhancedContent = addEnhancedLanguageEntry(enhancedContentRaw, code, locale);
+    enhancedContent = addEnhancedLanguageEntry(enhancedContentRaw, code, locale, name);
   }
 
   const profileOverridePath = path.join(LOCALES_DIR, locale, 'profile.ts');

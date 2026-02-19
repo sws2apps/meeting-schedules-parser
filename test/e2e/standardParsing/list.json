@@ -1,1 +1,7 @@
-[{ "language": "D", "issue": "202511" }]
+[
+  {
+    "language": "D",
+    "name": "Danish",
+    "issue": "202511"
+  }
+]
