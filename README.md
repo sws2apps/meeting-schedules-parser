@@ -10,6 +10,7 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sws2apps_meeting-schedules-parser&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sws2apps_meeting-schedules-parser)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sws2apps/meeting-schedules-parser)
 
 #### A parser utility to extract the needed meeting schedules from Meeting Workbook and Watchtower Study JWPUB and EPUB files.
 
