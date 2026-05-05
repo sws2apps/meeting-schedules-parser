@@ -34,7 +34,7 @@ jobs:
         run: npm run test
 
       - name: Browser version testing
-        uses: cypress-io/github-action@57b70560982e6a11d23d4b8bec7f8a487cdbb71b
+        uses: cypress-io/github-action@b7a7441d775af8f8b9d19945c10dd689a51dba68
         with:
           command-prefix: '--'
           install: false
