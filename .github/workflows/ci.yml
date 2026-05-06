@@ -40,7 +40,7 @@ jobs:
         run: npm run test:e2e
 
       - name: Browser version testing
-        uses: cypress-io/github-action@57b70560982e6a11d23d4b8bec7f8a487cdbb71b
+        uses: cypress-io/github-action@dace029018fcdf86e0df89a31bc3cfa5b32570d8
         with:
           command-prefix: '--'
           install: false
