@@ -6,8 +6,8 @@ import { MONTH_NAME } from '../../constants/index.js';
 const mwbDatePatternOptions = [String.raw`(?<month>${MONTH_NAME}) (?<day>\d{1,2})`];
 
 const wDatePatternOptions = [
-  String.raw`(?<month>${MONTH_NAME}) (?<day>\d{1,2})[-–](?:\d{1,2})?, (?<year>\d{4})`,
-  String.raw`(?<month>${MONTH_NAME}) (?<day>\d{1,2})[-–](?:${MONTH_NAME}) (?:\d{1,2}), (?<year>\d{4})`,
+  String.raw`(?<month>${MONTH_NAME}) (?<day>\d{1,2})(?:-|–|—)(?:\d{1,2})?, (?<year>\d{4})`,
+  String.raw`(?<month>${MONTH_NAME}) (?<day>\d{1,2})(?:-|–|—)(?:${MONTH_NAME}) (?:\d{1,2}), (?<year>\d{4})`,
   String.raw`(?<month>${MONTH_NAME}) (?<day>\d{1,2}), (?<year>\d{4})`,
 ];
 

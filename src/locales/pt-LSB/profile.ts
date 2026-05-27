@@ -4,13 +4,13 @@ import { MONTH_NAME } from '../../constants/index.js';
 // Language profile override for pt-LSB.
 
 const mwbDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-–](?:\d{1,2}) de (?<month>${MONTH_NAME})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2}) de (?<month>${MONTH_NAME})`,
   String.raw`\b(?<day>\d{1,2}) de (?<month>${MONTH_NAME})`,
 ];
 
 const wDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-—–](?:\d{1,2})? de (?<month>${MONTH_NAME}) de (?<year>\d{4})`,
-  String.raw`\b(?<day>\d{1,2}) de (?<month>${MONTH_NAME})[-—–](?:\d{1,2})?(?:.º)? de (?:${MONTH_NAME}) de (?<year>\d{4})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2})? de (?<month>${MONTH_NAME}) de (?<year>\d{4})`,
+  String.raw`\b(?<day>\d{1,2}) de (?<month>${MONTH_NAME})(?:-|–|—)(?:\d{1,2})?(?:.º)? de (?:${MONTH_NAME}) de (?<year>\d{4})`,
   String.raw`\b(?<day>\d{1,2}) de (?<month>${MONTH_NAME}) de (?<year>\d{4})`,
 ];
 

@@ -4,7 +4,7 @@ import { MONTH_NAME } from '../../constants/index.js';
 // Language profile override for es-ES.
 
 const mwbDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-–](?:\d{1,2}) de (?<month>${MONTH_NAME})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2}) de (?<month>${MONTH_NAME})`,
   String.raw`\b(?<day>\d{1,2}) de (?<month>${MONTH_NAME})`,
 ];
 

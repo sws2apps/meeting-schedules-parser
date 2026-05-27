@@ -4,13 +4,13 @@ import { MONTH_NAME } from '../../constants/index.js';
 // Language profile override for ty-PF.
 
 const mwbDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-—–](?:\d{1,2}) no (?<month>${MONTH_NAME})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2}) no (?<month>${MONTH_NAME})`,
   String.raw`\b(?<day>\d{1,2}) no (?<month>${MONTH_NAME})`,
 ];
 
 const wDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-—–](?:\d{1,2})? no (?<month>${MONTH_NAME}) (?<year>\d{4})`,
-  String.raw`\b(?<day>\d{1,2}) no (?<month>${MONTH_NAME})[-—–](?:\d{1,2}) no (?:${MONTH_NAME}) (?<year>\d{4})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2})? no (?<month>${MONTH_NAME}) (?<year>\d{4})`,
+  String.raw`\b(?<day>\d{1,2}) no (?<month>${MONTH_NAME})(?:-|–|—)(?:\d{1,2}) no (?:${MONTH_NAME}) (?<year>\d{4})`,
   String.raw`\b(?<day>\d{1,2}) no (?<month>${MONTH_NAME})(?:,)? (?<year>\d{4})`,
 ];
 
