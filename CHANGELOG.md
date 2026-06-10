@@ -1,3 +1,20 @@
+# [4.5.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.4.0...v4.5.0) (2026-06-10)
+
+
+### Bug Fixes
+
+* **common:** force close unclosed tags inside h3 tag ([61547ba](https://github.com/sws2apps/meeting-schedules-parser/commit/61547ba8e3789e360122f518d4c7301cbd63dd1c))
+* **locales:** support em and en dashes in date range patterns ([43d1546](https://github.com/sws2apps/meeting-schedules-parser/commit/43d1546cf83b89c28d045d254cc812f68cb34c1e))
+
+
+### Features
+
+* **common:** update song parsing range to 163 ([1ff19c4](https://github.com/sws2apps/meeting-schedules-parser/commit/1ff19c4459f5f128cb0ef2ddbea78793a4f836b8))
+* **deps:** bump lodash from 4.17.23 to 4.18.1 ([64dd7a3](https://github.com/sws2apps/meeting-schedules-parser/commit/64dd7a3a26f166af4e815882961a2dfbd268823f))
+* **deps:** bump node-html-parser from 7.0.2 to 7.1.0 ([8df7845](https://github.com/sws2apps/meeting-schedules-parser/commit/8df7845c9904d303dd231094d4f936e8012cb80c))
+* **deps:** bump sql.js from 1.14.0 to 1.14.1 ([576d709](https://github.com/sws2apps/meeting-schedules-parser/commit/576d709667d6b6ad4ce9a160955ffddcb8be3e26))
+* **deps:** bump tar and npm ([6f32705](https://github.com/sws2apps/meeting-schedules-parser/commit/6f327051ab9019ba3be62bebdbc7feb779490675))
+
 # [4.4.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.3.0...v4.4.0) (2026-02-19)
 
 
