@@ -15,7 +15,7 @@ const getHTMLDocs = async (zip: JSZip, isMWB: boolean, isW: boolean) => {
 
     if (isValidFile) {
       const content = await getHTMLString(zip, filename);
-      const htmlDoc = HTMLParse(content);
+      const htmlDoc = HTMLParse(content, { closeAllByClosing: true });
 
       const isValidSchedule = isMWB ? isValidMWBSchedule(htmlDoc) : isW ? isValidWSchedule(htmlDoc) : false;
 
@@ -87,13 +87,13 @@ export const parseEPUB = async (filename: string, input: string | ArrayBuffer | 
     throw new Error(
       `The file you provided is not a valid ${
         isMWB ? 'Meeting Workbook' : 'Watchtower Study'
-      } EPUB file. Please make sure that the file is correct.`
+      } EPUB file. Please make sure that the file is correct.`,
     );
   }
 
   if (isW && htmlDocs.length > 1) {
     throw new Error(
-      `The file you provided is not a valid Watchtower Study EPUB file. Please make sure that the file is correct.`
+      `The file you provided is not a valid Watchtower Study EPUB file. Please make sure that the file is correct.`,
     );
   }
 

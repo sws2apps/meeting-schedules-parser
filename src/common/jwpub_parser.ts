@@ -14,8 +14,7 @@ type StudyArticle = { id: number; article: HTMLElement };
 type WPubContents = { toc: HTMLElement; articles: StudyArticle[] };
 
 const getDatabaseFile = async (zip: JSZip) => {
-  const SQL = await meeting_schedules_parser.loadSQL() as SqlJsStatic;
-  
+  const SQL = (await meeting_schedules_parser.loadSQL()) as SqlJsStatic;
 
   const contentZip = await zip.files['contents'].async('uint8array');
   const innerZip = await extractZipFiles(contentZip);
@@ -123,7 +122,7 @@ const getMWBDocs = async (db: Database, key: string, iv: string) => {
   for (const row of data.at(0)!.values) {
     const content = row.at(0) as BufferSource;
     const text = await getRawContent(content, key, iv);
-    const htmlDoc = HTMLParse(text);
+    const htmlDoc = HTMLParse(text, { closeAllByClosing: true });
 
     htmlDoc.querySelectorAll('rt').forEach((rt) => rt.remove());
 
@@ -228,7 +227,7 @@ export const parseJWPUB = async (filename: string, input: string | ArrayBuffer |
     throw new Error(
       `The file you provided is not a valid ${
         isMWB ? 'Meeting Workbook' : 'Watchtower Study'
-      } JWPUB file. Please make sure that the file is correct.`
+      } JWPUB file. Please make sure that the file is correct.`,
     );
   }
 
