@@ -1,5 +1,7 @@
 import JSZip from 'jszip';
 import { HTMLElement } from 'node-html-parser';
+
+import { SONG_MAX } from '../constants/index.js';
 import { isEnhancedLanguage } from '../config/language_profiles.js';
 
 import { extractSongNumber, extractSourceEnhanced } from './parsing_rules.js';
@@ -368,7 +370,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
 
   const trailingNumbers = trailingTokens
     .flatMap((token) => Array.from(token.matchAll(/\d{1,3}/g)).map((match) => +match[0]))
-    .filter((num) => num > 0 && num <= 162);
+    .filter((num) => num > 0 && num <= SONG_MAX);
 
   if (trailingNumbers.length > 0) {
     weekItem.mwb_song_conclude = trailingNumbers.at(-1)!;
