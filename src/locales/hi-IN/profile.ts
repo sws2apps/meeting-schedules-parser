@@ -4,12 +4,12 @@ import { MONTH_NAME } from '../../constants/index.js';
 // Language profile override for hi-IN.
 
 const mwbDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-](?:\d{1,2}) (?<month>(?:${MONTH_NAME})+)`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2}) (?<month>(?:${MONTH_NAME})+)`,
   String.raw`\b(?<day>\d{1,2}) (?<month>(?:${MONTH_NAME})+)`,
 ];
 
 const wDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-](?:\d{1,2})? (?<month>(?:${MONTH_NAME})+), (?<year>\d{4})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2})? (?<month>(?:${MONTH_NAME})+), (?<year>\d{4})`,
   String.raw`\b(?<day>\d{1,2}) (?<month>(?:${MONTH_NAME})+), (?<year>\d{4})`,
 ];
 

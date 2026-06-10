@@ -4,12 +4,12 @@ import { MONTH_NAME } from '../../constants/index.js';
 // Language profile override for vi-VN.
 
 const mwbDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-](?:\d{1,2}) (?<month>${MONTH_NAME}\s\d{1,2})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2}) (?<month>${MONTH_NAME}\s\d{1,2})`,
   String.raw`\b(?<day>\d{1,2}) (?<month>${MONTH_NAME}\s\d{1,2})`,
 ];
 
 const wDatePatternOptions = [
-  String.raw`\b(?<day>\d{1,2})[-](?:\d{1,2})? (?<month>${MONTH_NAME}\s\d{1,2}) năm (?<year>\d{4})`,
+  String.raw`\b(?<day>\d{1,2})(?:-|–|—)(?:\d{1,2})? (?<month>${MONTH_NAME}\s\d{1,2}) năm (?<year>\d{4})`,
   String.raw`\b(?<day>\d{1,2}) (?<month>${MONTH_NAME}\s\d{1,2}) năm (?<year>\d{4})`,
 ];
 
