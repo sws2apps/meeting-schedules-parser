@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "jszip": "^3.9.1",
-    "node-html-parser": "^8.0.3",
+    "node-html-parser": "^9.0.0",
     "pako": "^3.0.0",
     "path-browserify": "^1.0.1",
     "sql.js": "^1.13.0"
