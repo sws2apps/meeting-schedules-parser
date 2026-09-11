@@ -4,7 +4,8 @@ import { HTMLElement } from 'node-html-parser';
 import { SONG_MAX } from '../constants/index.js';
 import { isEnhancedLanguage } from '../config/language_profiles.js';
 
-import { extractSongNumber, extractSourceEnhanced } from './parsing_rules.js';
+import { extractSongNumber, extractSongNumberLocale, extractSourceEnhanced } from './parsing_rules.js';
+import { normalizeEasternArabicDigits } from './source_strategies.js';
 import { MWBSchedule, WSchedule } from '../types/index.js';
 import { extractMWBDate, extractWTStudyDate } from './date_parser.js';
 import { getHTMLString, HTMLParse, isValidHTML, isValidMWBSchedule, isValidWSchedule } from './html_validation.js';
@@ -132,6 +133,7 @@ export const getWSTudySongs = (content: HTMLElement) => {
 
   const openingSongText = pubRefs.at(0)!;
   const w_study_opening_song = extractSongNumber(openingSongText.textContent) as number;
+  const w_study_opening_song_locale = extractSongNumberLocale(openingSongText.textContent);
 
   let concludingSongText = <HTMLElement>pubRefs.at(-1);
 
@@ -141,10 +143,13 @@ export const getWSTudySongs = (content: HTMLElement) => {
   }
 
   const w_study_concluding_song = extractSongNumber(concludingSongText.textContent) as number;
+  const w_study_concluding_song_locale = extractSongNumberLocale(concludingSongText.textContent);
 
   return {
     w_study_opening_song,
+    w_study_opening_song_locale,
     w_study_concluding_song,
+    w_study_concluding_song_locale,
   };
 };
 
@@ -213,6 +218,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
 
   // First song
   weekItem.mwb_song_first = extractSongNumber(splits[1]) as number;
+  weekItem.mwb_song_first_locale = extractSongNumberLocale(splits[1]);
 
   // 10min TGW Source
   tmpSrc = splits[3].trim();
@@ -307,6 +313,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
   // Middle song
   let nextIndex = cnAYF > 3 ? 12 : cnAYF > 2 ? 11 : cnAYF > 1 ? 10 : 9;
   weekItem.mwb_song_middle = extractSongNumber(splits[nextIndex]);
+  weekItem.mwb_song_middle_locale = extractSongNumberLocale(splits[nextIndex]);
 
   // get number of assignments in Living as Christians Parts
   const cnLC = getMWBLCCount(htmlItem);
@@ -368,17 +375,25 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
     .map((token) => token?.trim())
     .filter((token): token is string => Boolean(token && token.length > 0));
 
-  const trailingNumbers = trailingTokens
-    .flatMap((token) => Array.from(token.matchAll(/\d{1,3}/g)).map((match) => +match[0]))
-    .filter((num) => num > 0 && num <= SONG_MAX);
+  const trailingSongs = trailingTokens
+    .flatMap((token) =>
+      Array.from(token.match(/[\d\u0660-\u0669\u06F0-\u06F9]{1,3}/gu) ?? []).map((raw) => ({
+        raw,
+        num: +normalizeEasternArabicDigits(raw),
+      })),
+    )
+    .filter((song) => song.num > 0 && song.num <= SONG_MAX);
 
-  if (trailingNumbers.length > 0) {
-    weekItem.mwb_song_conclude = trailingNumbers.at(-1)!;
+  if (trailingSongs.length > 0) {
+    const lastSong = trailingSongs.at(-1)!;
+    weekItem.mwb_song_conclude = lastSong.num;
+    weekItem.mwb_song_conclude_locale = lastSong.raw;
   } else {
     nextIndex++;
     nextIndex++;
     tmpSrc = (splits[nextIndex] ?? '').trim();
     weekItem.mwb_song_conclude = extractSongNumber(tmpSrc);
+    weekItem.mwb_song_conclude_locale = extractSongNumberLocale(tmpSrc);
   }
 
   return weekItem;
@@ -413,7 +428,9 @@ export const parseWSchedule = (
   const songs = getWSTudySongs(content);
 
   weekItem.w_study_opening_song = songs.w_study_opening_song;
+  weekItem.w_study_opening_song_locale = songs.w_study_opening_song_locale;
   weekItem.w_study_concluding_song = songs.w_study_concluding_song;
+  weekItem.w_study_concluding_song_locale = songs.w_study_concluding_song_locale;
 
   return weekItem;
 };

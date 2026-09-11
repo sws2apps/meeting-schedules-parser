@@ -3,6 +3,7 @@ export type MWBSchedule = {
   mwb_week_date_locale?: string;
   mwb_weekly_bible_reading: string;
   mwb_song_first: number;
+  mwb_song_first_locale?: string;
   mwb_tgw_talk: string;
   mwb_tgw_talk_title?: string;
   mwb_tgw_gems_title?: string;
@@ -26,6 +27,7 @@ export type MWBSchedule = {
   mwb_ayf_part4_type?: string;
   mwb_ayf_part4_title?: string;
   mwb_song_middle: number | string;
+  mwb_song_middle_locale?: string;
   mwb_lc_count: number;
   mwb_lc_part1: string;
   mwb_lc_part1_time?: number;
@@ -38,6 +40,7 @@ export type MWBSchedule = {
   mwb_lc_cbs: string;
   mwb_lc_cbs_title?: string;
   mwb_song_conclude: number | string;
+  mwb_song_conclude_locale?: string;
 };
 
 export type WSchedule = {
@@ -45,7 +48,9 @@ export type WSchedule = {
   w_study_date_locale?: string;
   w_study_title: string;
   w_study_opening_song?: number;
+  w_study_opening_song_locale?: string;
   w_study_concluding_song?: number;
+  w_study_concluding_song_locale?: string;
 };
 
 export interface Language {
