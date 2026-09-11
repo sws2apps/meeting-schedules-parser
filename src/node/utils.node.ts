@@ -1,5 +1,5 @@
-import * as path from 'path';
-import { readFile } from 'fs/promises';
+import * as path from 'node:path';
+import { readFile } from 'node:fs/promises';
 import initSqlJs from 'sql.js';
 
 import BL from '../locales/bg-BG/text.json' with { type: 'json' };
