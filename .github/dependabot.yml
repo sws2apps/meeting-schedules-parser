@@ -5,6 +5,12 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+    commit-message:
+      prefix: 'chore(actions)'
+    groups:
+      github/codeql-action:
+        patterns:
+          - 'github/codeql-action*'
 
   # Maintain dependencies for npm
   - package-ecosystem: 'npm'
