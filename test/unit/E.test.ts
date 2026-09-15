@@ -98,6 +98,11 @@ describe(`[${CODE}] rules`, () => {
       expect(result).toBe(expected);
     });
 
+    it('parses date range with repeated word joiners before the separator', () => {
+      const src = 'January 5\u2060\u2060-11, 2026';
+      expect(extractWTStudyDate(src, CODE)).toBe('2026/01/05');
+    });
+
     it('throws an error for unknown month', () => {
       const src = 'Foobar 10-16, 2027';
       expect(() => extractWTStudyDate(src, CODE)).toThrowError();

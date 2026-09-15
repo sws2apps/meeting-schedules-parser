@@ -80,6 +80,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_week_date_locale\*   |      string       | Week date                                                                                                                       |
 | mwb_weekly_bible_reading |      string       | Weekly Bible Reading                                                                                                            |
 | mwb_song_first           |      integer      | First song                                                                                                                      |
+| mwb_song_first_locale    |      string       | First song as printed in the publication, keeping the original digit script (e.g. `١٣٨`). Omitted when the text has no digit run |
 | mwb_tgw_talk             |      string       | 10 min talk title of the Treasures from God’s Word                                                                              |
 | mwb_tgw_talk_title\*     |      string       | 10 min talk full title of the Treasures from God’s Word                                                                         |
 | mwb_tgw_gems_title       |      string       | Spiritual gems full title of the Treasures from God’s Word                                                                      |
@@ -103,6 +104,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_ayf_part4_type\*     |      string       | Type of Part 4 in Apply Yourself to the Field Ministry. This property will not be available if `mwb_ayf_count` is less than 4   |
 | mwb_ayf_part4_title\*    |      string       | Assignment full title of Part 4 in Apply Yourself to the Field Ministry                                                         |
 | mwb_song_middle          |      integer      | Middle song                                                                                                                     |
+| mwb_song_middle_locale   |      string       | Middle song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run                |
 | mwb_lc_count             |      integer      | Number of parts in Living as Christians                                                                                         |
 | mwb_lc_part1             |      string       | Part 1 in Living as Christians                                                                                                  |
 | mwb_lc_part1_time\*      |      integer      | Timing of Part 1 in Living as Christians                                                                                        |
@@ -115,6 +117,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_lc_cbs               |      string       | Congregation Bible Study source material                                                                                        |
 | mwb_lc_cbs_title\*       |      string       | Congregation Bible Study assignment full title                                                                                  |
 | mwb_song_conclude        | integer or string | Concluding song. When the song number is out of range, it will be the default text from the Meeting Workbook.                   |
+| mwb_song_conclude_locale |      string       | Concluding song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run              |
 
 #### Watchtower Study Data
 
@@ -124,7 +127,9 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | w_study_date_locale\*   | string  | Week date                                                        |
 | w_study_title           | string  | Watchtower Study Article Title                                   |
 | w_study_opening_song    | integer | Opening Song for the Watchtower Study                            |
+| w_study_opening_song_locale | string | Opening Song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run       |
 | w_study_concluding_song | integer | Concluding Song for the Watchtower Study                         |
+| w_study_concluding_song_locale | string | Concluding Song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run |
 
 \* These properties are only available when enhanced parsing is available for the language you parse.
 
@@ -156,6 +161,7 @@ Here are how the results of this module look like:
     mwb_week_date_locale: 'NOVEMBER 4-10',
     mwb_weekly_bible_reading: 'PSALM 105',
     mwb_song_first: 3,
+    mwb_song_first_locale: '3',
     mwb_tgw_talk: '“He Remembers His Covenant Forever”',
     mwb_tgw_talk_title: '1. “He Remembers His Covenant Forever”',
     mwb_tgw_gems_title: '2. Spiritual Gems',
@@ -179,6 +185,7 @@ Here are how the results of this module look like:
     mwb_ayf_part4_type: 'Following Up',
     mwb_ayf_part4_title: '7. Following Up',
     mwb_song_middle: 84,
+    mwb_song_middle_locale: '84',
     mwb_lc_count: 1,
     mwb_lc_part1: 'Expressions of Your Love',
     mwb_lc_part1_time: 15,
@@ -187,6 +194,7 @@ Here are how the results of this module look like:
     mwb_lc_cbs: 'bt chap. 17 ¶13-19',
     mwb_lc_cbs_title: '9. Congregation Bible Study',
     mwb_song_conclude: 97,
+    mwb_song_conclude_locale: '97',
   },
 	...
 ]
@@ -201,7 +209,9 @@ Here are how the results of this module look like:
     w_study_date_locale: 'Study Article 44: January 6-12, 2025',
     w_study_title: 'How to Cope With Injustice',
     w_study_opening_song: 33,
-    w_study_concluding_song: 38
+    w_study_opening_song_locale: '33',
+    w_study_concluding_song: 38,
+    w_study_concluding_song_locale: '38'
   },
 	...
 ]

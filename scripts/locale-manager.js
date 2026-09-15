@@ -77,13 +77,27 @@ const parseLocaleImports = (content, isNodeFile) => {
 };
 
 const parseLanguagesObjectCodes = (content) => {
-  const blockMatch = content.match(/languages:\s*\{([\s\S]*?)\n\s*\},\n\s*(?:path|loadSQL|readFile)/);
+  const lines = content.split('\n').map((line) => line.trim());
+  const start = lines.findIndex((line) => /^languages:\s*\{\s*$/.test(line));
 
-  if (!blockMatch) {
+  if (start === -1) {
     return [];
   }
 
-  return Array.from(blockMatch[1].matchAll(/^\s*([A-Z0-9]+),\s*$/gm)).map((m) => m[1]);
+  const codes = [];
+  for (let i = start + 1; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (line.startsWith('}')) {
+      break;
+    }
+
+    if (/^[A-Z0-9]{1,4},$/.test(line)) {
+      codes.push(line.slice(0, -1));
+    }
+  }
+
+  return codes;
 };
 
 const parseEnhancedEntries = (content) => {
@@ -111,12 +125,27 @@ const parseProfileOverrideImports = (content) => {
 };
 
 const parseProfileOverrideMapEntries = (content) => {
-  const match = content.match(/languageStrategyOverrides:\s*[^\{]*\{([\s\S]*?)\n\};/);
-  if (!match) {
+  const lines = content.split('\n').map((line) => line.trim());
+  const start = lines.findIndex((line) => line.includes('languageStrategyOverrides') && line.includes('{'));
+
+  if (start === -1) {
     return [];
   }
 
-  return Array.from(match[1].matchAll(/^\s*([A-Z0-9]+),\s*$/gm)).map((m) => m[1]);
+  const codes = [];
+  for (let i = start + 1; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (line.startsWith('};')) {
+      break;
+    }
+
+    if (/^[A-Z0-9]{1,4},$/.test(line)) {
+      codes.push(line.slice(0, -1));
+    }
+  }
+
+  return codes;
 };
 
 const validateCode = (code) => /^[A-Z0-9]{1,4}$/.test(code);
@@ -153,12 +182,27 @@ const insertBrowserImport = (content, code, locale) => {
 };
 
 const insertCodeInLanguagesObject = (content, code) => {
-  const hasCode = new RegExp(`^\s*${code},\s*$`, 'm').test(content);
-  if (hasCode) {
+  const lines = content.split('\n');
+  const target = `${code},`;
+
+  if (lines.some((line) => line.trim() === target)) {
     return content;
   }
 
-  return content.replace(/(\s*Z,\n)(\s*\},\n\s*(?:path|loadSQL|readFile))/m, `$1    ${code},\n$2`);
+  const startIdx = lines.findIndex((line) => /^\s*languages:\s*\{\s*$/.test(line));
+
+  if (startIdx === -1) {
+    return content;
+  }
+
+  const insertAt = lines.findIndex((line, i) => i > startIdx && line.trim() === '},');
+
+  if (insertAt === -1) {
+    return content;
+  }
+
+  lines.splice(insertAt, 0, `    ${target}`);
+  return lines.join('\n');
 };
 
 const addEnhancedLanguageEntry = (content, code, locale, name) => {

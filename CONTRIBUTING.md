@@ -108,7 +108,7 @@ npm test
   - Date extraction: `src/common/date_parser.ts`
   - Source/title extraction: `src/common/parsing_rules.ts`
   - Shared source helpers: `src/common/source_strategies.ts`
-  - Shared date input normalization: `src/common/date_normalize_input.ts`
+  - Date input normalization: normalization is defined in `src/common/date_parser.ts`
 
 ### `textOverrides` vs regex changes
 Use `textOverrides` in profile when:
