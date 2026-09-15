@@ -34,6 +34,11 @@ describe(`common rules`, () => {
       const src = 'Song 999';
       expect(extractSongNumber(src)).toBe(src);
     });
+
+    it('preserves the original locale script when the song number is out of range', () => {
+      const src = 'التَّرنيمَة ٩٩٩ « الشَّيبَةُ تاجُ جَمال»\u200F';
+      expect(extractSongNumber(src)).toBe(src);
+    });
   });
 
   describe('song number locale parsing', () => {

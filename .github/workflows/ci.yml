@@ -28,7 +28,7 @@ jobs:
           node-version: lts/Krypton
 
       - name: Install dependency
-        run: npm ci --ignore-scripts --allow-scripts=cypress
+        run: npm ci
 
       - name: Build output
         run: npm run build

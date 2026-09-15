@@ -377,7 +377,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
 
   const trailingSongs = trailingTokens
     .flatMap((token) =>
-      Array.from(token.match(/[\d\u0660-\u0669\u06F0-\u06F9]{1,3}/gu) ?? []).map((raw) => ({
+      Array.from(token.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu) ?? []).map((raw) => ({
         raw,
         num: +normalizeEasternArabicDigits(raw),
       })),
