@@ -7,7 +7,7 @@ import { LanguageProfile } from '../types/index.js';
 const clonePattern = (pattern: RegExp) => new RegExp(pattern.source, pattern.flags);
 
 const normalizeDateInput = (src: string, profile: LanguageProfile) => {
-  let normalized = src.trim().replace('  ', ' ').replace(/\u2060/g, '');
+  let normalized = src.trim().replaceAll('  ', ' ').replace(/\u2060/g, '');
 
   if (profile.normalizers.includes('stripBidiControls')) {
     normalized = stripBidiControls(normalized);
