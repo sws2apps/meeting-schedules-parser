@@ -397,7 +397,7 @@ describe('html_utils', () => {
       expect(result[0]).toHaveProperty('mwb_weekly_bible_reading');
     });
 
-    it('rejects a four-digit out-of-range number as a concluding song and falls back', async () => {
+    it('falls back to the raw source text when the concluding song number is out of range', async () => {
       const html = `
         <div>
           <h1>Date</h1>
@@ -422,8 +422,8 @@ describe('html_utils', () => {
       const doc = parse(html).querySelector('div')!;
       const result = await parseMWB({ htmlDocs: [doc], year: 2026, lang: 'UNDEFINED' });
 
-      expect(result[0].mwb_song_conclude).toBe(10);
-      expect(result[0].mwb_song_conclude_locale).toBe('10');
+      expect(result[0].mwb_song_conclude).toBe('Song 2026');
+      expect(result[0].mwb_song_conclude_locale).toBe('Song 2026');
     });
   });
 });

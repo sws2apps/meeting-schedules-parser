@@ -25,6 +25,11 @@ export const extractSongNumber = (src: string) => {
   return src;
 };
 
+export const extractSongNumberWithLocale = (src: string) => {
+  const value = extractSongNumber(src);
+  return { value, locale: typeof value === 'number' ? extractSongNumberLocale(src) : src };
+};
+
 export const extractSongNumberLocale = (src: string) => {
   const match = src.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu);
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import '../../src/node/utils.node.js';
 import { extractMWBDate, extractWTStudyDate } from '../../src/common/date_parser.js';
-import { extractSongNumber, extractSongNumberLocale, extractSourceEnhanced } from '../../src/common/parsing_rules.js';
+import { extractSongNumber, extractSongNumberLocale, extractSongNumberWithLocale, extractSourceEnhanced } from '../../src/common/parsing_rules.js';
 
 describe(`common rules`, () => {
   it('parses date with year explicitely set', () => {
@@ -38,6 +38,22 @@ describe(`common rules`, () => {
     it('preserves the original locale script when the song number is out of range', () => {
       const src = 'التَّرنيمَة ٩٩٩ « الشَّيبَةُ تاجُ جَمال»\u200F';
       expect(extractSongNumber(src)).toBe(src);
+    });
+  });
+
+  describe('song number and locale parsing', () => {
+    it('returns the numeric value and digit-run locale for a valid song number', () => {
+      expect(extractSongNumberWithLocale('Song 132 and Prayer')).toEqual({ value: 132, locale: '132' });
+    });
+
+    it('returns the full raw text for value and locale when the song number is out of range', () => {
+      const src = 'Song 999';
+      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: src });
+    });
+
+    it('returns the full raw locale text when there is no digit run', () => {
+      const src = 'Song and Prayer';
+      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: src });
     });
   });
 
