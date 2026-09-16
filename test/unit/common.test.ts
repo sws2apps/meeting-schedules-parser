@@ -46,14 +46,14 @@ describe(`common rules`, () => {
       expect(extractSongNumberWithLocale('Song 132 and Prayer')).toEqual({ value: 132, locale: '132' });
     });
 
-    it('returns the full raw text for value and locale when the song number is out of range', () => {
+    it('returns the raw value and digit-run locale when the song number is out of range', () => {
       const src = 'Song 999';
-      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: src });
+      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: '999' });
     });
 
-    it('returns the full raw locale text when there is no digit run', () => {
+    it('returns the raw value and undefined locale when there is no digit run', () => {
       const src = 'Song and Prayer';
-      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: src });
+      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: undefined });
     });
   });
 
@@ -70,12 +70,12 @@ describe(`common rules`, () => {
       expect(extractSongNumberLocale('سرود ۱۲۳')).toBe('۱۲۳');
     });
 
-    it('returns the full raw text when there is no digit run', () => {
-      expect(extractSongNumberLocale('Song and Prayer')).toBe('Song and Prayer');
+    it('returns undefined when there is no digit run', () => {
+      expect(extractSongNumberLocale('Song and Prayer')).toBeUndefined();
     });
 
-    it('returns the full raw text when the song number is out of range', () => {
-      expect(extractSongNumberLocale('Song 999')).toBe('Song 999');
+    it('returns the digit run when the song number is out of range', () => {
+      expect(extractSongNumberLocale('Song 999')).toBe('999');
     });
   });
 });

@@ -30,22 +30,13 @@ export const extractSongNumberWithLocale = (src: string) => {
 };
 
 export const extractSongNumberLocale = (src: string) => {
-  const normalized = stripBidiControls(normalizeEasternArabicDigits(src));
-  const parseNum = normalized.match(/(\d+)/);
+  const match = src.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu);
 
-  if (parseNum && parseNum.length > 0) {
-    const firstNumber = +parseNum[0];
-
-    if (firstNumber <= SONG_MAX) {
-      const match = src.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu);
-
-      if (match && match.length > 0) {
-        return match[0];
-      }
-    }
+  if (match === null || match.length === 0) {
+    return undefined;
   }
 
-  return src;
+  return match[0];
 };
 
 const resolveFinalSource = (profile: LanguageProfile, sourceInput: string, src: string) => {

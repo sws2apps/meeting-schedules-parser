@@ -1,7 +1,6 @@
 import JSZip from 'jszip';
 import { HTMLElement } from 'node-html-parser';
 
-import { SONG_MAX } from '../constants/index.js';
 import { isEnhancedLanguage } from '../config/language_profiles.js';
 
 import { extractSongNumberWithLocale, extractSourceEnhanced } from './parsing_rules.js';
@@ -391,7 +390,7 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
   if (trailingSongRuns.length > 0) {
     const lastRun = trailingSongRuns.at(-1)!;
 
-    if (lastRun.num > 0 && lastRun.num <= SONG_MAX) {
+    if (lastRun.num > 0) {
       weekItem.mwb_song_conclude = lastRun.num;
       weekItem.mwb_song_conclude_locale = lastRun.raw;
     } else {
