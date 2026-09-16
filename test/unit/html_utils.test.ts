@@ -397,7 +397,7 @@ describe('html_utils', () => {
       expect(result[0]).toHaveProperty('mwb_weekly_bible_reading');
     });
 
-    it('captures the full digit run as the concluding song even when out of range', async () => {
+    it('captures the full trailing digit run as the concluding song', async () => {
       const html = `
         <div>
           <h1>Date</h1>

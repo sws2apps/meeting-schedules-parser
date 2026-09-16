@@ -30,14 +30,12 @@ describe(`common rules`, () => {
       expect(extractSongNumber('سرود ۱۲۳')).toBe(123);
     });
 
-    it('returns the text when the song number is out of range', () => {
-      const src = 'Song 999';
-      expect(extractSongNumber(src)).toBe(src);
+    it('parses a large song number', () => {
+      expect(extractSongNumber('Song 999')).toBe(999);
     });
 
-    it('preserves the original locale script when the song number is out of range', () => {
-      const src = 'التَّرنيمَة ٩٩٩ « الشَّيبَةُ تاجُ جَمال»\u200F';
-      expect(extractSongNumber(src)).toBe(src);
+    it('parses an eastern arabic digit song number above the old limit', () => {
+      expect(extractSongNumber('التَّرنيمَة ٩٩٩ « الشَّيبَةُ تاجُ جَمال»\u200F')).toBe(999);
     });
   });
 
@@ -46,9 +44,8 @@ describe(`common rules`, () => {
       expect(extractSongNumberWithLocale('Song 132 and Prayer')).toEqual({ value: 132, locale: '132' });
     });
 
-    it('returns the raw value and digit-run locale when the song number is out of range', () => {
-      const src = 'Song 999';
-      expect(extractSongNumberWithLocale(src)).toEqual({ value: src, locale: '999' });
+    it('returns the numeric value and digit-run locale for a large song number', () => {
+      expect(extractSongNumberWithLocale('Song 999')).toEqual({ value: 999, locale: '999' });
     });
 
     it('returns the raw value and undefined locale when there is no digit run', () => {
@@ -74,7 +71,7 @@ describe(`common rules`, () => {
       expect(extractSongNumberLocale('Song and Prayer')).toBeUndefined();
     });
 
-    it('returns the digit run when the song number is out of range', () => {
+    it('returns the digit run for a large song number', () => {
       expect(extractSongNumberLocale('Song 999')).toBe('999');
     });
   });

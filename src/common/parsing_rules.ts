@@ -1,5 +1,4 @@
 import { JWEPUBParserError } from '../classes/error.js';
-import { SONG_MAX } from '../constants/index.js';
 import { getPartMinutesSeparatorVariations } from './language_rules.js';
 import { getLanguageProfile } from '../config/language_profiles.js';
 import { LanguageProfile } from '../types/index.js';
@@ -15,11 +14,7 @@ export const extractSongNumber = (src: string) => {
   const parseNum = normalized.match(/(\d+)/);
 
   if (parseNum && parseNum.length > 0) {
-    const firstNumber = +parseNum[0];
-
-    if (firstNumber <= SONG_MAX) {
-      return firstNumber;
-    }
+    return +parseNum[0];
   }
 
   return src;
