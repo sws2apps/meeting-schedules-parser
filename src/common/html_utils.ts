@@ -41,7 +41,7 @@ export const getMWBSources = (htmlItem: HTMLElement) => {
   for (const h3 of h3Texts) {
     let isSong = h3.classList.contains('dc-icon--music');
 
-    const part = h3.parentNode.classList.contains('boxContent') === false;
+    const part = h3.parentNode?.classList.contains('boxContent') === false;
 
     if (!isSong) {
       isSong = h3.querySelector('.dc-icon--music') ? true : false;

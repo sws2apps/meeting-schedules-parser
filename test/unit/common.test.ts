@@ -70,8 +70,12 @@ describe(`common rules`, () => {
       expect(extractSongNumberLocale('سرود ۱۲۳')).toBe('۱۲۳');
     });
 
-    it('returns undefined when there is no digit run', () => {
-      expect(extractSongNumberLocale('Song and Prayer')).toBeUndefined();
+    it('returns the full raw text when there is no digit run', () => {
+      expect(extractSongNumberLocale('Song and Prayer')).toBe('Song and Prayer');
+    });
+
+    it('returns the full raw text when the song number is out of range', () => {
+      expect(extractSongNumberLocale('Song 999')).toBe('Song 999');
     });
   });
 });

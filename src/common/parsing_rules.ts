@@ -26,18 +26,26 @@ export const extractSongNumber = (src: string) => {
 };
 
 export const extractSongNumberWithLocale = (src: string) => {
-  const value = extractSongNumber(src);
-  return { value, locale: typeof value === 'number' ? extractSongNumberLocale(src) : src };
+  return { value: extractSongNumber(src), locale: extractSongNumberLocale(src) };
 };
 
 export const extractSongNumberLocale = (src: string) => {
-  const match = src.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu);
+  const normalized = stripBidiControls(normalizeEasternArabicDigits(src));
+  const parseNum = normalized.match(/(\d+)/);
 
-  if (match === null || match.length === 0) {
-    return undefined;
+  if (parseNum && parseNum.length > 0) {
+    const firstNumber = +parseNum[0];
+
+    if (firstNumber <= SONG_MAX) {
+      const match = src.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu);
+
+      if (match && match.length > 0) {
+        return match[0];
+      }
+    }
   }
 
-  return match[0];
+  return src;
 };
 
 const resolveFinalSource = (profile: LanguageProfile, sourceInput: string, src: string) => {

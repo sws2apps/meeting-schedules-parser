@@ -80,7 +80,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_week_date_locale\*   |      string       | Week date                                                                                                                       |
 | mwb_weekly_bible_reading |      string       | Weekly Bible Reading                                                                                                            |
 | mwb_song_first           |      integer      | First song                                                                                                                      |
-| mwb_song_first_locale    |      string       | First song as printed in the publication, keeping the original digit script (e.g. `١٣٨`). Omitted when the text has no digit run |
+| mwb_song_first_locale    |      string       | First song as printed in the publication, keeping the original digit script (e.g. `١٣٨`). The full text when no song number can be parsed |
 | mwb_tgw_talk             |      string       | 10 min talk title of the Treasures from God’s Word                                                                              |
 | mwb_tgw_talk_title\*     |      string       | 10 min talk full title of the Treasures from God’s Word                                                                         |
 | mwb_tgw_gems_title       |      string       | Spiritual gems full title of the Treasures from God’s Word                                                                      |
@@ -104,7 +104,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_ayf_part4_type\*     |      string       | Type of Part 4 in Apply Yourself to the Field Ministry. This property will not be available if `mwb_ayf_count` is less than 4   |
 | mwb_ayf_part4_title\*    |      string       | Assignment full title of Part 4 in Apply Yourself to the Field Ministry                                                         |
 | mwb_song_middle          |      integer      | Middle song                                                                                                                     |
-| mwb_song_middle_locale   |      string       | Middle song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run                |
+| mwb_song_middle_locale   |      string       | Middle song as printed in the publication, keeping the original digit script. The full text when no song number can be parsed             |
 | mwb_lc_count             |      integer      | Number of parts in Living as Christians                                                                                         |
 | mwb_lc_part1             |      string       | Part 1 in Living as Christians                                                                                                  |
 | mwb_lc_part1_time\*      |      integer      | Timing of Part 1 in Living as Christians                                                                                        |
@@ -117,7 +117,7 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | mwb_lc_cbs               |      string       | Congregation Bible Study source material                                                                                        |
 | mwb_lc_cbs_title\*       |      string       | Congregation Bible Study assignment full title                                                                                  |
 | mwb_song_conclude        | integer or string | Concluding song. When the song number is out of range, it will be the default text from the Meeting Workbook.                   |
-| mwb_song_conclude_locale |      string       | Concluding song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run              |
+| mwb_song_conclude_locale |      string       | Concluding song as printed in the publication, keeping the original digit script. The full text when no song number can be parsed           |
 
 #### Watchtower Study Data
 
@@ -127,9 +127,9 @@ By calling the `loadPub` function, it will return an array of objects with the f
 | w_study_date_locale\*   | string  | Week date                                                        |
 | w_study_title           | string  | Watchtower Study Article Title                                   |
 | w_study_opening_song    | integer | Opening Song for the Watchtower Study                            |
-| w_study_opening_song_locale | string | Opening Song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run       |
+| w_study_opening_song_locale | string | Opening Song as printed in the publication, keeping the original digit script. The full text when no song number can be parsed   |
 | w_study_concluding_song | integer | Concluding Song for the Watchtower Study                         |
-| w_study_concluding_song_locale | string | Concluding Song as printed in the publication, keeping the original digit script. Omitted when the text has no digit run |
+| w_study_concluding_song_locale | string | Concluding Song as printed in the publication, keeping the original digit script. The full text when no song number can be parsed |
 
 \* These properties are only available when enhanced parsing is available for the language you parse.
 
