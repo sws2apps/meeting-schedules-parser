@@ -1,10 +1,10 @@
 import JSZip from 'jszip';
 import { HTMLElement } from 'node-html-parser';
 
-import { SONG_MAX } from '../constants/index.js';
 import { isEnhancedLanguage } from '../config/language_profiles.js';
 
-import { extractSongNumber, extractSourceEnhanced } from './parsing_rules.js';
+import { extractSongNumberWithLocale, extractSourceEnhanced } from './parsing_rules.js';
+import { normalizeEasternArabicDigits } from './source_strategies.js';
 import { MWBSchedule, WSchedule } from '../types/index.js';
 import { extractMWBDate, extractWTStudyDate } from './date_parser.js';
 import { getHTMLString, HTMLParse, isValidHTML, isValidMWBSchedule, isValidWSchedule } from './html_validation.js';
@@ -40,7 +40,7 @@ export const getMWBSources = (htmlItem: HTMLElement) => {
   for (const h3 of h3Texts) {
     let isSong = h3.classList.contains('dc-icon--music');
 
-    const part = h3.parentNode.classList.contains('boxContent') === false;
+    const part = h3.parentNode?.classList.contains('boxContent') === false;
 
     if (!isSong) {
       isSong = h3.querySelector('.dc-icon--music') ? true : false;
@@ -131,7 +131,9 @@ export const getWSTudySongs = (content: HTMLElement) => {
   const pubRefs = content.querySelectorAll('.pubRefs');
 
   const openingSongText = pubRefs.at(0)!;
-  const w_study_opening_song = extractSongNumber(openingSongText.textContent) as number;
+  const openingSong = extractSongNumberWithLocale(openingSongText.textContent);
+  const w_study_opening_song = openingSong.value as number;
+  const w_study_opening_song_locale = openingSong.locale;
 
   let concludingSongText = <HTMLElement>pubRefs.at(-1);
 
@@ -140,11 +142,15 @@ export const getWSTudySongs = (content: HTMLElement) => {
     concludingSongText = blockTeach!.nextElementSibling!;
   }
 
-  const w_study_concluding_song = extractSongNumber(concludingSongText.textContent) as number;
+  const concludingSong = extractSongNumberWithLocale(concludingSongText.textContent);
+  const w_study_concluding_song = concludingSong.value as number;
+  const w_study_concluding_song_locale = concludingSong.locale;
 
   return {
     w_study_opening_song,
+    w_study_opening_song_locale,
     w_study_concluding_song,
+    w_study_concluding_song_locale,
   };
 };
 
@@ -212,7 +218,9 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
   let tmpSrc = '';
 
   // First song
-  weekItem.mwb_song_first = extractSongNumber(splits[1]) as number;
+  const firstSong = extractSongNumberWithLocale(splits[1]);
+  weekItem.mwb_song_first = firstSong.value as number;
+  weekItem.mwb_song_first_locale = firstSong.locale;
 
   // 10min TGW Source
   tmpSrc = splits[3].trim();
@@ -306,7 +314,9 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
 
   // Middle song
   let nextIndex = cnAYF > 3 ? 12 : cnAYF > 2 ? 11 : cnAYF > 1 ? 10 : 9;
-  weekItem.mwb_song_middle = extractSongNumber(splits[nextIndex]);
+  const middleSong = extractSongNumberWithLocale(splits[nextIndex]);
+  weekItem.mwb_song_middle = middleSong.value;
+  weekItem.mwb_song_middle_locale = middleSong.locale;
 
   // get number of assignments in Living as Christians Parts
   const cnLC = getMWBLCCount(htmlItem);
@@ -368,17 +378,33 @@ export const parseMWBSchedule = (htmlItem: HTMLElement, mwbYear: number, mwbLang
     .map((token) => token?.trim())
     .filter((token): token is string => Boolean(token && token.length > 0));
 
-  const trailingNumbers = trailingTokens
-    .flatMap((token) => Array.from(token.matchAll(/\d{1,3}/g)).map((match) => +match[0]))
-    .filter((num) => num > 0 && num <= SONG_MAX);
+  const trailingSongRuns = trailingTokens
+    .flatMap((token) =>
+      Array.from(token.match(/[\d\u0660-\u0669\u06F0-\u06F9]+/gu) ?? []).map((raw) => ({
+        token,
+        raw,
+        num: +normalizeEasternArabicDigits(raw),
+      })),
+    );
 
-  if (trailingNumbers.length > 0) {
-    weekItem.mwb_song_conclude = trailingNumbers.at(-1)!;
+  if (trailingSongRuns.length > 0) {
+    const lastRun = trailingSongRuns.at(-1)!;
+
+    if (lastRun.num > 0) {
+      weekItem.mwb_song_conclude = lastRun.num;
+      weekItem.mwb_song_conclude_locale = lastRun.raw;
+    } else {
+      const fallbackSong = extractSongNumberWithLocale(lastRun.token);
+      weekItem.mwb_song_conclude = fallbackSong.value;
+      weekItem.mwb_song_conclude_locale = fallbackSong.locale;
+    }
   } else {
     nextIndex++;
     nextIndex++;
     tmpSrc = (splits[nextIndex] ?? '').trim();
-    weekItem.mwb_song_conclude = extractSongNumber(tmpSrc);
+    const fallbackSong = extractSongNumberWithLocale(tmpSrc);
+    weekItem.mwb_song_conclude = fallbackSong.value;
+    weekItem.mwb_song_conclude_locale = fallbackSong.locale;
   }
 
   return weekItem;
@@ -413,7 +439,9 @@ export const parseWSchedule = (
   const songs = getWSTudySongs(content);
 
   weekItem.w_study_opening_song = songs.w_study_opening_song;
+  weekItem.w_study_opening_song_locale = songs.w_study_opening_song_locale;
   weekItem.w_study_concluding_song = songs.w_study_concluding_song;
+  weekItem.w_study_concluding_song_locale = songs.w_study_concluding_song_locale;
 
   return weekItem;
 };

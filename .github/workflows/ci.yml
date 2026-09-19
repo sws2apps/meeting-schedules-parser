@@ -15,6 +15,9 @@ jobs:
     name: Run Test Units
     runs-on: ubuntu-latest
 
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_JW_EPUB_PARSER_RECORD_KEY }}
+
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -47,9 +50,8 @@ jobs:
           browser: chrome
           build: npm run setup:client
           start: npm run start:client
-          record: true
+          record: ${{ env.CYPRESS_RECORD_KEY != '' }}
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_JW_EPUB_PARSER_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: dvtrvb
 
@@ -118,7 +120,7 @@ jobs:
           node-version: lts/Krypton
 
       - name: Install dependency
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Build output
         run: npm run build

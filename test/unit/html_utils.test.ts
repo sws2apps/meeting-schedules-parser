@@ -396,5 +396,34 @@ describe('html_utils', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toHaveProperty('mwb_weekly_bible_reading');
     });
+
+    it('captures the full trailing digit run as the concluding song', async () => {
+      const html = `
+        <div>
+          <h1>Date</h1>
+          <h2>Reading</h2>
+          <h3 class="dc-icon--music">Song 1</h3>
+          <h3>Part 1</h3>
+          <h3>Part 2</h3>
+          <h3>Part 3</h3>
+          <h3>Part 4</h3>
+          <h3>Part 5</h3>
+          <h3>Part 6</h3>
+          <h3>Part 7</h3>
+          <h3>Part 8</h3>
+          <h3>Part 9</h3>
+          <h3>Part 10</h3>
+          <h3 class="dc-icon--music">Song 2026</h3>
+          <span class="du-color--gold-700">A</span>
+          <span class="du-color--maroon-600 du-margin-top--8 du-margin-bottom--0">B</span>
+        </div>
+      `;
+
+      const doc = parse(html).querySelector('div')!;
+      const result = await parseMWB({ htmlDocs: [doc], year: 2026, lang: 'UNDEFINED' });
+
+      expect(result[0].mwb_song_conclude).toBe(2026);
+      expect(result[0].mwb_song_conclude_locale).toBe('2026');
+    });
   });
 });

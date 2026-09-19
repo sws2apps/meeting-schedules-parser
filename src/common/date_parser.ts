@@ -1,127 +1,120 @@
 import { JWEPUBParserError } from '../classes/error.js';
 import { getMonthNames } from './language_rules.js';
 import { getLanguageProfile } from '../config/language_profiles.js';
+import { normalizeEasternArabicDigits, stripBidiControls } from './source_strategies.js';
+import { LanguageProfile } from '../types/index.js';
 
 const clonePattern = (pattern: RegExp) => new RegExp(pattern.source, pattern.flags);
 
-const normalizeDateInput = (src: string) => {
-  return src
-    .trim()
-    .replace('  ', ' ')
-    .replace('​', '')
-    .replace('⁠', '')
-    .replace(/\u200F/g, '')
-    .replace(/\u200B/g, '');
+const normalizeDateInput = (src: string, profile: LanguageProfile) => {
+  let normalized = src.trim().replaceAll('  ', ' ').replaceAll(/\u2060/g, '');
+
+  if (profile.normalizers.includes('stripBidiControls')) {
+    normalized = stripBidiControls(normalized);
+  }
+
+  if (profile.normalizers.includes('normalizeEasternArabicDigits')) {
+    normalized = normalizeEasternArabicDigits(normalized);
+  }
+
+  return normalized;
+};
+
+const resolveMonthIndex = (lang: string, month: string) => {
+  const captured = month.toLocaleLowerCase().trim();
+
+  return getMonthNames(lang).find((record) =>
+    record.name
+      .toLocaleLowerCase()
+      .split('|')
+      .some((variant) => {
+        const normalized = variant.trim();
+        return normalized === captured || normalized.split(/\s+/).includes(captured);
+      })
+  )?.index;
+};
+
+const getDateError = (type: 'mwb' | 'wtstudy', src: string) => {
+  const prefix = type === 'mwb' ? 'Meeting Workbook' : 'Watchtower Study';
+
+  return new JWEPUBParserError(type, `Parsing failed for ${prefix} Date. The input was: ${src}`);
+};
+
+const getDateGroups = (src: string, patterns: RegExp[], keys: string[]) => {
+  for (const pattern of patterns) {
+    const groups = clonePattern(pattern).exec(src)?.groups;
+
+    if (groups && keys.every((key) => groups[key])) {
+      return groups;
+    }
+  }
+
+  return undefined;
+};
+
+const resolveMonthNumber = (lang: string, month: string, src: string, type: 'mwb' | 'wtstudy') => {
+  if (!Number.isNaN(+month)) {
+    return month;
+  }
+
+  const monthIndex = resolveMonthIndex(lang, month);
+
+  if (monthIndex === undefined) {
+    throw getDateError(type, src);
+  }
+
+  return String(monthIndex + 1);
 };
 
 export const extractMWBDate = (src: string, year: number, lang: string) => {
   const profile = getLanguageProfile(lang);
-  const srcClean = normalizeDateInput(src);
-  let month = '';
-  let date = '';
+  const srcClean = normalizeDateInput(src, profile);
 
-  for (const pattern of profile.mwbDatePatterns) {
-    const datePattern = clonePattern(pattern);
-    const match = datePattern.exec(srcClean);
-    const groups = match?.groups;
+  const groups = getDateGroups(srcClean, profile.mwbDatePatterns, ['month', 'day']);
 
-    if (!groups?.month || !groups?.day) {
-      continue;
-    }
-
-    month = groups.month;
-    date = groups.day;
-    break;
+  if (!groups) {
+    throw getDateError('mwb', src);
   }
 
-  if (!month || !date) {
-    throw new JWEPUBParserError('mwb', `Parsing failed for Meeting Workbook Date. The input was: ${src}`);
-  }
+  const month = resolveMonthNumber(lang, groups.month, src, 'mwb');
 
-  if (isNaN(+month)) {
-    const months = getMonthNames(lang);
-    const monthIndex = months.find((record) => record.name.toLocaleLowerCase().includes(month.toLowerCase()))?.index;
-
-    if (monthIndex === undefined) {
-      throw new JWEPUBParserError('wtstudy', `Parsing failed for Meeting Workbook Date. The input was: ${src}`);
-    }
-
-    month = String(monthIndex + 1);
-  }
-
-  return `${year}/${String(month).padStart(2, '0')}/${String(date).padStart(2, '0')}`;
+  return `${year}/${String(month).padStart(2, '0')}/${String(groups.day).padStart(2, '0')}`;
 };
 
 export const extractWTStudyDate = (src: string, lang: string, fallbackYear?: number, fallbackIssueMonth?: number) => {
   const profile = getLanguageProfile(lang);
-  src = normalizeDateInput(src);
+  src = normalizeDateInput(src, profile);
 
-  let finalSrc = src;
-  const overrideSrc = profile.textOverrides?.[src];
+  const finalSrc = profile.textOverrides?.[src] ?? src;
 
-  if (overrideSrc) {
-    finalSrc = overrideSrc;
-  }
+  const wGroups = getDateGroups(finalSrc, profile.wDatePatterns, ['year', 'month', 'day']);
 
-  let year = '';
-  let month = '';
-  let date = '';
+  let year = wGroups?.year ?? '';
+  let month = wGroups?.month ?? '';
+  let date = wGroups?.day ?? '';
   let usedFallbackYear = false;
 
-  for (const pattern of profile.wDatePatterns) {
-    const datePattern = clonePattern(pattern);
-    const match = datePattern.exec(finalSrc);
-    const groups = match?.groups;
-
-    if (!groups?.year || !groups?.month || !groups?.day) {
-      continue;
-    }
-
-    year = groups.year;
-    month = groups.month;
-    date = groups.day;
-    break;
-  }
-
-  if (!year && fallbackYear && month && date) {
-    year = String(fallbackYear);
-    usedFallbackYear = true;
-  }
-
-  // Some W TOC entries omit the year (e.g., "11-17 grudnia").
-  // Reuse MWB day/month patterns for that case and apply fallback year.
-  if (!year && !month && !date && fallbackYear) {
-    for (const pattern of profile.mwbDatePatterns) {
-      const datePattern = clonePattern(pattern);
-      const match = datePattern.exec(finalSrc);
-      const groups = match?.groups;
-
-      if (!groups?.month || !groups?.day) {
-        continue;
-      }
-
+  if (!year && fallbackYear) {
+    if (month && date) {
       year = String(fallbackYear);
-      month = groups.month;
-      date = groups.day;
       usedFallbackYear = true;
-      break;
+    } else if (!month && !date) {
+      const mwbGroups = getDateGroups(finalSrc, profile.mwbDatePatterns, ['month', 'day']);
+
+      if (mwbGroups) {
+        year = String(fallbackYear);
+        month = mwbGroups.month;
+        date = mwbGroups.day;
+        usedFallbackYear = true;
+      }
     }
   }
 
   if (!year || !month || !date) {
-    throw new JWEPUBParserError('wtstudy', `Parsing failed for Watchtower Study Date. The input was: ${finalSrc}`);
+    throw getDateError('wtstudy', finalSrc);
   }
 
-  if (isNaN(+month)) {
-    const months = getMonthNames(lang);
-    const monthIndex = months.find((record) => record.name.toLocaleLowerCase().includes(month.toLowerCase()))?.index;
-
-    if (monthIndex === undefined) {
-      throw new JWEPUBParserError('wtstudy', `Parsing failed for Watchtower Study Date. The input was: ${finalSrc}`);
-    }
-
-    month = String(monthIndex + 1);
-  }
+  month = resolveMonthNumber(lang, month, finalSrc, 'wtstudy');
 
   if (usedFallbackYear && fallbackIssueMonth && +month < fallbackIssueMonth) {
     year = String(+year + 1);
