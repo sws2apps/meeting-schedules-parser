@@ -248,6 +248,43 @@ describe('html_utils', () => {
       ]);
     });
 
+    it('does not read a paragraph after a part heading as a song', () => {
+      const html = `
+        <div>
+          <div class="bodyTxt">
+            <p>Song 83 and Prayer | Opening Comments (1 min.)</p>
+            <h3 class="du-color--teal-700">1. Talk</h3>
+            <div id="tt1"><p>(10 min.) Talk content</p></div>
+            <h3 class="du-color--gold-700">2. Part</h3>
+            <div id="tt2"><p>(5 min.) Part content</p></div>
+            <div id="tt3"><h2 class="du-color--maroon-600">Living as Christians</h2></div>
+            <p>Song 2</p>
+            <h3 class="du-color--maroon-600">3. Local Needs</h3>
+            <p>(3 min.) Local needs text</p>
+            <h3>Concluding Comments (3 min.)</h3>
+            <p>Song 164 and Prayer</p>
+          </div>
+        </div>
+      `;
+      const doc = parse(html);
+      const parts = getMWBSources(doc.querySelector('div')!)
+        .split('@')
+        .map((part) => part.trim())
+        .filter((part) => part.length > 0 && part !== 'junk');
+
+      expect(parts).toEqual([
+        'Song 83 and Prayer',
+        'Opening Comments (1 min.)',
+        expect.stringContaining('1. Talk'),
+        expect.stringContaining('2. Part'),
+        'Song 2',
+        expect.stringContaining('3. Local Needs'),
+        expect.stringContaining('Concluding Comments'),
+        'Song 164 and Prayer',
+      ]);
+      expect(parts.join('@')).not.toContain('Local needs text');
+    });
+
     it('keeps part content paragraphs out of the sources', () => {
       const html = `
         <div>

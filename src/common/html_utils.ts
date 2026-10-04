@@ -33,14 +33,13 @@ export const getMWBLCCount = (htmlItem: HTMLElement) => {
 
 const isHeadingElement = (el: HTMLElement) => /^H[1-6]$/.test(el.tagName);
 
-const holdsHeadingElement = (el: HTMLElement) => !!el.querySelector('h1, h2, h3, h4, h5, h6');
-
 // Up to issue 202601 songs were rendered as `<h3 class="dc-icon--music">`. From issue 202701 they
-// became plain paragraphs, anchored to fixed spots in the schedule flow: before any heading (the
-// opening song, which also carries the opening comments after a pipe), right after the "Living as
-// Christians" section header (the middle song) and right after the concluding comments heading
-// (the concluding song). Only paragraphs sitting at such an anchor are songs; every other direct
-// child paragraph belongs to the part content blocks and is read from there.
+// became plain paragraphs, recognised by their position in the schedule flow alone: the opening
+// song opens the flow before the first heading and also carries the opening comments after a pipe,
+// the middle song follows the section header that opens Living as Christians (a `div` wrapping an
+// `h2`) and the concluding song follows the last heading of the flow, the concluding comments
+// heading. Only those three positions hold songs; every other direct child paragraph belongs to a
+// part content block and is read from there.
 const getMWBSongParagraphs = (htmlItem: HTMLElement) => {
   const body = htmlItem.querySelector('.bodyTxt');
 
@@ -48,16 +47,20 @@ const getMWBSongParagraphs = (htmlItem: HTMLElement) => {
     return [] as HTMLElement[];
   }
 
+  const elements = body.children;
+  const lastHeadingIndex = elements.reduce((last, element, index) => (isHeadingElement(element) ? index : last), -1);
   const songParagraphs: HTMLElement[] = [];
 
-  for (const paragraph of body.children) {
+  for (const [index, paragraph] of elements.entries()) {
     if (paragraph.tagName !== 'P') {
       continue;
     }
 
     const anchor = paragraph.previousElementSibling;
 
-    if (!anchor || isHeadingElement(anchor) || holdsHeadingElement(anchor)) {
+    if (!anchor || (anchor.tagName === 'DIV' && !!anchor.querySelector('h2'))) {
+      songParagraphs.push(paragraph);
+    } else if (index > lastHeadingIndex) {
       songParagraphs.push(paragraph);
     }
   }
