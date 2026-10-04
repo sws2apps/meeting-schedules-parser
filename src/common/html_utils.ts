@@ -31,16 +31,111 @@ export const getMWBLCCount = (htmlItem: HTMLElement) => {
   return htmlItem.querySelectorAll('.du-color--maroon-600.du-margin-top--8.du-margin-bottom--0').length - 1;
 };
 
+const isHeadingElement = (el: HTMLElement) => /^H[1-6]$/.test(el.tagName);
+
+// Up to issue 202601 songs were rendered as `<h3 class="dc-icon--music">`. From issue 202701 they
+// became plain paragraphs, recognised by their position in the schedule flow alone: the opening
+// song opens the flow before the first heading and also carries the opening comments after a pipe,
+// the middle song follows the section header that opens Living as Christians (a `div` wrapping an
+// `h2`) and the concluding song follows the last heading of the flow, the concluding comments
+// heading. Only those three positions hold songs; every other direct child paragraph belongs to a
+// part content block and is read from there.
+const getMWBSongParagraphs = (htmlItem: HTMLElement) => {
+  const body = htmlItem.querySelector('.bodyTxt');
+
+  if (!body) {
+    return [] as HTMLElement[];
+  }
+
+  const elements = body.children;
+  const lastHeadingIndex = elements.reduce((last, element, index) => (isHeadingElement(element) ? index : last), -1);
+  const songParagraphs: HTMLElement[] = [];
+
+  for (const [index, paragraph] of elements.entries()) {
+    if (paragraph.tagName !== 'P') {
+      continue;
+    }
+
+    const anchor = paragraph.previousElementSibling;
+    const followsSectionHeader = anchor?.tagName === 'DIV' && !!anchor?.querySelector('h2');
+
+    if (!anchor || followsSectionHeader || index > lastHeadingIndex) {
+      songParagraphs.push(paragraph);
+    }
+  }
+
+  return songParagraphs;
+};
+
+// A heading belongs to the schedule flow when it is not nested inside the content block of a
+// preceding item. Headings nested in such a block (for example the title of an inserted box) are
+// part content, not a separate schedule item, so they must not emit their own source token.
+// Headings are visited in document order, so a heading is always reached before its descendants and
+// every heading it contains is known by the time it is considered.
+const getMWBItemHeadings = (htmlItem: HTMLElement) => {
+  const nestedHeadings = new Set<HTMLElement>();
+  const itemHeadings: HTMLElement[] = [];
+
+  for (const h3 of htmlItem.querySelectorAll('h3')) {
+    if (h3.closest('.boxContent') || nestedHeadings.has(h3)) {
+      continue;
+    }
+
+    itemHeadings.push(h3);
+
+    const nextSibling = h3.nextElementSibling;
+
+    if (nextSibling && !isHeadingElement(nextSibling) && nextSibling.tagName === 'DIV') {
+      for (const nested of nextSibling.querySelectorAll('h3')) {
+        nestedHeadings.add(nested);
+      }
+    }
+  }
+
+  return itemHeadings;
+};
+
+// Heading-like elements and song paragraphs are emitted by different node types depending on the
+// issue, so both are collected first and then walked together in document order.
+const getDocumentOrder = (root: HTMLElement) => {
+  const order = new Map<HTMLElement, number>();
+  let counter = 0;
+
+  const walk = (el: HTMLElement) => {
+    order.set(el, counter++);
+
+    for (const child of el.children) {
+      walk(child);
+    }
+  };
+
+  walk(root);
+
+  return order;
+};
+
 export const getMWBSources = (htmlItem: HTMLElement) => {
   let src = '';
-  const h3Texts = htmlItem.querySelectorAll('h3');
+
+  const order = getDocumentOrder(htmlItem);
+
+  const entries = [
+    ...getMWBItemHeadings(htmlItem).map((h3) => ({ el: h3, songParagraph: false, at: order.get(h3) ?? 0 })),
+    ...getMWBSongParagraphs(htmlItem).map((p) => ({ el: p, songParagraph: true, at: order.get(p) ?? 0 })),
+  ].sort((a, b) => a.at - b.at);
 
   let songIndex = 0;
 
-  for (const h3 of h3Texts) {
+  for (const { el: h3, songParagraph } of entries) {
+    if (songParagraph) {
+      songIndex++;
+      src += '@' + h3.textContent.replace('|', '@');
+      continue;
+    }
+
     let isSong = h3.classList.contains('dc-icon--music');
 
-    const part = h3.parentNode.classList.contains('boxContent') === false;
+    const part = !h3.closest('.boxContent');
 
     if (!isSong) {
       isSong = h3.querySelector('.dc-icon--music') ? true : false;
