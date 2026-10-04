@@ -1,3 +1,3 @@
 export const MONTH_NAME = String.raw`\p{L}+\p{M}*`;
 
-export const SONG_MAX = 163;
+export const SONG_MAX = 200;

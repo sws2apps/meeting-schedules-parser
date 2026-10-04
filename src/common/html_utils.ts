@@ -31,16 +31,87 @@ export const getMWBLCCount = (htmlItem: HTMLElement) => {
   return htmlItem.querySelectorAll('.du-color--maroon-600.du-margin-top--8.du-margin-bottom--0').length - 1;
 };
 
+// Since the January–February 2027 issue, songs are no longer rendered as
+// `<h3 class="dc-icon--music">` but as plain paragraphs that start with a bold
+// song reference, optionally linked and/or ruby-annotated, e.g.:
+//   EPUB : `<p><a href="…-extracted.xhtml#…"><strong>Song 83</strong></a> <strong>and Prayer</strong></p>`
+//   JWPUB: `<p><a href="jwpub://p/E:…"><strong>Song 83</strong></a> …</p>`
+//   unlinked new songs: `<p><strong>Wimbo 164</strong> <strong>na Sala</strong></p>`
+//   CJK: `<p><ruby><rb><strong>唱诗</strong></rb></ruby>…<strong>164</strong>…</p>`
+const squashText = (text: string) => text.replace(/[\s\u200B\u200E\u200F]/g, ''); // whitespace, zero-width space, bidi marks
+
+const isFullyBold = (el: HTMLElement) => {
+  if (el.tagName === 'STRONG') return true;
+
+  const text = squashText(el.textContent);
+  const boldText = squashText(
+    el
+      .querySelectorAll('strong')
+      .map((strong) => strong.textContent)
+      .join(''),
+  );
+
+  return text !== '' && text === boldText;
+};
+
+const isSongParagraph = (p: HTMLElement) => {
+  // skip headings, article boxes and scripture footnotes (which can start with bold verse numbers)
+  if (p.closest('h3') || p.closest('.boxContent') || p.closest('aside') || p.closest('.groupExt')) return false;
+
+  // songs sit beside the meeting part headings; part instructions live inside the parts' content containers
+  const isBesidePartHeadings = p.parentNode?.childNodes.some(
+    (node) => node instanceof HTMLElement && node.tagName === 'H3' && Boolean(node.getAttribute('class')),
+  );
+  if (!isBesidePartHeadings) return false;
+
+  // collect the leading run of bold content and whatever text follows it
+  let leadText = '';
+  let restText = '';
+
+  for (const node of p.childNodes) {
+    const text = node.textContent;
+
+    if (restText === '' && squashText(text) === '') continue; // whitespace, zero-width spaces, empty anchor spans
+
+    if (restText === '' && node instanceof HTMLElement && isFullyBold(node)) {
+      leadText += text;
+    } else {
+      restText += text;
+    }
+  }
+
+  // a song line is bold, optionally followed by a duration “(1 min.)” / “（1分钟）” or by the
+  // “| Opening Comments (1 min)” segment. This excludes bold-led instructions such as
+  // “Read 1 Corinthians 3:6. Then ask the audience:”
+  const rest = squashText(restText);
+  const isSongTail = rest === '' || /^[|(（]/.test(rest);
+
+  // \p{Nd}: any script's decimal digits (e.g. Arabic-Indic “الترنيمة ١٦٤”)
+  return isSongTail && /\p{Nd}/u.test(leadText);
+};
+
 export const getMWBSources = (htmlItem: HTMLElement) => {
   let src = '';
-  const h3Texts = htmlItem.querySelectorAll('h3');
+  // Legacy layouts mark songs with `.dc-icon--music`; only fall back to song paragraphs (2027+ layout) without them
+  const hasLegacySongs = htmlItem.querySelector('.dc-icon--music') !== null;
+  const h3Texts = htmlItem
+    .querySelectorAll('h3, p')
+    .filter((el) => el.tagName === 'H3' || (!hasLegacySongs && isSongParagraph(el)));
 
   let songIndex = 0;
 
-  for (const h3 of h3Texts) {
-    let isSong = h3.classList.contains('dc-icon--music');
+  // In the 2027+ layout all meeting part headings carry styling classes, so an
+  // unclassed <h3> there is an article box heading (e.g. “How to Make Effective Return Visits”)
+  const isNewLayout =
+    !hasLegacySongs && htmlItem.querySelectorAll('h3').some((h3) => Boolean(h3.getAttribute('class')));
 
-    const part = h3.parentNode.classList.contains('boxContent') === false;
+  for (const h3 of h3Texts) {
+    let isSong = h3.tagName === 'P' || h3.classList.contains('dc-icon--music');
+
+    // Article boxes use either a `.boxContent` wrapper (older layouts) or an unclassed `<h3>` (2027+ layout)
+    const isBoxHeading =
+      Boolean(h3.parentNode?.classList.contains('boxContent')) || (isNewLayout && !h3.getAttribute('class'));
+    const part = h3.tagName === 'H3' && !isBoxHeading;
 
     if (!isSong) {
       isSong = h3.querySelector('.dc-icon--music') ? true : false;
