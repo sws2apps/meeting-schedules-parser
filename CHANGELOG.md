@@ -1,3 +1,37 @@
+# [4.6.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.5.0...v4.6.0) (2026-10-04)
+
+
+### Bug Fixes
+
+* **common:** read mwb songs from paragraphs as of issue 202701 ([76ac3c3](https://github.com/sws2apps/meeting-schedules-parser/commit/76ac3c308527547c1370b0fd1fbfc10e4053307b))
+
+
+### Features
+
+* **deps:** bump actions/setup-node from 6.4.0 to 7.0.0 ([08438f9](https://github.com/sws2apps/meeting-schedules-parser/commit/08438f94e21a609f7be3da508460c44dee9ca9ca))
+* **deps:** bump cypress-io/github-action from 7.4.0 to 7.4.1 ([171df0b](https://github.com/sws2apps/meeting-schedules-parser/commit/171df0b7e93df2deb2f77a55365a16f9df97c423))
+* **deps:** bump github/codeql-action/init from 4.36.2 to 4.37.6 ([4249d32](https://github.com/sws2apps/meeting-schedules-parser/commit/4249d32aeca2e4eef56c738565237c0d01dc610b))
+* **deps:** bump github/codeql-action/upload-sarif from 4.36.2 to 4.36.3 ([6a52e1f](https://github.com/sws2apps/meeting-schedules-parser/commit/6a52e1f2230a4aef52db532f2d5040f74df54284))
+* **deps:** bump github/codeql-action/upload-sarif from 4.37.3 to 4.37.4 ([e297f53](https://github.com/sws2apps/meeting-schedules-parser/commit/e297f532f2968d9a94ee9e18b9ab9e37c279f56b))
+* **deps:** bump github/codeql-action/upload-sarif from 4.37.4 to 4.37.5 ([ee0b301](https://github.com/sws2apps/meeting-schedules-parser/commit/ee0b301015d1f18ec7ec16123f712cc9242ac131))
+* **deps:** bump github/codeql-action/upload-sarif from 4.37.5 to 4.37.6 ([e671f33](https://github.com/sws2apps/meeting-schedules-parser/commit/e671f333c6976b60314e370d8b0b8805af9ca025))
+* **deps:** bump jszip from 3.10.1 to 3.10.2 ([ef59fd0](https://github.com/sws2apps/meeting-schedules-parser/commit/ef59fd0ac90b20b0757a2d001166ca87b83a1e46))
+* **deps:** bump node-html-parser from 7.1.0 to 8.0.3 ([9b8f976](https://github.com/sws2apps/meeting-schedules-parser/commit/9b8f976f73ff7556a67aadbf874f87ec8ba6f0b3))
+* **deps:** bump node-html-parser from 8.0.3 to 8.0.4 ([dd65151](https://github.com/sws2apps/meeting-schedules-parser/commit/dd6515188b6036390e9d9ea9a4d901aaea09a8e4))
+* **deps:** bump node-html-parser from 8.0.4 to 9.0.0 ([d1925e5](https://github.com/sws2apps/meeting-schedules-parser/commit/d1925e590a51aa5350122234545ffedd84b88956))
+* **deps:** bump node-html-parser from 9.0.0 to 9.0.1 ([6dcb8ae](https://github.com/sws2apps/meeting-schedules-parser/commit/6dcb8ae03218e2af5b176a24cf8de2e4278ccfce))
+* **deps:** bump node-html-parser from 9.0.1 to 9.0.2 ([608f95d](https://github.com/sws2apps/meeting-schedules-parser/commit/608f95d896a9d4647aafc1ecd9ed6a073161ddba))
+* **deps:** bump node-html-parser from 9.0.2 to 9.0.4 ([d681765](https://github.com/sws2apps/meeting-schedules-parser/commit/d681765fb0760a9d046cc4a4f26ab2f93cca43dd))
+* **deps:** bump pako from 2.1.0 to 2.2.0 ([19c7c24](https://github.com/sws2apps/meeting-schedules-parser/commit/19c7c24783bb07a2d2b8de58343182d1e59f1e98))
+* **deps:** bump pako from 2.2.0 to 3.0.0 ([03103fe](https://github.com/sws2apps/meeting-schedules-parser/commit/03103fef86710e39bf1cb1c460ce24b22d9c8b53))
+* **deps:** bump pako from 3.0.0 to 3.0.1 ([085a633](https://github.com/sws2apps/meeting-schedules-parser/commit/085a633b0d975faecfa9c6223614eb53fcd0b157))
+* **deps:** bump pako from 3.0.1 to 3.0.2 ([d7dd96d](https://github.com/sws2apps/meeting-schedules-parser/commit/d7dd96da3455e848affe705c2392d808085ffd4e))
+* **deps:** bump postcss from 8.5.16 to 8.5.23 ([6ee6c3a](https://github.com/sws2apps/meeting-schedules-parser/commit/6ee6c3a4a41d41836c86f0a4eb046c95c2c38f2d))
+* **deps:** bump serialize-javascript from 7.1.1 to 7.1.2 ([d60b52a](https://github.com/sws2apps/meeting-schedules-parser/commit/d60b52a9e38e6bfef87631bb639ef2b32116d8ee))
+* **deps:** bump sql.js from 1.14.1 to 1.14.2 ([d12b660](https://github.com/sws2apps/meeting-schedules-parser/commit/d12b66068b8e6dc552d1d765ecfc442a3ff81739))
+* **deps:** bump tar and npm ([d52229b](https://github.com/sws2apps/meeting-schedules-parser/commit/d52229bfdbbf4036ab8f36877410054fd65bb98f))
+* **deps:** bump undici ([29c361b](https://github.com/sws2apps/meeting-schedules-parser/commit/29c361bc8aea9720cedbaf05fe78c15db4f049d7))
+
 # [4.5.0](https://github.com/sws2apps/meeting-schedules-parser/compare/v4.4.0...v4.5.0) (2026-06-10)
 
 
