@@ -212,6 +212,97 @@ describe('html_utils', () => {
       const result = getMWBSources(doc.querySelector('div')!);
       expect(result).toContain('Regular Part');
     });
+
+    it('extracts songs rendered as paragraphs from issue 202701 on', () => {
+      const html = `
+        <div>
+          <div class="bodyTxt">
+            <p>Song 83 and Prayer | Opening Comments (1 min.)</p>
+            <h3 class="du-color--teal-700">1. Talk</h3>
+            <div id="tt1"><p>(10 min.) Talk content</p></div>
+            <h3 class="du-color--gold-700">2. Part</h3>
+            <div id="tt2"><p>(5 min.) Part content</p></div>
+            <div id="tt3"><h2 class="du-color--maroon-600">Living as Christians</h2></div>
+            <p>Song 2</p>
+            <h3 class="du-color--maroon-600">3. Local Needs</h3>
+            <h3>Concluding Comments (3 min.)</h3>
+            <p>Song 164 and Prayer</p>
+          </div>
+        </div>
+      `;
+      const doc = parse(html);
+      const parts = getMWBSources(doc.querySelector('div')!)
+        .split('@')
+        .map((part) => part.trim())
+        .filter((part) => part.length > 0 && part !== 'junk');
+
+      expect(parts).toEqual([
+        'Song 83 and Prayer',
+        'Opening Comments (1 min.)',
+        expect.stringContaining('1. Talk'),
+        expect.stringContaining('2. Part'),
+        'Song 2',
+        expect.stringContaining('3. Local Needs'),
+        expect.stringContaining('Concluding Comments'),
+        'Song 164 and Prayer',
+      ]);
+    });
+
+    it('keeps part content paragraphs out of the sources', () => {
+      const html = `
+        <div>
+          <div class="bodyTxt">
+            <h3 class="du-color--gold-700">1. Part</h3>
+            <div id="tt1"><p>(5 min.) Part content</p></div>
+            <h3>Concluding Comments</h3>
+          </div>
+        </div>
+      `;
+      const doc = parse(html);
+      const result = getMWBSources(doc.querySelector('div')!);
+
+      expect(result).toContain('Part content');
+      expect(result.split('@').filter((part) => part.includes('Part content')).length).toBe(1);
+    });
+
+    it('ignores headings nested inside the content block of a preceding part', () => {
+      const html = `
+        <div>
+          <div class="bodyTxt">
+            <h3 class="du-color--teal-700">1. Talk</h3>
+            <div id="tt1"><p>(10 min.) Talk content</p></div>
+            <h3 class="du-color--gold-700">2. Part</h3>
+            <div id="tt2"><p>(5 min.) Part content<h3>How to Do Effective Return Visits</h3></p></div>
+            <h3>Concluding Comments</h3>
+          </div>
+        </div>
+      `;
+      const doc = parse(html);
+      const parts = getMWBSources(doc.querySelector('div')!)
+        .split('@')
+        .map((part) => part.trim())
+        .filter((part) => part.length > 0 && part !== 'junk');
+
+      expect(parts.filter((part) => part.includes('How to Do Effective Return Visits')).length).toBe(1);
+      expect(parts.join('@')).toContain('Part content');
+    });
+
+    it('ignores headings inside box content', () => {
+      const html = `
+        <div>
+          <div class="bodyTxt">
+            <h3 class="du-color--gold-700">1. Part</h3>
+            <div class="boxContent"><h3>Box Title</h3><p>Box content</p></div>
+            <h3>Concluding Comments</h3>
+          </div>
+        </div>
+      `;
+      const doc = parse(html);
+      const result = getMWBSources(doc.querySelector('div')!);
+
+      expect(result).toContain('Concluding Comments');
+      expect(result).not.toContain('Box Title');
+    });
   });
 
   describe('getWStudyArticles', () => {
