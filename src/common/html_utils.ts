@@ -57,10 +57,9 @@ const getMWBSongParagraphs = (htmlItem: HTMLElement) => {
     }
 
     const anchor = paragraph.previousElementSibling;
+    const followsSectionHeader = anchor?.tagName === 'DIV' && !!anchor?.querySelector('h2');
 
-    if (!anchor || (anchor.tagName === 'DIV' && !!anchor.querySelector('h2'))) {
-      songParagraphs.push(paragraph);
-    } else if (index > lastHeadingIndex) {
+    if (!anchor || followsSectionHeader || index > lastHeadingIndex) {
       songParagraphs.push(paragraph);
     }
   }
